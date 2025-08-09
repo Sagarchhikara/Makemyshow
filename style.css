@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #111;
+    color: #fff;
+}
+
+.container {
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.seat {
+    height: 20px;
+    width: 25px;
+    background: #444;
+    margin: 5px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.seat.selected {
+    background: limegreen;
+}
+
+.seat.booked {
+    background: red;
+    cursor: not-allowed;
+}
+
+.screen {
+    height: 40px;
+    background: #fff;
+    margin: 10px 0;
+}
