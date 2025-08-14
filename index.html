@@ -1,43 +1,201 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Booking</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MovieWave — Book Tickets</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-    <h1>Movie Booking</h1>
-
-    <label>Choose Movie:</label>
-    <select id="movie">
-        <option value="200">Avengers: Endgame ($200)</option>
-        <option value="150">Joker ($150)</option>
-        <option value="180">Frozen II ($180)</option>
-    </select>
-
-    <div class="container">
-        <div class="screen"></div>
-        <div class="row">
-            <div class="seat"></div>
-            <div class="seat"></div>
-            <div class="seat booked"></div>
-            <div class="seat"></div>
-        </div>
-        <div class="row">
-            <div class="seat"></div>
-            <div class="seat"></div>
-            <div class="seat"></div>
-            <div class="seat"></div>
-        </div>
+  <!-- NAVBAR -->
+  <header class="nav fade-up" role="banner">
+    <div class="container nav-inner">
+      <a class="brand" href="#">🎬 <span>MovieWave</span></a>
+      <nav role="navigation" aria-label="Main">
+        <ul class="nav-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#now">Now Showing</a></li>
+          <li><a href="#coming">Coming Soon</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <input class="search" placeholder="Search movies..." aria-label="Search movies" />
+        <button class="btn ghost">Sign in</button>
+      </div>
     </div>
+  </header>
 
-    <p>Selected Seats: <span id="count">0</span></p>
-    <p>Total Price: ₹<span id="total">0</span></p>
+  <!-- HERO: slideshow -->
+  <section class="hero-wrap">
+    <div class="hero-slideshow">
+      <button class="hero-arrow left" aria-label="Previous slide">‹</button>
+      <div class="slides">
+        <!-- Images are static in HTML (user requested that) -->
+        <div class="slide active" data-title="F1: The Movie" data-tag="Action/Drama/Sports • 142m">
+          <img src="f1 movie.png" alt="f1" />
+        </div>
+        <div class="slide" data-title="War 2" data-tag="Action/Thriller • 128m">
+          <img src="war 2.jpg" alt="war 2" />
+        </div>
+        <div class="slide" data-title="Saiyaara" data-tag="Drama/Musical/Romantic • 121m">
+          <img src="saiyaara.avif" alt="saiyaara" />
+        </div>
+      </div>
+      <button class="hero-arrow right" aria-label="Next slide">›</button>
 
-    <script src="script.js"></script>
+      <div class="hero-info">
+        <h1 id="hero-title">Starlight Odyssey</h1>
+        <p id="hero-tag">Action • 142m</p>
+        <div class="hero-ctas">
+          <a class="btn primary" href="#">Book Tickets</a>
+          <a class="btn ghost" href="#">Details</a>
+        </div>
+      </div>
+
+      <div class="hero-dots" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- NOW SHOWING -->
+  <main>
+    <section id="now" class="section container">
+      <h2 class="section-title fade-up">Now Showing</h2>
+      <div class="grid movie-grid">
+        <!-- Movie cards (images in HTML) -->
+        <article class="card movie-card reveal" tabindex="0">
+          <div class="poster">
+            <img src="f1 movie.png" alt="F1: The Movie">
+          </div>
+          <div class="card-body">
+            <h3>F1: The Movie</h3>
+            <p class="muted">Action • 142m</p>
+            <div class="card-cta">
+              <a class="btn primary" href="#">Book</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card movie-card reveal" tabindex="0">
+          <div class="poster">
+            <img src="saiyaara.avif" alt="Saiyaara">
+          </div>
+          <div class="card-body">
+            <h3>Saiyaara</h3>
+            <p class="muted">Romantic • 121m</p>
+            <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
+          </div>
+        </article>
+
+        <article class="card movie-card reveal" tabindex="0">
+          <div class="poster">
+            <img src="war 2.jpg" alt="War 2">
+          </div>
+          <div class="card-body">
+            <h3>War 2</h3>
+            <p class="muted">Thriller • 128m</p>
+            <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
+          </div>
+        </article>
+
+        <article class="card movie-card reveal" tabindex="0">
+          <div class="poster">
+            <img src="narsimha.jpeg" alt="Narsimha">
+          </div>
+          <div class="card-body">
+            <h3>Mahavatar Narsimha</h3>
+            <p class="muted">Animation • 121m</p>
+            <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
+          </div>
+        </article>
+
+        <article class="card movie-card reveal" tabindex="0">
+          <div class="poster">
+            <img src="coolie.jpg" alt="Coolie">
+          </div>
+          <div class="card-body">
+            <h3>Coolie: The Powerhouse</h3>
+            <p class="muted">Romance • 128m</p>
+            <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
+          </div>
+        </article>
+
+        <article class="card movie-card reveal" tabindex="0">
+          <div class="poster">
+            <img src="sarbala ji.jpg" alt="Sarbala ji">
+          </div>
+          <div class="card-body">
+            <h3>Sarbala ji</h3>
+            <p class="muted">Comedy • 128m</p>
+            <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
+          </div>
+        </article>
+
+        <article class="card movie-card reveal" tabindex="0">
+          <div class="poster">
+            <img src="weapons.webp" alt="Weapons">
+          </div>
+          <div class="card-body">
+            <h3>Weapons</h3>
+            <p class="muted">Horror • 128m</p>
+            <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
+          </div>
+        </article>
+
+        <article class="card movie-card reveal" tabindex="0">
+          <div class="poster">
+            <img src="freaky friday.jpeg" alt="Freakier Friday">
+          </div>
+          <div class="card-body">
+            <h3>Freakier Friday</h3>
+            <p class="muted">Comedy • 128m</p>
+            <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
+          </div>
+        </article>
+
+    <!-- COMING SOON horizontal -->
+    <section id="coming" class="section pale">
+      <div class="container">
+        <h2 class="section-title fade-up">Coming Soon</h2>
+        <div class="row-scroll reveal">
+          <div class="up-card">
+            <img src="kanatara 2.jpg" alt="Coming soon 1">
+            <p>Kantara: A Legend Chapter-1</p>
+          </div>
+          <div class="up-card">
+            <img src="avatara 2.jpeg" alt="Coming soon 2">
+            <p>Avatar: Fire and Ash</p>
+          </div>
+          <div class="up-card">
+            <img src="param sundari.jpg" alt="Coming soon 3">
+            <p>Param Sundari</p>
+          </div>
+          <div class="up-card">
+            <img src="bring her back.jpg" alt="Coming soon 4">
+            <p>Bring Her Back</p>
+          </div>
+          <div class="up-card">
+            <img src="deewane.jpg" alt="Coming soon 5">
+            <p>EK Deewane ki Deewaniyat</p>
+          </div>
+          <div class="up-card">
+            <img src="demon slayer.jpeg" alt="Coming soon 6">
+            <p>Demon Slayer</p>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="footer">
+    <div class="container footer-inner">
+      <div>© 2025 MovieWave</div>
+      <div class="muted">Made with care · Front-end demo</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
-
 </html>
