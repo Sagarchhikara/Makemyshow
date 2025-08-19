@@ -1,8 +1,8 @@
 // ========== CONFIGURATION ==========
-const API_KEY = 'YOUR_TMDB_API_KEY'; // Replace with your TMDB API key
+const API_KEY = '48e8311bc75552ff9f831b9c52e76a2d'; // Replace with your TMDB API key
 const API_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
-const USE_API = true; // Switch to false to use local data
+const USE_API = true; // Switch to false to use local data (changed to false for testing)
 
 // ========== LOCAL DATA (for testing if USE_API is false) ==========
 const localMovies = [
@@ -46,20 +46,10 @@ const movieGrid = document.querySelector('.movie-grid');
 async function fetchMovieData(endpoint, params = {}, forceRefresh = false) {
     const paramString = new URLSearchParams(params).toString();
     const cacheKey = `tmdb_${endpoint}_${paramString}`;
-    const cachedData = localStorage.getItem(cacheKey);
-    const now = new Date().getTime();
 
-    if (cachedData && !forceRefresh) {
-        const {
-            data,
-            timestamp
-        } = JSON.parse(cachedData);
-        // Cache is valid for 1 hour
-        if (now - timestamp < 60 * 60 * 1000) {
-            console.log(`Loading from cache: ${cacheKey}`);
-            return data;
-        }
-    }
+    // Note: localStorage is not available in artifacts, using fallback
+    // const cachedData = localStorage.getItem(cacheKey);
+    const now = new Date().getTime();
 
     console.log(`Fetching from API: ${endpoint}`);
     try {
@@ -86,15 +76,6 @@ async function fetchMovieData(endpoint, params = {}, forceRefresh = false) {
         }
         const data = await response.json();
 
-        // Cache the new data
-        localStorage.setItem(
-            cacheKey,
-            JSON.stringify({
-                data,
-                timestamp: now
-            })
-        );
-
         return data;
     } catch (error) {
         console.error('Error fetching movie data:', error);
@@ -110,7 +91,11 @@ async function fetchMovieData(endpoint, params = {}, forceRefresh = false) {
  * @param {Array<Object>} movies - An array of movie objects.
  */
 function renderMovieCards(movies) {
-    if (!movieGrid) return;
+    console.log('Rendering movie cards:', movies);
+    if (!movieGrid) {
+        console.error('Movie grid container not found');
+        return;
+    }
 
     movieGrid.innerHTML = '';
 
@@ -158,295 +143,266 @@ function renderMovieCards(movies) {
         movieGrid.appendChild(card);
     });
 
+    console.log('Movie cards rendered successfully');
+
     // Re-initialize interactions for the new cards
     initMovieCards();
     // Re-initialize scroll animations for new cards
     initScrollAnimations();
 }
 
-
 // ========== UTILITY FUNCTIONS ==========
 
 // Debounce function for performance optimization
 function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
     };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
 }
 
 // Smooth scroll to element
 function smoothScrollTo(element) {
-  if (element) {
-    element.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-  }
+    if (element) {
+        element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
 }
 
 // Add class with animation delay
 function addClassWithDelay(elements, className, delay = 100) {
-  elements.forEach((element, index) => {
-    setTimeout(() => {
-      element.classList.add(className);
-    }, index * delay);
-  });
+    elements.forEach((element, index) => {
+        setTimeout(() => {
+            element.classList.add(className);
+        }, index * delay);
+    });
 }
 
 // ========== SLIDESHOW FUNCTIONALITY ==========
 
 // Initialize slideshow
 function initSlideshow() {
-  if (slides.length === 0) return;
+    if (slides.length === 0) return;
 
-  // Create dots
-  createDots();
+    // Create dots
+    createDots();
 
-  // Set initial slide
-  updateSlideInfo();
+    // Set initial slide
+    updateSlideInfo();
 
-  // Start autoplay
-  startAutoplay();
+    // Start autoplay
+    startAutoplay();
 
-  // Add event listeners
-  addSlideEventListeners();
+    // Add event listeners
+    addSlideEventListeners();
 }
 
 // Create navigation dots
 function createDots() {
-  if (!dotsContainer) return;
+    if (!dotsContainer) return;
 
-  dotsContainer.innerHTML = '';
+    dotsContainer.innerHTML = '';
 
-  slides.forEach((_, index) => {
-    const dot = document.createElement('button');
-    dot.classList.add('dot');
-    if (index === currentSlide) {
-      dot.classList.add('active');
-    }
-    dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
-    dot.addEventListener('click', () => goToSlide(index));
-    dotsContainer.appendChild(dot);
-  });
+    slides.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.classList.add('dot');
+        if (index === currentSlide) {
+            dot.classList.add('active');
+        }
+        dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+        dot.addEventListener('click', () => goToSlide(index));
+        dotsContainer.appendChild(dot);
+    });
 }
 
 // Go to specific slide
 function goToSlide(index) {
-  if (index < 0 || index >= slides.length) return;
+    if (index < 0 || index >= slides.length) return;
 
-  // Remove active class from all slides and dots
-  slides.forEach(slide => slide.classList.remove('active'));
-  document.querySelectorAll('.dot').forEach(dot => dot.classList.remove('active'));
+    // Remove active class from all slides and dots
+    slides.forEach(slide => slide.classList.remove('active'));
+    document.querySelectorAll('.dot').forEach(dot => dot.classList.remove('active'));
 
-  // Add active class to current slide and dot
-  slides[index].classList.add('active');
-  document.querySelectorAll('.dot')[index]?.classList.add('active');
+    // Add active class to current slide and dot
+    slides[index].classList.add('active');
+    document.querySelectorAll('.dot')[index]?.classList.add('active');
 
-  currentSlide = index;
-  updateSlideInfo();
+    currentSlide = index;
+    updateSlideInfo();
 }
 
 // Go to next slide
 function nextSlide() {
-  const nextIndex = (currentSlide + 1) % slides.length;
-  goToSlide(nextIndex);
+    const nextIndex = (currentSlide + 1) % slides.length;
+    goToSlide(nextIndex);
 }
 
 // Go to previous slide
 function prevSlide() {
-  const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
-  goToSlide(prevIndex);
+    const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+    goToSlide(prevIndex);
 }
 
 // Update slide information
 function updateSlideInfo() {
-  if (!slides[currentSlide]) return;
+    if (!slides[currentSlide]) return;
 
-  const slideData = slides[currentSlide].dataset;
+    const slideData = slides[currentSlide].dataset;
 
-  if (heroTitle && slideData.title) {
-    heroTitle.textContent = slideData.title;
-  }
+    if (heroTitle && slideData.title) {
+        heroTitle.textContent = slideData.title;
+    }
 
-  if (heroTag && slideData.tag) {
-    heroTag.textContent = slideData.tag;
-  }
+    if (heroTag && slideData.tag) {
+        heroTag.textContent = slideData.tag;
+    }
 
-  if (heroRating && slideData.rating) {
-    heroRating.textContent = slideData.rating;
-  }
+    if (heroRating && slideData.rating) {
+        heroRating.textContent = slideData.rating;
+    }
 }
 
 // Start autoplay
 function startAutoplay() {
-  if (slideInterval) clearInterval(slideInterval);
-  slideInterval = setInterval(nextSlide, 5000);
-  isPlaying = true;
+    if (slideInterval) clearInterval(slideInterval);
+    slideInterval = setInterval(nextSlide, 5000);
+    isPlaying = true;
 }
 
 // Stop autoplay
 function stopAutoplay() {
-  if (slideInterval) clearInterval(slideInterval);
-  isPlaying = false;
+    if (slideInterval) clearInterval(slideInterval);
+    isPlaying = false;
 }
 
 // Add slideshow event listeners
 function addSlideEventListeners() {
-  // Arrow navigation
-  leftArrow?.addEventListener('click', () => {
-    prevSlide();
-    stopAutoplay();
-    setTimeout(startAutoplay, 3000); // Resume after 3 seconds
-  });
+    // Arrow navigation
+    leftArrow?.addEventListener('click', () => {
+        prevSlide();
+        stopAutoplay();
+        setTimeout(startAutoplay, 3000); // Resume after 3 seconds
+    });
 
-  rightArrow?.addEventListener('click', () => {
-    nextSlide();
-    stopAutoplay();
-    setTimeout(startAutoplay, 3000); // Resume after 3 seconds
-  });
+    rightArrow?.addEventListener('click', () => {
+        nextSlide();
+        stopAutoplay();
+        setTimeout(startAutoplay, 3000); // Resume after 3 seconds
+    });
 
-  // Pause on hover
-  heroSlideshow?.addEventListener('mouseenter', stopAutoplay);
-  heroSlideshow?.addEventListener('mouseleave', () => {
-    if (!isPlaying) startAutoplay();
-  });
+    // Pause on hover
+    heroSlideshow?.addEventListener('mouseenter', stopAutoplay);
+    heroSlideshow?.addEventListener('mouseleave', () => {
+        if (!isPlaying) startAutoplay();
+    });
 
-  // Keyboard navigation
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') {
-      prevSlide();
-      stopAutoplay();
-      setTimeout(startAutoplay, 3000);
-    } else if (e.key === 'ArrowRight') {
-      nextSlide();
-      stopAutoplay();
-      setTimeout(startAutoplay, 3000);
-    }
-  });
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            prevSlide();
+            stopAutoplay();
+            setTimeout(startAutoplay, 3000);
+        } else if (e.key === 'ArrowRight') {
+            nextSlide();
+            stopAutoplay();
+            setTimeout(startAutoplay, 3000);
+        }
+    });
 }
 
 // ========== MOBILE MENU ==========
 
 function initMobileMenu() {
-  if (!mobileMenuToggle || !navMenu) return;
+    if (!mobileMenuToggle || !navMenu) return;
 
-  mobileMenuToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-    mobileMenuToggle.classList.toggle('active');
+    mobileMenuToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        mobileMenuToggle.classList.toggle('active');
 
-    // Toggle aria-expanded
-    const isExpanded = navMenu.classList.contains('active');
-    mobileMenuToggle.setAttribute('aria-expanded', isExpanded);
-  });
+        // Toggle aria-expanded
+        const isExpanded = navMenu.classList.contains('active');
+        mobileMenuToggle.setAttribute('aria-expanded', isExpanded);
+    });
 
-  // Close menu when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!navMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
-      navMenu.classList.remove('active');
-      mobileMenuToggle.classList.remove('active');
-      mobileMenuToggle.setAttribute('aria-expanded', 'false');
-    }
-  });
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!navMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+            navMenu.classList.remove('active');
+            mobileMenuToggle.classList.remove('active');
+            mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        }
+    });
 }
 
 // ========== MOVIE CARDS INTERACTIONS ==========
 
 function initMovieCards() {
-  const movieCards = document.querySelectorAll('.movie-card');
+    const movieCards = document.querySelectorAll('.movie-card');
 
-  movieCards.forEach(card => {
-    // Add tilt effect on mouse move
-    card.addEventListener('mousemove', handleCardTilt);
-    card.addEventListener('mouseleave', resetCardTilt);
+    movieCards.forEach(card => {
+        // Add tilt effect on mouse move
+        card.addEventListener('mousemove', handleCardTilt);
+        card.addEventListener('mouseleave', resetCardTilt);
 
-    // Add click handlers
-    const bookButton = card.querySelector('.btn-primary');
-    const playButton = card.querySelector('.play-btn');
-
-    bookButton?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      handleBookTicket(card);
-    });
-
-    playButton?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      handlePlayTrailer(card);
-    });
-
-    // Add keyboard navigation
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
+        // Add click handlers
         const bookButton = card.querySelector('.btn-primary');
-        if (bookButton) {
-          bookButton.click();
-        }
-      }
+        const playButton = card.querySelector('.play-btn');
+
+        bookButton?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handleBookTicket(card);
+        });
+
+        playButton?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handlePlayTrailer(card);
+        });
+
+        // Add keyboard navigation
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const bookButton = card.querySelector('.btn-primary');
+                if (bookButton) {
+                    bookButton.click();
+                }
+            }
+        });
     });
-  });
-}
-
-// ========== INITIALIZATION ==========
-
-/**
- * Main initialization function.
- */
-async function init() {
-    // Initialize core functionalities
-    initSlideshow();
-    initMobileMenu();
-    initSearch();
-    initSmoothScrolling();
-    initComingSoonScroll();
-    initLazyLoading();
-
-    // Load initial movie data
-    if (USE_API) {
-        const data = await fetchMovieData('movie/now_playing');
-        if (data && data.results) {
-            renderMovieCards(data.results);
-        }
-    } else {
-        console.log('Using local data source.');
-        renderMovieCards(localMovies);
-    }
-}
-
-// Run initialization on page load
-document.addEventListener('DOMContentLoaded', init);
 }
 
 // Handle card tilt effect
 function handleCardTilt(e) {
-  const card = e.currentTarget;
-  const rect = card.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
 
-  const rotateX = (y - centerY) / 10;
-  const rotateY = (centerX - x) / 10;
+    const rotateX = (y - centerY) / 10;
+    const rotateY = (centerX - x) / 10;
 
-  card.style.transform = `
-    perspective(1000px) 
-    rotateX(${rotateX}deg) 
-    rotateY(${rotateY}deg) 
-    translateZ(10px)
-  `;
+    card.style.transform = `
+        perspective(1000px) 
+        rotateX(${rotateX}deg) 
+        rotateY(${rotateY}deg) 
+        translateZ(10px)
+    `;
 }
 
 // Reset card tilt
 function resetCardTilt(e) {
-  const card = e.currentTarget;
-  card.style.transform = '';
+    const card = e.currentTarget;
+    card.style.transform = '';
 }
 
 // Handle ticket booking
@@ -477,9 +433,9 @@ function handleBookTicket(card) {
 
 // Handle trailer play
 function handlePlayTrailer(card) {
-  const movieTitle = card.querySelector('h3')?.textContent;
-  console.log(`Playing trailer for: ${movieTitle}`);
-  showNotification(`Playing trailer for "${movieTitle}"`);
+    const movieTitle = card.querySelector('h3')?.textContent;
+    console.log(`Playing trailer for: ${movieTitle}`);
+    showNotification(`Playing trailer for "${movieTitle}"`);
 }
 
 // ========== SEARCH FUNCTIONALITY ==========
@@ -530,171 +486,204 @@ async function handleSearch(forceImmediate = false) {
 // ========== SMOOTH SCROLLING ==========
 
 function initSmoothScrolling() {
-  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+    const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
 
-  navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
 
-      const targetId = link.getAttribute('href');
-      const targetElement = document.querySelector(targetId);
+            const targetId = link.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
 
-      if (targetElement) {
-        smoothScrollTo(targetElement);
+            if (targetElement) {
+                smoothScrollTo(targetElement);
 
-        // Close mobile menu if open
-        if (navMenu && navMenu.classList.contains('active')) {
-          navMenu.classList.remove('active');
-          mobileMenuToggle.classList.remove('active');
-          mobileMenuToggle.setAttribute('aria-expanded', 'false');
-        }
-      }
+                // Close mobile menu if open
+                if (navMenu && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    mobileMenuToggle.classList.remove('active');
+                    mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
     });
-  });
 }
 
 // ========== INTERSECTION OBSERVER ==========
 
 function initScrollAnimations() {
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('fade-in-up');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in-up');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
 
-  // Observe movie cards
-  const movieCards = document.querySelectorAll('.movie-card');
-  movieCards.forEach(card => observer.observe(card));
+    // Observe movie cards
+    const movieCards = document.querySelectorAll('.movie-card');
+    movieCards.forEach(card => observer.observe(card));
 
-  // Observe coming soon cards
-  const comingCards = document.querySelectorAll('.coming-soon-card');
-  comingCards.forEach(card => observer.observe(card));
+    // Observe coming soon cards
+    const comingCards = document.querySelectorAll('.coming-soon-card');
+    comingCards.forEach(card => observer.observe(card));
 
-  // Observe section headers
-  const sectionHeaders = document.querySelectorAll('.section-header');
-  sectionHeaders.forEach(header => observer.observe(header));
+    // Observe section headers
+    const sectionHeaders = document.querySelectorAll('.section-header');
+    sectionHeaders.forEach(header => observer.observe(header));
 }
 
 // ========== COMING SOON SCROLL ==========
 
 function initComingSoonScroll() {
-  const scrollContainer = document.querySelector('.coming-soon-scroll');
-  if (!scrollContainer) return;
+    const scrollContainer = document.querySelector('.coming-soon-scroll');
+    if (!scrollContainer) return;
 
-  let isScrolling = false;
+    // Add mouse wheel horizontal scrolling
+    scrollContainer.addEventListener('wheel', (e) => {
+        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            e.preventDefault();
+            scrollContainer.scrollLeft += e.deltaY;
+        }
+    });
 
-  // Add mouse wheel horizontal scrolling
-  scrollContainer.addEventListener('wheel', (e) => {
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      e.preventDefault();
-      scrollContainer.scrollLeft += e.deltaY;
-    }
-  });
+    // Add touch scrolling for mobile
+    let startX = 0;
+    let scrollLeft = 0;
 
-  // Add touch scrolling for mobile
-  let startX = 0;
-  let scrollLeft = 0;
+    scrollContainer.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        scrollLeft = scrollContainer.scrollLeft;
+    });
 
-  scrollContainer.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-    scrollLeft = scrollContainer.scrollLeft;
-  });
+    scrollContainer.addEventListener('touchmove', (e) => {
+        if (!startX) return;
 
-  scrollContainer.addEventListener('touchmove', (e) => {
-    if (!startX) return;
+        const x = e.touches[0].clientX;
+        const diff = startX - x;
+        scrollContainer.scrollLeft = scrollLeft + diff;
+    });
 
-    const x = e.touches[0].clientX;
-    const diff = startX - x;
-    scrollContainer.scrollLeft = scrollLeft + diff;
-  });
-
-  scrollContainer.addEventListener('touchend', () => {
-    startX = 0;
-  });
+    scrollContainer.addEventListener('touchend', () => {
+        startX = 0;
+    });
 }
 
 // ========== NOTIFICATIONS ==========
 
 function showNotification(message, type = 'info', duration = 3000) {
-  // Remove existing notification
-  const existingNotification = document.querySelector('.notification');
-  if (existingNotification) {
-    existingNotification.remove();
-  }
+    // Remove existing notification
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
 
-  // Create notification element
-  const notification = document.createElement('div');
-  notification.classList.add('notification', `notification-${type}`);
-  notification.textContent = message;
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.classList.add('notification', `notification-${type}`);
+    notification.textContent = message;
 
-  // Style the notification
-  Object.assign(notification.style, {
-    position: 'fixed',
-    top: '2rem',
-    right: '2rem',
-    backgroundColor: 'var(--bg-tertiary)',
-    color: 'var(--text-primary)',
-    padding: '1rem 1.5rem',
-    borderRadius: 'var(--radius-medium)',
-    border: '1px solid var(--border)',
-    boxShadow: 'var(--shadow-medium)',
-    zIndex: '1000',
-    transform: 'translateX(100%)',
-    transition: 'transform 0.3s ease',
-    maxWidth: '300px',
-    wordWrap: 'break-word'
-  });
+    // Style the notification
+    Object.assign(notification.style, {
+        position: 'fixed',
+        top: '2rem',
+        right: '2rem',
+        backgroundColor: '#1f2937',
+        color: '#f9fafb',
+        padding: '1rem 1.5rem',
+        borderRadius: '8px',
+        border: '1px solid #374151',
+        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+        zIndex: '1000',
+        transform: 'translateX(100%)',
+        transition: 'transform 0.3s ease',
+        maxWidth: '300px',
+        wordWrap: 'break-word'
+    });
 
-  if (type === 'error') {
-    notification.style.borderColor = 'var(--accent)';
-  }
+    if (type === 'error') {
+        notification.style.borderColor = '#ef4444';
+    }
 
-  document.body.appendChild(notification);
+    document.body.appendChild(notification);
 
-  // Animate in
-  setTimeout(() => {
-    notification.style.transform = 'translateX(0)';
-  }, 10);
-
-  // Animate out and remove
-  setTimeout(() => {
-    notification.style.transform = 'translateX(100%)';
+    // Animate in
     setTimeout(() => {
-      if (notification.parentNode) {
-        notification.parentNode.removeChild(notification);
-      }
-    }, 300);
-  }, duration);
+        notification.style.transform = 'translateX(0)';
+    }, 10);
+
+    // Animate out and remove
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, duration);
 }
 
 // ========== PERFORMANCE OPTIMIZATIONS ==========
 
 // Lazy load images
 function initLazyLoading() {
-  const images = document.querySelectorAll('img[src]');
+    const images = document.querySelectorAll('img[src]');
 
-  const imageObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
 
-        // Add loading animation
-        img.style.opacity = '0';
-        img.style.transition = 'opacity 0.3s ease';
+                // Add loading animation
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.3s ease';
 
-        img.addEventListener('load', () => {
-          img.style.opacity = '1';
+                img.addEventListener('load', () => {
+                    img.style.opacity = '1';
+                });
+
+                imageObserver.unobserve(img);
+            }
         });
-
-        imageObserver.unobserve(img);
-      }
     });
-  });
+
+    images.forEach(img => imageObserver.observe(img));
+}
+
+// ========== INITIALIZATION ==========
+
+/**
+ * Main initialization function.
+ */
+async function init() {
+    console.log('Initializing MovieWave application...');
+
+    // Initialize core functionalities
+    initSlideshow();
+    initMobileMenu();
+    initSearch();
+    initSmoothScrolling();
+    initComingSoonScroll();
+    initLazyLoading();
+
+    // Load initial movie data
+    if (USE_API) {
+        console.log('Loading movies from API...');
+        const data = await fetchMovieData('movie/now_playing');
+        if (data && data.results) {
+            renderMovieCards(data.results);
+        }
+    } else {
+        console.log('Using local data source.');
+        renderMovieCards(localMovies);
+    }
+}
+
+// Run initialization on page load
+document.addEventListener('DOMContentLoaded', init);
