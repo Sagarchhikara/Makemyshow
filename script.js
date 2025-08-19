@@ -1,3 +1,21 @@
+// ========== CONFIGURATION ==========
+const API_KEY = 'YOUR_TMDB_API_KEY'; // Replace with your TMDB API key
+const API_URL = 'https://api.themoviedb.org/3';
+const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+const USE_API = true; // Switch to false to use local data
+
+// ========== LOCAL DATA (for testing if USE_API is false) ==========
+const localMovies = [
+    { id: 967847, title: 'F1: The Movie', poster_path: 'f1-movie.png', vote_average: 8.5, original_language: 'en' },
+    { id: 967848, title: 'Saiyaara', poster_path: 'saiyaara.avif', vote_average: 8.2, original_language: 'hi' },
+    { id: 967849, title: 'War 2', poster_path: 'war-2.jpg', vote_average: 7.8, original_language: 'hi' },
+    { id: 967850, title: 'Mahavatar Narsimha', poster_path: 'narsimha.jpeg', vote_average: 8.0, original_language: 'hi' },
+    { id: 967851, title: 'Coolie: The Powerhouse', poster_path: 'coolie.jpg', vote_average: 7.5, original_language: 'hi' },
+    { id: 967852, title: 'Sarbala ji', poster_path: 'sarbala-ji.jpg', vote_average: 7.2, original_language: 'hi' },
+    { id: 967853, title: 'Weapons', poster_path: 'weapons.webp', vote_average: 6.8, original_language: 'en' },
+    { id: 967854, title: 'Freakier Friday', poster_path: 'freaky-friday.jpeg', vote_average: 7.9, original_language: 'en' },
+];
+
 // ========== GLOBAL VARIABLES ==========
 let currentSlide = 0;
 let slideInterval;
@@ -15,6 +33,137 @@ const heroSlideshow = document.querySelector('.hero-slideshow');
 const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
 const navMenu = document.querySelector('.nav-menu');
 const searchInput = document.querySelector('.search');
+const movieGrid = document.querySelector('.movie-grid');
+
+// ========== API & DATA HANDLING ==========
+
+/**
+ * Fetches data from the TMDB API or returns cached data.
+ * @param {string} endpoint - The API endpoint to fetch from.
+ * @param {boolean} forceRefresh - Whether to force a refresh from the API.
+ * @returns {Promise<Object>} - The fetched data.
+ */
+async function fetchMovieData(endpoint, params = {}, forceRefresh = false) {
+    const paramString = new URLSearchParams(params).toString();
+    const cacheKey = `tmdb_${endpoint}_${paramString}`;
+    const cachedData = localStorage.getItem(cacheKey);
+    const now = new Date().getTime();
+
+    if (cachedData && !forceRefresh) {
+        const {
+            data,
+            timestamp
+        } = JSON.parse(cachedData);
+        // Cache is valid for 1 hour
+        if (now - timestamp < 60 * 60 * 1000) {
+            console.log(`Loading from cache: ${cacheKey}`);
+            return data;
+        }
+    }
+
+    console.log(`Fetching from API: ${endpoint}`);
+    try {
+        if (API_KEY === 'YOUR_TMDB_API_KEY') {
+            showNotification(
+                'Please add your TMDB API key to script.js',
+                'error'
+            );
+            return null;
+        }
+
+        const allParams = {
+            api_key: API_KEY,
+            language: 'en-US',
+            page: 1,
+            ...params,
+        };
+
+        const queryString = new URLSearchParams(allParams).toString();
+        const response = await fetch(`${API_URL}/${endpoint}?${queryString}`);
+
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.statusText}`);
+        }
+        const data = await response.json();
+
+        // Cache the new data
+        localStorage.setItem(
+            cacheKey,
+            JSON.stringify({
+                data,
+                timestamp: now
+            })
+        );
+
+        return data;
+    } catch (error) {
+        console.error('Error fetching movie data:', error);
+        showNotification(`Error fetching data: ${error.message}`, 'error');
+        return null;
+    }
+}
+
+// ========== UI RENDERING ==========
+
+/**
+ * Renders movie cards in the grid.
+ * @param {Array<Object>} movies - An array of movie objects.
+ */
+function renderMovieCards(movies) {
+    if (!movieGrid) return;
+
+    movieGrid.innerHTML = '';
+
+    if (!movies || movies.length === 0) {
+        movieGrid.innerHTML = '<p class="no-movies-message">No movies found. Try a different search.</p>';
+        return;
+    }
+
+    movies.forEach(movie => {
+        const {
+            id,
+            title,
+            poster_path,
+            vote_average,
+            original_language
+        } = movie;
+
+        const posterUrl = movie.poster_path
+            ? (USE_API ? `${IMAGE_BASE_URL}${movie.poster_path}` : movie.poster_path)
+            : 'https://via.placeholder.com/500x750?text=No+Image';
+
+        const card = document.createElement('article');
+        card.classList.add('movie-card');
+        card.tabIndex = 0;
+        card.dataset.movieId = id; // Store movie ID for later use
+
+        card.innerHTML = `
+            <div class="movie-poster">
+              <img src="${posterUrl}" alt="Poster for ${title}" loading="lazy">
+              <div class="movie-overlay">
+                <button class="play-btn" aria-label="Play trailer for ${title}">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5,3 19,12 5,21"></polygon>
+                  </svg>
+                </button>
+              </div>
+              <div class="movie-rating">★ ${vote_average.toFixed(1)}</div>
+            </div>
+            <div class="movie-info">
+              <h3>${title}</h3>
+              <p class="movie-genre">Lang: ${original_language.toUpperCase()}</p>
+              <button class="btn btn-primary btn-small">Book Now</button>
+            </div>
+        `;
+        movieGrid.appendChild(card);
+    });
+
+    // Re-initialize interactions for the new cards
+    initMovieCards();
+    // Re-initialize scroll animations for new cards
+    initScrollAnimations();
+}
+
 
 // ========== UTILITY FUNCTIONS ==========
 
@@ -243,6 +392,36 @@ function initMovieCards() {
   });
 }
 
+// ========== INITIALIZATION ==========
+
+/**
+ * Main initialization function.
+ */
+async function init() {
+    // Initialize core functionalities
+    initSlideshow();
+    initMobileMenu();
+    initSearch();
+    initSmoothScrolling();
+    initComingSoonScroll();
+    initLazyLoading();
+
+    // Load initial movie data
+    if (USE_API) {
+        const data = await fetchMovieData('movie/now_playing');
+        if (data && data.results) {
+            renderMovieCards(data.results);
+        }
+    } else {
+        console.log('Using local data source.');
+        renderMovieCards(localMovies);
+    }
+}
+
+// Run initialization on page load
+document.addEventListener('DOMContentLoaded', init);
+}
+
 // Handle card tilt effect
 function handleCardTilt(e) {
   const card = e.currentTarget;
@@ -272,29 +451,28 @@ function resetCardTilt(e) {
 
 // Handle ticket booking
 function handleBookTicket(card) {
-  const movieTitle = card.querySelector('h3')?.textContent;
+    const movieTitle = card.querySelector('h3')?.textContent;
 
-  // Add visual feedback
-  const button = card.querySelector('.btn-primary');
-  if (button) {
-    const originalText = button.textContent;
-    button.textContent = 'Booking...';
-    button.disabled = true;
+    // Show a simple alert for booking
+    alert(`You are booking a ticket for "${movieTitle}".`);
 
-    setTimeout(() => {
-      button.textContent = 'Booked!';
-      setTimeout(() => {
-        button.textContent = originalText;
-        button.disabled = false;
-      }, 2000);
-    }, 1000);
-  }
+    // Add visual feedback on the button
+    const button = card.querySelector('.btn-primary');
+    if (button) {
+        const originalText = button.textContent;
+        if (button.disabled) return; // Prevent multiple clicks
 
-  // Simulate booking process
-  console.log(`Booking ticket for: ${movieTitle}`);
+        button.textContent = 'Processing...';
+        button.disabled = true;
 
-  // Show notification (you can replace this with a proper notification system)
-  showNotification(`Booking initiated for "${movieTitle}"`);
+        setTimeout(() => {
+            button.textContent = 'Booked!';
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.disabled = false;
+            }, 1500);
+        }, 500);
+    }
 }
 
 // Handle trailer play
@@ -307,55 +485,46 @@ function handlePlayTrailer(card) {
 // ========== SEARCH FUNCTIONALITY ==========
 
 function initSearch() {
-  if (!searchInput) return;
+    if (!searchInput) return;
 
-  const debouncedSearch = debounce(handleSearch, 300);
+    const debouncedSearch = debounce(() => handleSearch(false), 500);
 
-  searchInput.addEventListener('input', debouncedSearch);
-  searchInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleSearch();
-    }
-  });
+    searchInput.addEventListener('input', debouncedSearch);
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSearch(true); // Force immediate search on Enter
+        }
+    });
 }
 
-function handleSearch() {
-  const query = searchInput.value.trim().toLowerCase();
-  if (!query) {
-    showAllMovies();
-    return;
-  }
+async function handleSearch(forceImmediate = false) {
+    const query = searchInput.value.trim().toLowerCase();
 
-  const movieCards = document.querySelectorAll('.movie-card');
-  let foundMovies = 0;
+    if (!query) {
+        // If search is cleared, show the default list
+        if (USE_API) {
+            const data = await fetchMovieData('movie/now_playing');
+            if (data && data.results) {
+                renderMovieCards(data.results);
+            }
+        } else {
+            renderMovieCards(localMovies);
+        }
+        return;
+    }
 
-  movieCards.forEach(card => {
-    const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
-    const genre = card.querySelector('.movie-genre')?.textContent.toLowerCase() || '';
-
-    if (title.includes(query) || genre.includes(query)) {
-      card.style.display = 'block';
-      card.classList.add('fade-in-up');
-      foundMovies++;
+    if (USE_API) {
+        const data = await fetchMovieData('search/movie', { query: query }, forceImmediate);
+        if (data) {
+            renderMovieCards(data.results);
+        }
     } else {
-      card.style.display = 'none';
-      card.classList.remove('fade-in-up');
+        const filteredMovies = localMovies.filter(movie =>
+            movie.title.toLowerCase().includes(query)
+        );
+        renderMovieCards(filteredMovies);
     }
-  });
-
-  // Show search results feedback
-  if (foundMovies === 0) {
-    showNotification('No movies found matching your search');
-  }
-}
-
-function showAllMovies() {
-  const movieCards = document.querySelectorAll('.movie-card');
-  movieCards.forEach(card => {
-    card.style.display = 'block';
-    card.classList.add('fade-in-up');
-  });
 }
 
 // ========== SMOOTH SCROLLING ==========
