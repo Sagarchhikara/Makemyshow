@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 @import url('signin.css');
 
 /* ========== CSS CUSTOM PROPERTIES ========== */
-=======
-/* ---------- design tokens ---------- */
->>>>>>> parent of 96f1702 (Revamp UI and interactions for MovieWave site)
+
+
 :root {
   --bg1: #1a1a1a; /* dark */
   --bg2: #111111; /* darker */
@@ -134,7 +131,7 @@ body{
   .hero-info{padding:12px}
 
 }
-<<<<<<< HEAD
+
 
 .movie-poster img {
   width: 100%;
@@ -327,6 +324,310 @@ body{
 .footer-brand p {
   color: var(--text-secondary);
   line-height: 1.6;
+
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.footer-column h4 {
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footer-column a {
+  display: block;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin-bottom: 0.5rem;
+  transition: var(--transition-fast);
+}
+
+.footer-column a:hover {
+  color: var(--accent);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-light);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .nav-links {
+    gap: 1.5rem;
+    margin: 0 1rem;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .hero-content {
+    left: 2rem;
+    right: 2rem;
+  }
+
+  #hero-title {
+    font-size: var(--font-size-3xl);
+  }
+  .seat-selection-layout {
+    grid-template-columns: 1.5fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .search {
+    width: 150px;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .hero {
+    padding: 1rem 0;
+  }
+
+  .hero-slideshow {
+    height: 60vh;
+    min-height: 400px;
+  }
+
+  .hero-content {
+    left: 1.5rem;
+    right: 1.5rem;
+    bottom: 2rem;
+  }
+
+  #hero-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  #hero-tag {
+    font-size: var(--font-size-base);
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hero-arrow.left {
+    left: 1rem;
+  }
+
+  .hero-arrow.right {
+    right: 1rem;
+  }
+
+  .hero-dots {
+    right: 1.5rem;
+    bottom: 1rem;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .section {
+    padding: 2rem 0;
+  }
+
+  .section-header {
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .booking-header {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  
+  .seat-selection-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .seat-map-container {
+    padding: 1rem;
+  }
+
+  .seat-map {
+    gap: 0.4rem;
+  }
+
+  .seat {
+    width: 25px;
+    height: 25px;
+    font-size: 0.6rem;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .nav-inner {
+    padding: 0.5rem 1rem;
+  }
+
+  .brand {
+    font-size: var(--font-size-lg);
+  }
+
+  .search {
+    width: 120px;
+    padding: 0.4rem 0.8rem 0.4rem 2rem;
+  }
+
+  .search-icon {
+    left: 0.5rem;
+  }
+
+  .nav-actions {
+    gap: 0.5rem;
+  }
+
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: var(--font-size-xs);
+  }
+
+  .hero-content {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  #hero-title {
+    font-size: var(--font-size-xl);
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .movie-info {
+    padding: 1rem;
+  }
+
+  .coming-soon-card {
+    flex: 0 0 160px;
+    padding: 0.75rem;
+  }
+
+  .footer-links {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .booking-flow {
+    padding: 1.5rem;
+  }
+
+  .time-slots {
+    gap: 0.5rem;
+  }
+
+  .time-slot {
+    padding: 0.5rem 1rem;
+  }
+  
+  .seat-map {
+    grid-template-columns: repeat(7, auto); /* Adjust for smaller screens */
+  }
+}
+
+/* ========== ACCESSIBILITY ========== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ========== DARK MODE ENHANCEMENTS ========== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --shadow-small: 0 2px 8px rgba(0, 0, 0, 0.5);
+    --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.6);
+    --shadow-large: 0 20px 60px rgba(0, 0, 0, 0.7);
+  }
+}
+=======
 =======
 /* ---------- design tokens ---------- */
 :root{
@@ -456,7 +757,5 @@ body{
   .slides{height:260px}
   .hero-info{padding:12px}
   .poster img{height:200px}
->>>>>>> parent of 85cd52a (Merge pull request #1 from Sagarchhikara/feat/update-ui-theme-and-fix-images)
-}
-=======
->>>>>>> parent of 96f1702 (Revamp UI and interactions for MovieWave site)
+
+

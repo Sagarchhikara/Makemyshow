@@ -14,7 +14,7 @@
     <div class="container">
       <div class="nav-inner">
         <a class="brand" href="#">
-          🎬 <span>MovieWave</span>
+          🎬 <span>Makemyshow</span>
         </a>
 
         <nav class="nav-menu" role="navigation" aria-label="Main">
@@ -42,372 +42,345 @@
             <span></span>
           </button>
         </div>
-        <header class="nav fade-up" role="banner">
-          <div class="container nav-inner">
-            <a class="brand" href="#">🎬 <span>MovieWave</span></a>
-            <nav role="navigation" aria-label="Main">
-              <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#now">Now Showing</a></li>
-                <li><a href="#coming">Coming Soon</a></li>
-                <li><a href="#contact">Contact</a></li>
-              </ul>
-            </nav>
-            <div class="nav-actions">
-              <input class="search" placeholder="Search movies..." aria-label="Search movies" />
-              <button class="btn ghost">Sign in</button>
-            </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SLIDESHOW -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="hero-slideshow">
+        <div class="slides-container">
+          <div class="slide active" data-title="F1: The Movie" data-tag="Action/Drama/Sports • 142m" data-rating="8.5">
+            <img src="f1-movie.png" alt="F1: The Movie" />
+            <div class="slide-overlay"></div>
           </div>
-        </header>
+          <div class="slide" data-title="War 2" data-tag="Action/Thriller • 128m" data-rating="7.8">
+            <img src="war-2.jpg" alt="War 2" />
+            <div class="slide-overlay"></div>
+          </div>
+          <div class="slide" data-title="Saiyaara" data-tag="Drama/Musical/Romance • 121m" data-rating="8.2">
+            <img src="saiyaara.avif" alt="Saiyaara" />
+            <div class="slide-overlay"></div>
+          </div>
+        </div>
 
-        <!-- HERO: slideshow -->
-        <section class="hero-wrap">
-          <div class="hero-slideshow">
-            <button class="hero-arrow left" aria-label="Previous slide">‹</button>
-            <div class="slides">
-              <!-- Images are static in HTML (user requested that) -->
-              <div class="slide active" data-title="F1: The Movie" data-tag="Action/Drama/Sports • 142m">
-                <img src="f1-movie.png" alt="f1" />
+        <button class="hero-arrow left" aria-label="Previous slide">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15,18 9,12 15,6"></polyline>
+          </svg>
+        </button>
+
+        <button class="hero-arrow right" aria-label="Next slide">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9,6 15,12 9,18"></polyline>
+          </svg>
+        </button>
+
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="rating">★ <span id="hero-rating">8.5</span></span>
+          </div>
+          <h1 id="hero-title">F1: The Movie</h1>
+          <p id="hero-tag">Action/Drama/Sports • 142m</p>
+          <div class="hero-actions">
+            <a href="booking.html" class="btn btn-primary">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5,3 19,12 5,21"></polygon>
+              </svg>
+              Book Tickets
+            </a>
+            <button class="btn btn-outline">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              Details
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-dots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOW SHOWING -->
+  <main>
+    <section id="now" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Now Showing</h2>
+          <p class="section-subtitle">Latest blockbusters in theaters</p>
+        </div>
+
+        <div class="movie-grid">
+          <article class="movie-card" tabindex="0">
+            <div class="movie-poster">
+              <img src="f1-movie.png" alt="F1: The Movie">
+              <div class="movie-overlay">
+                <button class="play-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5,3 19,12 5,21"></polygon>
+                  </svg>
+                </button>
               </div>
-              <div class="slide" data-title="War 2" data-tag="Action/Thriller • 128m">
-                <img src="war-2.jpg" alt="war 2" />
+              <div class="movie-rating">★ 8.5</div>
+            </div>
+            <div class="movie-info">
+              <h3>F1: The Movie</h3>
+              <p class="movie-genre">Action • 142m</p>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
+            </div>
+          </article>
+
+          <article class="movie-card" tabindex="0">
+            <div class="movie-poster">
+              <img src="saiyaara.avif" alt="Saiyaara">
+              <div class="movie-overlay">
+                <button class="play-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5,3 19,12 5,21"></polygon>
+                  </svg>
+                </button>
               </div>
-              <div class="slide" data-title="Saiyaara" data-tag="Drama/Musical/Romantic • 121m">
-                <img src="saiyaara.avif" alt="saiyaara" />
-                <!-- HERO: slideshow -->
-                <section class="hero-wrap">
-                  <div class="hero-slideshow">
-                    <button class="hero-arrow left" aria-label="Previous slide">‹</button>
-                    <div class="slides">
-                      <!-- Images are static in HTML (user requested that) -->
-                      <div class="slide active" data-title="F1: The Movie" data-tag="Action/Drama/Sports • 142m">
-                        <img src="f1 movie.png" alt="f1" />
-                      </div>
-                      <div class="slide" data-title="War 2" data-tag="Action/Thriller • 128m">
-                        <img src="war 2.jpg" alt="war 2" />
-                      </div>
-                      <div class="slide" data-title="Saiyaara" data-tag="Drama/Musical/Romantic • 121m">
-                        <img src="saiyaara.avif" alt="saiyaara" />
-                      </div>
-                    </div>
-                    <button class="hero-arrow right" aria-label="Next slide">›</button>
+              <div class="movie-rating">★ 8.2</div>
+            </div>
+            <div class="movie-info">
+              <h3>Saiyaara</h3>
+              <p class="movie-genre">Romance • 121m</p>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
+            </div>
+          </article>
 
-                    <div class="hero-info">
-                      <h1 id="hero-title">Starlight Odyssey</h1>
-                      <p id="hero-tag">Action • 142m</p>
-                      <div class="hero-ctas">
-                        <a class="btn primary" href="#">Book Tickets</a>
-                        <a class="btn ghost" href="#">Details</a>
-                      </div>
-                      <button class="hero-arrow right" aria-label="Next slide">›</button>
+          <article class="movie-card" tabindex="0">
+            <div class="movie-poster">
+              <img src="war-2.jpg" alt="War 2">
+              <div class="movie-overlay">
+                <button class="play-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5,3 19,12 5,21"></polygon>
+                  </svg>
+                </button>
+              </div>
+              <div class="movie-rating">★ 7.8</div>
+            </div>
+            <div class="movie-info">
+              <h3>War 2</h3>
+              <p class="movie-genre">Thriller • 128m</p>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
+            </div>
+          </article>
 
-                      <div class="hero-info">
-                        <h1 id="hero-title">Starlight Odyssey</h1>
-                        <p id="hero-tag">Action • 142m</p>
-                        <div class="hero-ctas">
-                          <a class="btn primary" href="#">Book Tickets</a>
-                          <a class="btn ghost" href="#">Details</a>
-                        </div>
-                      </div>
+          <article class="movie-card" tabindex="0">
+            <div class="movie-poster">
+              <img src="narsimha.jpeg" alt="Mahavatar Narsimha">
+              <div class="movie-overlay">
+                <button class="play-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5,3 19,12 5,21"></polygon>
+                  </svg>
+                </button>
+              </div>
+              <div class="movie-rating">★ 8.0</div>
+            </div>
+            <div class="movie-info">
+              <h3>Mahavatar Narsimha</h3>
+              <p class="movie-genre">Animation • 121m</p>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
+            </div>
+          </article>
 
-                      <div class="hero-dots" aria-hidden="true"></div>
+          <article class="movie-card" tabindex="0">
+            <div class="movie-poster">
+              <img src="coolie.jpg" alt="Coolie: The Powerhouse">
+              <div class="movie-overlay">
+                <button class="play-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5,3 19,12 5,21"></polygon>
+                  </svg>
+                </button>
+              </div>
+              <div class="movie-rating">★ 7.5</div>
+            </div>
+            <div class="movie-info">
+              <h3>Coolie: The Powerhouse</h3>
+              <p class="movie-genre">Romance • 128m</p>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
+            </div>
+          </article>
 
-                      <div class="hero-dots" aria-hidden="true"></div>
-                    </div>
-                </section>
+          <article class="movie-card" tabindex="0">
+            <div class="movie-poster">
+              <img src="sarbala-ji.jpg" alt="Sarbala ji">
+              <div class="movie-overlay">
+                <button class="play-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5,3 19,12 5,21"></polygon>
+                  </svg>
+                </button>
+              </div>
+              <div class="movie-rating">★ 7.2</div>
+            </div>
+            <div class="movie-info">
+              <h3>Sarbala ji</h3>
+              <p class="movie-genre">Comedy • 128m</p>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
+            </div>
+          </article>
 
-                <!-- NOW SHOWING -->
-                <main>
-                  <section id="now" class="section container">
-                    <h2 class="section-title fade-up">Now Showing</h2>
-                    <div class="grid movie-grid">
-                      <!-- Movie cards (images in HTML) -->
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="f1-movie.png" alt="F1: The Movie">
-                        </div>
-                        <div class="card-body">
-                          <h3>F1: The Movie</h3>
-                          <p class="muted">Action • 142m</p>
-                          <div class="card-cta">
-                            <a class="btn primary" href="#">Book</a>
-                            <section id="now" class="section container">
-                              <h2 class="section-title fade-up">Now Showing</h2>
-                              <div class="grid movie-grid">
-                                <!-- Movie cards (images in HTML) -->
-                                <article class="card movie-card reveal" tabindex="0">
-                                  <div class="poster">
-                                    <img src="f1 movie.png" alt="F1: The Movie">
-                                  </div>
-                                  <div class="card-body">
-                                    <h3>F1: The Movie</h3>
-                                    <p class="muted">Action • 142m</p>
-                                    <div class="card-cta">
-                                      <a class="btn primary" href="#">Book</a>
-                                    </div>
-                                  </div>
-                                </article>
-                              </div>
-                      </article>
+          <article class="movie-card" tabindex="0">
+            <div class="movie-poster">
+              <img src="weapons.webp" alt="Weapons">
+              <div class="movie-overlay">
+                <button class="play-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5,3 19,12 5,21"></polygon>
+                  </svg>
+                </button>
+              </div>
+              <div class="movie-rating">★ 6.8</div>
+            </div>
+            <div class="movie-info">
+              <h3>Weapons</h3>
+              <p class="movie-genre">Horror • 128m</p>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
+            </div>
+          </article>
 
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="saiyaara.avif" alt="Saiyaara">
-                        </div>
-                        <div class="card-body">
-                          <h3>Saiyaara</h3>
-                          <p class="muted">Romantic • 121m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="saiyaara.avif" alt="Saiyaara">
-                        </div>
-                        <div class="card-body">
-                          <h3>Saiyaara</h3>
-                          <p class="muted">Romantic • 121m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
+          <article class="movie-card" tabindex="0">
+            <div class="movie-poster">
+              <img src="freaky-friday.jpeg" alt="Freakier Friday">
+              <div class="movie-overlay">
+                <button class="play-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5,3 19,12 5,21"></polygon>
+                  </svg>
+                </button>
+              </div>
+              <div class="movie-rating">★ 7.9</div>
+            </div>
+            <div class="movie-info">
+              <h3>Freakier Friday</h3>
+              <p class="movie-genre">Comedy • 128m</p>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="war-2.jpg" alt="War 2">
-                        </div>
-                        <div class="card-body">
-                          <h3>War 2</h3>
-                          <p class="muted">Thriller • 128m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="war 2.jpg" alt="War 2">
-                        </div>
-                        <div class="card-body">
-                          <h3>War 2</h3>
-                          <p class="muted">Thriller • 128m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
+    <!-- COMING SOON -->
+    <section id="coming" class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Coming Soon</h2>
+          <p class="section-subtitle">Upcoming releases to watch out for</p>
+        </div>
 
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="narsimha.jpeg" alt="Narsimha">
-                        </div>
-                        <div class="card-body">
-                          <h3>Mahavatar Narsimha</h3>
-                          <p class="muted">Animation • 121m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="narsimha.jpeg" alt="Narsimha">
-                        </div>
-                        <div class="card-body">
-                          <h3>Mahavatar Narsimha</h3>
-                          <p class="muted">Animation • 121m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
+        <div class="coming-soon-scroll">
+          <div class="coming-soon-card">
+            <div class="coming-poster">
+              <img src="kanatara-2.jpg" alt="Kantara: A Legend Chapter-1">
+              <div class="coming-date">Dec 2025</div>
+            </div>
+            <h4>Kantara: A Legend Chapter-1</h4>
+            <p>Action/Drama</p>
+          </div>
 
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="coolie.jpg" alt="Coolie">
-                        </div>
-                        <div class="card-body">
-                          <h3>Coolie: The Powerhouse</h3>
-                          <p class="muted">Romance • 128m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="coolie.jpg" alt="Coolie">
-                        </div>
-                        <div class="card-body">
-                          <h3>Coolie: The Powerhouse</h3>
-                          <p class="muted">Romance • 128m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
+          <div class="coming-soon-card">
+            <div class="coming-poster">
+              <img src="avatara-2.jpeg" alt="Avatar: Fire and Ash">
+              <div class="coming-date">Dec 2025</div>
+            </div>
+            <h4>Avatar: Fire and Ash</h4>
+            <p>Sci-Fi/Adventure</p>
+          </div>
 
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="sarbala-ji.jpg" alt="Sarbala ji">
-                        </div>
-                        <div class="card-body">
-                          <h3>Sarbala ji</h3>
-                          <p class="muted">Comedy • 128m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="sarbala ji.jpg" alt="Sarbala ji">
-                        </div>
-                        <div class="card-body">
-                          <h3>Sarbala ji</h3>
-                          <p class="muted">Comedy • 128m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
+          <div class="coming-soon-card">
+            <div class="coming-poster">
+              <img src="param-sundari.jpg" alt="Param Sundari">
+              <div class="coming-date">Jan 2026</div>
+            </div>
+            <h4>Param Sundari</h4>
+            <p>Drama/Romance</p>
+          </div>
 
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="weapons.webp" alt="Weapons">
-                        </div>
-                        <div class="card-body">
-                          <h3>Weapons</h3>
-                          <p class="muted">Horror • 128m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="weapons.webp" alt="Weapons">
-                        </div>
-                        <div class="card-body">
-                          <h3>Weapons</h3>
-                          <p class="muted">Horror • 128m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
+          <div class="coming-soon-card">
+            <div class="coming-poster">
+              <img src="bring-her-back.jpg" alt="Bring Her Back">
+              <div class="coming-date">Feb 2026</div>
+            </div>
+            <h4>Bring Her Back</h4>
+            <p>Thriller/Mystery</p>
+          </div>
 
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="freaky friday.jpeg" alt="Freakier Friday">
-                        </div>
-                        <div class="card-body">
-                          <h3>Freakier Friday</h3>
-                          <p class="muted">Comedy • 128m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
+          <div class="coming-soon-card">
+            <div class="coming-poster">
+              <img src="deewane.jpg" alt="EK Deewane ki Deewaniyat">
+              <div class="coming-date">Mar 2026</div>
+            </div>
+            <h4>EK Deewane ki Deewaniyat</h4>
+            <p>Romance/Comedy</p>
+          </div>
 
-                      <!-- COMING SOON horizontal -->
-                      <section id="coming" class="section pale">
-                        <div class="container">
+          <div class="coming-soon-card">
+            <div class="coming-poster">
+              <img src="demon-slayer.jpeg" alt="Demon Slayer">
+              <div class="coming-date">Apr 2026</div>
+            </div>
+            <h4>Demon Slayer</h4>
+            <p>Anime/Action</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-                          <div class="section-header">
-                            <h2 class="section-title">Now Showing</h2>
-                            <p class="section-subtitle">Latest blockbusters in theaters</p>
-                          </div>
+  <!-- FOOTER -->
+  <footer id="contact" class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand">🎬 <span>MovieWave</span></div>
+          <p>Your ultimate destination for movie tickets and entertainment.</p>
+        </div>
 
-                          <div class="movie-grid">
-                            <!-- Movie cards are dynamically inserted here by script.js -->
-                          </div>
-                        </div>
-                      </section>
-                      <article class="card movie-card reveal" tabindex="0">
-                        <div class="poster">
-                          <img src="freaky-friday.jpeg" alt="Freakier Friday">
-                        </div>
-                        <div class="card-body">
-                          <h3>Freakier Friday</h3>
-                          <p class="muted">Comedy • 128m</p>
-                          <div class="card-cta"><a class="btn primary" href="#">Book</a></div>
-                        </div>
-                      </article>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Movies</h4>
+            <a href="#">Now Showing</a>
+            <a href="#">Coming Soon</a>
+            <a href="#">Top Rated</a>
+          </div>
 
-                      <!-- COMING SOON -->
-                      <section id="coming" class="section section-alt">
-                        <div class="container">
-                          <div class="section-header">
-                            <h2 class="section-title">Coming Soon</h2>
-                            <p class="section-subtitle">Upcoming releases to watch out for</p>
-                          </div>
+          <div class="footer-column">
+            <h4>Support</h4>
+            <a href="#">Help Center</a>
+            <a href="#">Contact Us</a>
+            <a href="#">FAQs</a>
+          </div>
 
-                          <div class="coming-soon-scroll">
-                            <div class="coming-soon-card">
-                              <div class="coming-poster">
-                                <img src="kanatara-2.jpg" alt="Kantara: A Legend Chapter-1">
-                                <div class="coming-date">Dec 2025</div>
-                              </div>
-                              <h4>Kantara: A Legend Chapter-1</h4>
-                              <p>Action/Drama</p>
+          <div class="footer-column">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
 
-                              <h2 class="section-title fade-up">Coming Soon</h2>
-                              <div class="row-scroll reveal">
-                                <div class="up-card">
-                                  <img src="kanatara 2.jpg" alt="Coming soon 1">
-                                  <p>Kantara: A Legend Chapter-1</p>
-                                  >>>>>>> parent of 85cd52a (Merge pull request #1 from
-                                  Sagarchhikara/feat/update-ui-theme-and-fix-images)
-                                </div>
-                                <div class="up-card">
-                                  <img src="avatara 2.jpeg" alt="Coming soon 2">
-                                  <p>Avatar: Fire and Ash</p>
-                                </div>
-                                <div class="up-card">
-                                  <img src="param sundari.jpg" alt="Coming soon 3">
-                                  <p>Param Sundari</p>
-                                </div>
-                                <div class="up-card">
-                                  <img src="bring her back.jpg" alt="Coming soon 4">
-                                  <p>Bring Her Back</p>
-                                </div>
-                                <div class="up-card">
-                                  <img src="deewane.jpg" alt="Coming soon 5">
-                                  <p>EK Deewane ki Deewaniyat</p>
-                                </div>
-                                <div class="up-card">
-                                  <img src="demon slayer.jpeg" alt="Coming soon 6">
-                                  <p>Demon Slayer</p>
-                                </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 MovieWave. All rights reserved.</p>
+        <p>Made with ❤️ for movie lovers</p>
+      </div>
+    </div>
+  </footer>
 
-                              </div>
-                            </div>
-                      </section>
-                      <!-- COMING SOON horizontal -->
-                      <section id="coming" class="section pale">
-                        <div class="container">
-                          <h2 class="section-title fade-up">Coming Soon</h2>
-                          <div class="row-scroll reveal">
-                            <div class="up-card">
-                              <img src="kanatara-2.jpg" alt="Coming soon 1">
-                              <p>Kantara: A Legend Chapter-1</p>
-                            </div>
-                            <div class="up-card">
-                              <img src="avatara-2.jpeg" alt="Coming soon 2">
-                              <p>Avatar: Fire and Ash</p>
-                            </div>
-                            <div class="up-card">
-                              <img src="param-sundari.jpg" alt="Coming soon 3">
-                              <p>Param Sundari</p>
-                            </div>
-                            <div class="up-card">
-                              <img src="bring-her-back.jpg" alt="Coming soon 4">
-                              <p>Bring Her Back</p>
-                            </div>
-                            <div class="up-card">
-                              <img src="deewane.jpg" alt="Coming soon 5">
-                              <p>EK Deewane ki Deewaniyat</p>
-                            </div>
-                            <div class="up-card">
-                              <img src="demon-slayer.jpeg" alt="Coming soon 6">
-                              <p>Demon Slayer</p>
-                            </div>
+  <script src="script.js"></script>
 
-                          </div>
-                        </div>
-                      </section>
-                </main>
-
-                <!-- FOOTER -->
-                <footer id="contact" class="footer">
-                  <div class="container footer-inner">
-                    <div>© 2025 MovieWave</div>
-                    <div class="muted">Made with care · Front-end demo</div>
-                    <div class="container footer-inner">
-                      <div>© 2025 MovieWave</div>
-                      <div class="muted">Made with care · Front-end demo</div>
-                    </div>
-                </footer>
-
-                <script src="script.js"></script>
 </body>
 
 </html>

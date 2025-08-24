@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MovieWave — Book Tickets</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="booking.css" />
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <header class="nav" role="banner">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="brand" href="index.html">
+          🎬 <span>MovieWave</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- BOOKING SECTION -->
+  <section id="booking" class="section booking-section">
+    <div class="container">
+      <div class="booking-header">
+        <a href="index.html" class="btn btn-outline" id="back-to-movies">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15,18 9,12 15,6"></polyline>
+          </svg>
+          Back to Movies
+        </a>
+        <h2 id="booking-movie-title" class="section-title">Book Tickets</h2>
+      </div>
+
+      <div class="booking-flow">
+        <!-- Step 1: Showtime -->
+        <div class="booking-step active" id="step-1-time">
+          <h3>Select Showtime</h3>
+          <div class="time-slots">
+            <button class="time-slot" data-time="12:00 PM">12:00 PM</button>
+            <button class="time-slot" data-time="3:00 PM">3:00 PM</button>
+            <button class="time-slot" data-time="6:30 PM">6:30 PM</button>
+            <button class="time-slot" data-time="9:00 PM">9:00 PM</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Tickets -->
+        <div class="booking-step" id="step-2-tickets">
+          <h3>Select Number of Tickets</h3>
+          <div class="ticket-quantity">
+            <button id="quantity-minus" class="quantity-btn" disabled>-</button>
+            <span id="quantity-display">1</span>
+            <button id="quantity-plus" class="quantity-btn">+</button>
+          </div>
+          <p class="ticket-help">You can select up to 10 tickets.</p>
+          <button id="confirm-quantity-btn" class="btn btn-primary">Select Seats</button>
+        </div>
+
+        <!-- Step 3: Seat Selection -->
+        <div class="booking-step" id="step-3-seats">
+          <div class="seat-selection-layout">
+            <div class="seat-map-container">
+                <div class="screen">SCREEN</div>
+                <div id="seat-map" class="seat-map"></div>
+                <div class="seat-legend">
+                    <div class="legend-item"><div class="seat available"></div><span>Available</span></div>
+                    <div class="legend-item"><div class="seat selected"></div><span>Selected</span></div>
+                    <div class="legend-item"><div class="seat booked"></div><span>Booked</span></div>
+                </div>
+            </div>
+            <div class="booking-summary-container">
+              <h3>Booking Summary</h3>
+              <div id="booking-summary" class="booking-summary">
+                <p><strong>Movie:</strong> <span id="summary-movie-title"></span></p>
+                <p><strong>Time:</strong> <span id="summary-time"></span></p>
+                <p><strong>Seats:</strong> <span id="summary-seats">N/A</span></p>
+                <p><strong>Total:</strong> <span id="summary-total">₹0</span></p>
+              </div>
+              <button id="confirm-booking-btn" class="btn btn-primary btn-full" disabled>Confirm Booking</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="booking.js"></script>
+</body>
+
+</html>
