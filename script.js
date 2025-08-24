@@ -3,38 +3,7 @@ let currentSlide = 0;
 let slideInterval;
 let isPlaying = true;
 
-// ========== BOOKING VARIABLES ==========
-let bookingState = {
-  movieTitle: '',
-  time: '',
-  ticketQuantity: 1,
-  selectedSeats: [],
-  totalPrice: 0,
-};
-
-const TICKET_PRICE = 150; // Price per ticket
-
 // ========== DOM ELEMENTS ==========
-const mainContent = document.querySelector('main');
-const heroSection = document.getElementById('home');
-const bookingSection = document.getElementById('booking');
-const backToMoviesBtn = document.getElementById('back-to-movies');
-const bookingMovieTitle = document.getElementById('booking-movie-title');
-const bookingSteps = document.querySelectorAll('.booking-step');
-const timeStep = document.getElementById('step-1-time');
-const ticketsStep = document.getElementById('step-2-tickets');
-const seatsStep = document.getElementById('step-3-seats');
-const timeSlots = document.querySelectorAll('.time-slot');
-const quantityMinusBtn = document.getElementById('quantity-minus');
-const quantityPlusBtn = document.getElementById('quantity-plus');
-const quantityDisplay = document.getElementById('quantity-display');
-const confirmQuantityBtn = document.getElementById('confirm-quantity-btn');
-const seatMap = document.getElementById('seat-map');
-const summaryMovieTitle = document.getElementById('summary-movie-title');
-const summaryTime = document.getElementById('summary-time');
-const summarySeats = document.getElementById('summary-seats');
-const summaryTotal = document.getElementById('summary-total');
-const confirmBookingBtn = document.getElementById('confirm-booking-btn');
 const slides = document.querySelectorAll('.slide');
 const heroTitle = document.getElementById('hero-title');
 const heroTag = document.getElementById('hero-tag');
@@ -283,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initComingSoonScroll();
   initLazyLoading();
-  initBooking();
 });
 
 // Handle card tilt effect
@@ -316,17 +284,9 @@ function resetCardTilt(e) {
 // Handle ticket booking
 function handleBookTicket(card) {
   const movieTitle = card.querySelector('h3')?.textContent;
-  bookingState.movieTitle = movieTitle;
-
-  if(bookingMovieTitle) bookingMovieTitle.textContent = `Book Tickets for ${movieTitle}`;
-  if(summaryMovieTitle) summaryMovieTitle.textContent = movieTitle;
-
-  if(mainContent) mainContent.style.display = 'none';
-  if(heroSection) heroSection.style.display = 'none';
-  if(bookingSection) bookingSection.style.display = 'block';
-
-  resetBookingFlow();
-  if(bookingSection) smoothScrollTo(bookingSection);
+  if (movieTitle) {
+    window.location.href = `booking.html?movie=${encodeURIComponent(movieTitle)}`;
+  }
 }
 
 // Handle trailer play
@@ -334,154 +294,6 @@ function handlePlayTrailer(card) {
   const movieTitle = card.querySelector('h3')?.textContent;
   console.log(`Playing trailer for: ${movieTitle}`);
   showNotification(`Playing trailer for "${movieTitle}"`);
-}
-
-// ========== BOOKING FLOW ==========
-
-function initBooking() {
-  if(backToMoviesBtn) backToMoviesBtn.addEventListener('click', handleBackToMovies);
-  timeSlots.forEach(slot => slot.addEventListener('click', handleTimeSelection));
-  if(quantityMinusBtn) quantityMinusBtn.addEventListener('click', () => handleQuantityChange(-1));
-  if(quantityPlusBtn) quantityPlusBtn.addEventListener('click', () => handleQuantityChange(1));
-  if(confirmQuantityBtn) confirmQuantityBtn.addEventListener('click', handleConfirmQuantity);
-  if(confirmBookingBtn) confirmBookingBtn.addEventListener('click', handleConfirmBooking);
-}
-
-function goToStep(stepNumber) {
-  bookingSteps.forEach((step, index) => {
-    step.classList.toggle('active', index + 1 === stepNumber);
-  });
-}
-
-function handleBackToMovies() {
-  if(mainContent) mainContent.style.display = 'block';
-  if(heroSection) heroSection.style.display = 'block';
-  if(bookingSection) bookingSection.style.display = 'none';
-}
-
-function resetBookingFlow() {
-    goToStep(1);
-    bookingState.time = '';
-    bookingState.ticketQuantity = 1;
-    bookingState.selectedSeats = [];
-    updateQuantityDisplay();
-    updateBookingSummary();
-    timeSlots.forEach(slot => slot.classList.remove('selected'));
-    if(confirmBookingBtn) confirmBookingBtn.disabled = true;
-    if (seatMap) {
-      seatMap.innerHTML = '';
-    }
-}
-
-function handleTimeSelection(e) {
-  const selectedTime = e.target.dataset.time;
-  bookingState.time = selectedTime;
-
-  timeSlots.forEach(slot => slot.classList.remove('selected'));
-  e.target.classList.add('selected');
-
-  updateBookingSummary();
-  goToStep(2);
-}
-
-function handleQuantityChange(change) {
-  const newQuantity = bookingState.ticketQuantity + change;
-  if (newQuantity >= 1 && newQuantity <= 10) {
-    bookingState.ticketQuantity = newQuantity;
-    updateQuantityDisplay();
-  }
-}
-
-function updateQuantityDisplay() {
-  if(quantityDisplay) quantityDisplay.textContent = bookingState.ticketQuantity;
-  if(quantityMinusBtn) quantityMinusBtn.disabled = bookingState.ticketQuantity === 1;
-  if(quantityPlusBtn) quantityPlusBtn.disabled = bookingState.ticketQuantity === 10;
-}
-
-function handleConfirmQuantity() {
-  generateSeatMap();
-  updateBookingSummary();
-  goToStep(3);
-}
-
-function generateSeatMap() {
-    if (!seatMap) return;
-    seatMap.innerHTML = '';
-    const bookedSeats = ['A5', 'B6', 'C7', 'H2', 'F10'];
-
-    for (let i = 0; i < 10; i++) {
-        const rowChar = String.fromCharCode(65 + i);
-        const rowLabel = document.createElement('div');
-        rowLabel.classList.add('row-label');
-        rowLabel.textContent = rowChar;
-        seatMap.appendChild(rowLabel);
-
-        for (let j = 1; j <= 12; j++) {
-            const seat = document.createElement('div');
-            const seatId = `${rowChar}${j}`;
-            seat.classList.add('seat');
-            seat.dataset.seatId = seatId;
-
-            if (bookedSeats.includes(seatId)) {
-                seat.classList.add('booked');
-            } else {
-                seat.addEventListener('click', handleSeatSelection);
-            }
-            seatMap.appendChild(seat);
-        }
-    }
-}
-
-function handleSeatSelection(e) {
-    const seat = e.target;
-    if (!seat.classList.contains('seat') || seat.classList.contains('booked')) return;
-
-    const seatId = seat.dataset.seatId;
-    const isSelected = seat.classList.contains('selected');
-
-    if (isSelected) {
-        bookingState.selectedSeats = bookingState.selectedSeats.filter(s => s !== seatId);
-        seat.classList.remove('selected');
-    } else {
-        if (bookingState.selectedSeats.length < bookingState.ticketQuantity) {
-            bookingState.selectedSeats.push(seatId);
-            seat.classList.add('selected');
-        } else {
-            showNotification(`You can only select ${bookingState.ticketQuantity} seats.`, 'error');
-        }
-    }
-    updateBookingSummary();
-}
-
-function updateBookingSummary() {
-    if(summaryMovieTitle) summaryMovieTitle.textContent = bookingState.movieTitle || 'N/A';
-    if(summaryTime) summaryTime.textContent = bookingState.time || 'N/A';
-
-    const seatsText = bookingState.selectedSeats.sort().join(', ') || 'N/A';
-    if(summarySeats) summarySeats.textContent = seatsText;
-
-    bookingState.totalPrice = bookingState.selectedSeats.length * TICKET_PRICE;
-    if(summaryTotal) summaryTotal.textContent = `₹${bookingState.totalPrice}`;
-
-    if(confirmBookingBtn) confirmBookingBtn.disabled = bookingState.selectedSeats.length !== bookingState.ticketQuantity || bookingState.ticketQuantity === 0;
-}
-
-function handleConfirmBooking() {
-    showNotification(`Booking confirmed for ${bookingState.movieTitle}! Seats: ${bookingState.selectedSeats.join(', ')}`, 'success');
-
-    bookingState.selectedSeats.forEach(seatId => {
-        const seatElement = document.querySelector(`[data-seat-id="${seatId}"]`);
-        if(seatElement) {
-            seatElement.classList.remove('selected');
-            seatElement.classList.add('booked');
-            seatElement.removeEventListener('click', handleSeatSelection);
-        }
-    });
-
-    setTimeout(() => {
-        handleBackToMovies();
-        resetBookingFlow();
-    }, 3000);
 }
 
 // ========== SEARCH FUNCTIONALITY ==========
