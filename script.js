@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // ========== CONFIGURATION ==========
 const API_KEY = '48e8311bc75552ff9f831b9c52e76a2d'; // TMDB API key
 const API_URL = 'https://api.themoviedb.org/3';
@@ -22,6 +23,8 @@ let currentSlide = 0;
 let slideInterval;
 let isPlaying = true;
 =======
+=======
+>>>>>>> parent of 96f1702 (Revamp UI and interactions for MovieWave site)
 /* ========= HERO SLIDESHOW (auto + arrows + dots) ========= */
 const slides = Array.from(document.querySelectorAll('.slide'));
 const titleEl = document.getElementById('hero-title');
@@ -29,7 +32,10 @@ const tagEl = document.getElementById('hero-tag');
 const dotsWrap = document.querySelector('.hero-dots');
 let index = slides.findIndex(s => s.classList.contains('active'));
 if(index < 0) index = 0;
+<<<<<<< HEAD
 >>>>>>> parent of 85cd52a (Merge pull request #1 from Sagarchhikara/feat/update-ui-theme-and-fix-images)
+=======
+>>>>>>> parent of 96f1702 (Revamp UI and interactions for MovieWave site)
 
 /* build dots */
 slides.forEach((s,i)=> {
@@ -61,6 +67,7 @@ function goto(i){
 let autoplay = setInterval(()=> goto(index+1), 4500);
 /* pause on hover */
 const heroSlideshow = document.querySelector('.hero-slideshow');
+<<<<<<< HEAD
 <<<<<<< HEAD
 const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
 const navMenu = document.querySelector('.nav-menu');
@@ -355,6 +362,14 @@ function addSlideEventListeners() {
     });
 }
 =======
+=======
+heroSlideshow?.addEventListener('mouseenter', ()=> clearInterval(autoplay));
+heroSlideshow?.addEventListener('mouseleave', ()=> autoplay = setInterval(()=> goto(index+1), 4500));
+
+/* set initial info */
+goto(index);
+
+>>>>>>> parent of 96f1702 (Revamp UI and interactions for MovieWave site)
 /* ========= SCROLL REVEAL (IntersectionObserver) ========= */
 const reveals = document.querySelectorAll('.reveal, .fade-up');
 const io = new IntersectionObserver((entries)=>{
@@ -363,6 +378,7 @@ const io = new IntersectionObserver((entries)=>{
       entry.target.classList.add('show');
       io.unobserve(entry.target);
     }
+<<<<<<< HEAD
   });
 },{threshold:0.2});
 >>>>>>> parent of 85cd52a (Merge pull request #1 from Sagarchhikara/feat/update-ui-theme-and-fix-images)
@@ -753,9 +769,33 @@ cards.forEach(card=>{
   });
 });
 
+=======
+  });
+},{threshold:0.2});
+
+reveals.forEach(el => io.observe(el));
+
+/* ========= CARD TILT (subtle) ========= */
+const cards = document.querySelectorAll('.movie-card');
+cards.forEach(card=>{
+  card.addEventListener('mousemove', (e)=>{
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `perspective(900px) rotateX(${ -y * 5 }deg) rotateY(${ x * 6 }deg) translateZ(6px)`;
+  });
+  card.addEventListener('mouseleave', ()=>{
+    card.style.transform = '';
+  });
+});
+
+>>>>>>> parent of 96f1702 (Revamp UI and interactions for MovieWave site)
 /* ========= accessibility: keyboard focus visual ========= */
 document.querySelectorAll('.movie-card, .card, .btn').forEach(el=>{
   el.addEventListener('focus', ()=> el.classList.add('focus'));
   el.addEventListener('blur', ()=> el.classList.remove('focus'));
 });
+<<<<<<< HEAD
 >>>>>>> parent of 85cd52a (Merge pull request #1 from Sagarchhikara/feat/update-ui-theme-and-fix-images)
+=======
+>>>>>>> parent of 96f1702 (Revamp UI and interactions for MovieWave site)
