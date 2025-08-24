@@ -1,5 +1,5 @@
 // ========== CONFIGURATION ==========
-const API_KEY = '48e8311bc75552ff9f831b9c52e76a2d'; // Replace with your TMDB API key
+const API_KEY = '48e8311bc75552ff9f831b9c52e76a2d'; // TMDB API key
 const API_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 const USE_API = true; // Switch to false to use local data (changed to false for testing)
