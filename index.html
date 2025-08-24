@@ -14,7 +14,7 @@
     <div class="container">
       <div class="nav-inner">
         <a class="brand" href="#">
-          🎬 <span>MovieWave</span>
+          🎬 <span>Makemyshow</span>
         </a>
 
         <nav class="nav-menu" role="navigation" aria-label="Main">
@@ -84,13 +84,12 @@
           <h1 id="hero-title">F1: The Movie</h1>
           <p id="hero-tag">Action/Drama/Sports • 142m</p>
           <div class="hero-actions">
-            <button class="btn btn-primary">
+            <a href="booking.html" class="btn btn-primary">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <polygon points="5,3 19,12 5,21"></polygon>
               </svg>
               Book Tickets
-            </button>
-            <a href="booking.html"></a>
+            </a>
             <button class="btn btn-outline">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -132,7 +131,7 @@
             <div class="movie-info">
               <h3>F1: The Movie</h3>
               <p class="movie-genre">Action • 142m</p>
-              <button class="btn btn-primary btn-small">Book Now</button>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
             </div>
           </article>
 
@@ -151,7 +150,7 @@
             <div class="movie-info">
               <h3>Saiyaara</h3>
               <p class="movie-genre">Romance • 121m</p>
-              <button class="btn btn-primary btn-small">Book Now</button>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
             </div>
           </article>
 
@@ -170,7 +169,7 @@
             <div class="movie-info">
               <h3>War 2</h3>
               <p class="movie-genre">Thriller • 128m</p>
-              <button class="btn btn-primary btn-small">Book Now</button>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
             </div>
           </article>
 
@@ -189,7 +188,7 @@
             <div class="movie-info">
               <h3>Mahavatar Narsimha</h3>
               <p class="movie-genre">Animation • 121m</p>
-              <button class="btn btn-primary btn-small">Book Now</button>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
             </div>
           </article>
 
@@ -208,7 +207,7 @@
             <div class="movie-info">
               <h3>Coolie: The Powerhouse</h3>
               <p class="movie-genre">Romance • 128m</p>
-              <button class="btn btn-primary btn-small">Book Now</button>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
             </div>
           </article>
 
@@ -227,7 +226,7 @@
             <div class="movie-info">
               <h3>Sarbala ji</h3>
               <p class="movie-genre">Comedy • 128m</p>
-              <button class="btn btn-primary btn-small">Book Now</button>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
             </div>
           </article>
 
@@ -246,7 +245,7 @@
             <div class="movie-info">
               <h3>Weapons</h3>
               <p class="movie-genre">Horror • 128m</p>
-              <button class="btn btn-primary btn-small">Book Now</button>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
             </div>
           </article>
 
@@ -265,7 +264,7 @@
             <div class="movie-info">
               <h3>Freakier Friday</h3>
               <p class="movie-genre">Comedy • 128m</p>
-              <button class="btn btn-primary btn-small">Book Now</button>
+              <a href="booking.html" class="btn btn-primary btn-small">Book Now</a>
             </div>
           </article>
         </div>
@@ -338,77 +337,6 @@
       </div>
     </section>
   </main>
-
-  <!-- BOOKING SECTION -->
-  <section id="booking" class="section booking-section" style="display: none;">
-    <div class="container">
-      <div class="booking-header">
-        <button class="btn btn-outline" id="back-to-movies">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="15,18 9,12 15,6"></polyline>
-          </svg>
-          Back to Movies
-        </button>
-        <h2 id="booking-movie-title" class="section-title">Book Tickets for F1: The Movie</h2>
-      </div>
-
-      <div class="booking-flow">
-        <!-- Step 1: Showtime -->
-        <div class="booking-step active" id="step-1-time">
-          <h3>Select Showtime</h3>
-          <div class="time-slots">
-            <button class="time-slot" data-time="12:00 PM">12:00 PM</button>
-            <button class="time-slot" data-time="3:00 PM">3:00 PM</button>
-            <button class="time-slot" data-time="6:30 PM">6:30 PM</button>
-            <button class="time-slot" data-time="9:00 PM">9:00 PM</button>
-          </div>
-        </div>
-
-        <!-- Step 2: Tickets -->
-        <div class="booking-step" id="step-2-tickets">
-          <h3>Select Number of Tickets</h3>
-          <div class="ticket-quantity">
-            <button id="quantity-minus" class="quantity-btn" disabled>-</button>
-            <span id="quantity-display">1</span>
-            <button id="quantity-plus" class="quantity-btn">+</button>
-          </div>
-          <p class="ticket-help">You can select up to 10 tickets.</p>
-          <button id="confirm-quantity-btn" class="btn btn-primary">Select Seats</button>
-        </div>
-
-        <!-- Step 3: Seat Selection -->
-        <div class="booking-step" id="step-3-seats">
-          <div class="seat-selection-layout">
-            <div class="seat-map-container">
-              <div class="screen">SCREEN</div>
-              <div id="seat-map" class="seat-map"></div>
-              <div class="seat-legend">
-                <div class="legend-item">
-                  <div class="seat available"></div><span>Available</span>
-                </div>
-                <div class="legend-item">
-                  <div class="seat selected"></div><span>Selected</span>
-                </div>
-                <div class="legend-item">
-                  <div class="seat booked"></div><span>Booked</span>
-                </div>
-              </div>
-            </div>
-            <div class="booking-summary-container">
-              <h3>Booking Summary</h3>
-              <div id="booking-summary" class="booking-summary">
-                <p><strong>Movie:</strong> <span id="summary-movie-title"></span></p>
-                <p><strong>Time:</strong> <span id="summary-time"></span></p>
-                <p><strong>Seats:</strong> <span id="summary-seats">N/A</span></p>
-                <p><strong>Total:</strong> <span id="summary-total">₹0</span></p>
-              </div>
-              <button id="confirm-booking-btn" class="btn btn-primary btn-full" disabled>Confirm Booking</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- FOOTER -->
   <footer id="contact" class="footer">
