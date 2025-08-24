@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // ========== CONFIGURATION ==========
 const API_KEY = '48e8311bc75552ff9f831b9c52e76a2d'; // TMDB API key
 const API_URL = 'https://api.themoviedb.org/3';
@@ -20,16 +21,47 @@ const localMovies = [
 let currentSlide = 0;
 let slideInterval;
 let isPlaying = true;
+=======
+/* ========= HERO SLIDESHOW (auto + arrows + dots) ========= */
+const slides = Array.from(document.querySelectorAll('.slide'));
+const titleEl = document.getElementById('hero-title');
+const tagEl = document.getElementById('hero-tag');
+const dotsWrap = document.querySelector('.hero-dots');
+let index = slides.findIndex(s => s.classList.contains('active'));
+if(index < 0) index = 0;
+>>>>>>> parent of 85cd52a (Merge pull request #1 from Sagarchhikara/feat/update-ui-theme-and-fix-images)
 
-// ========== DOM ELEMENTS ==========
-const slides = document.querySelectorAll('.slide');
-const heroTitle = document.getElementById('hero-title');
-const heroTag = document.getElementById('hero-tag');
-const heroRating = document.getElementById('hero-rating');
-const dotsContainer = document.querySelector('.hero-dots');
-const leftArrow = document.querySelector('.hero-arrow.left');
-const rightArrow = document.querySelector('.hero-arrow.right');
+/* build dots */
+slides.forEach((s,i)=> {
+  const btn = document.createElement('button');
+  btn.addEventListener('click', ()=> goto(i));
+  if(i===index) btn.classList.add('active');
+  dotsWrap.appendChild(btn);
+});
+
+const left = document.querySelector('.hero-arrow.left');
+const right = document.querySelector('.hero-arrow.right');
+left?.addEventListener('click', ()=> goto(index-1));
+right?.addEventListener('click', ()=> goto(index+1));
+
+function goto(i){
+  const next = (i + slides.length) % slides.length;
+  slides.forEach((s,idx)=> s.classList.toggle('active', idx===next));
+  Array.from(dotsWrap.children).forEach((d,idx)=> d.classList.toggle('active', idx===next));
+  index = next;
+  // update info from active slide dataset
+  const active = slides[index];
+  if(active){
+    titleEl.textContent = active.dataset.title || '';
+    tagEl.textContent = active.dataset.tag || '';
+  }
+}
+
+/* autoplay */
+let autoplay = setInterval(()=> goto(index+1), 4500);
+/* pause on hover */
 const heroSlideshow = document.querySelector('.hero-slideshow');
+<<<<<<< HEAD
 const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
 const navMenu = document.querySelector('.nav-menu');
 const searchInput = document.querySelector('.search');
@@ -150,9 +182,15 @@ function renderMovieCards(movies) {
     // Re-initialize scroll animations for new cards
     initScrollAnimations();
 }
+=======
+heroSlideshow?.addEventListener('mouseenter', ()=> clearInterval(autoplay));
+heroSlideshow?.addEventListener('mouseleave', ()=> autoplay = setInterval(()=> goto(index+1), 4500));
+>>>>>>> parent of 85cd52a (Merge pull request #1 from Sagarchhikara/feat/update-ui-theme-and-fix-images)
 
-// ========== UTILITY FUNCTIONS ==========
+/* set initial info */
+goto(index);
 
+<<<<<<< HEAD
 // Debounce function for performance optimization
 function debounce(func, wait) {
     let timeout;
@@ -316,9 +354,22 @@ function addSlideEventListeners() {
         }
     });
 }
+=======
+/* ========= SCROLL REVEAL (IntersectionObserver) ========= */
+const reveals = document.querySelectorAll('.reveal, .fade-up');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('show');
+      io.unobserve(entry.target);
+    }
+  });
+},{threshold:0.2});
+>>>>>>> parent of 85cd52a (Merge pull request #1 from Sagarchhikara/feat/update-ui-theme-and-fix-images)
 
-// ========== MOBILE MENU ==========
+reveals.forEach(el => io.observe(el));
 
+<<<<<<< HEAD
 function initMobileMenu() {
     if (!mobileMenuToggle || !navMenu) return;
 
@@ -687,3 +738,24 @@ async function init() {
 
 // Run initialization on page load
 document.addEventListener('DOMContentLoaded', init);
+=======
+/* ========= CARD TILT (subtle) ========= */
+const cards = document.querySelectorAll('.movie-card');
+cards.forEach(card=>{
+  card.addEventListener('mousemove', (e)=>{
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `perspective(900px) rotateX(${ -y * 5 }deg) rotateY(${ x * 6 }deg) translateZ(6px)`;
+  });
+  card.addEventListener('mouseleave', ()=>{
+    card.style.transform = '';
+  });
+});
+
+/* ========= accessibility: keyboard focus visual ========= */
+document.querySelectorAll('.movie-card, .card, .btn').forEach(el=>{
+  el.addEventListener('focus', ()=> el.classList.add('focus'));
+  el.addEventListener('blur', ()=> el.classList.remove('focus'));
+});
+>>>>>>> parent of 85cd52a (Merge pull request #1 from Sagarchhikara/feat/update-ui-theme-and-fix-images)
