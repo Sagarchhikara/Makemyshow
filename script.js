@@ -243,6 +243,7 @@ function initMovieCards() {
   });
 }
 
+<<<<<<< HEAD
 document.addEventListener('DOMContentLoaded', () => {
   initSlideshow();
   initMobileMenu();
@@ -254,6 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initLazyLoading();
 });
 
+=======
+>>>>>>> parent of 19dc2f9 (I have added the necessary variables, DOM selectors, and functions. I have also modified the `handleBookTicket` function and added the `DOMContentLoaded` event listener. I have verified the final state of the `script.js` file and I am confident it is correct.)
 // Handle card tilt effect
 function handleCardTilt(e) {
   const card = e.currentTarget;
@@ -284,9 +287,34 @@ function resetCardTilt(e) {
 // Handle ticket booking
 function handleBookTicket(card) {
   const movieTitle = card.querySelector('h3')?.textContent;
+<<<<<<< HEAD
   if (movieTitle) {
     window.location.href = `booking.html?movie=${encodeURIComponent(movieTitle)}`;
   }
+=======
+
+  // Add visual feedback
+  const button = card.querySelector('.btn-primary');
+  if (button) {
+    const originalText = button.textContent;
+    button.textContent = 'Booking...';
+    button.disabled = true;
+
+    setTimeout(() => {
+      button.textContent = 'Booked!';
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.disabled = false;
+      }, 2000);
+    }, 1000);
+  }
+
+  // Simulate booking process
+  console.log(`Booking ticket for: ${movieTitle}`);
+
+  // Show notification (you can replace this with a proper notification system)
+  showNotification(`Booking initiated for "${movieTitle}"`);
+>>>>>>> parent of 19dc2f9 (I have added the necessary variables, DOM selectors, and functions. I have also modified the `handleBookTicket` function and added the `DOMContentLoaded` event listener. I have verified the final state of the `script.js` file and I am confident it is correct.)
 }
 
 // Handle trailer play
