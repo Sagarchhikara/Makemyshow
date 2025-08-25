@@ -1,211 +1,75 @@
-// ========== GLOBAL VARIABLES ==========
-let currentSlide = 0;
-let slideInterval;
-let isPlaying = true;
+/* ========= HERO SLIDESHOW (auto + arrows + dots) ========= */
+const slides = Array.from(document.querySelectorAll('.slide'));
+const titleEl = document.getElementById('hero-title');
+const tagEl = document.getElementById('hero-tag');
+const dotsWrap = document.querySelector('.hero-dots');
+let index = slides.findIndex(s => s.classList.contains('active'));
+if(index < 0) index = 0;
 
-// ========== DOM ELEMENTS ==========
-const slides = document.querySelectorAll('.slide');
-const heroTitle = document.getElementById('hero-title');
-const heroTag = document.getElementById('hero-tag');
-const heroRating = document.getElementById('hero-rating');
-const dotsContainer = document.querySelector('.hero-dots');
-const leftArrow = document.querySelector('.hero-arrow.left');
-const rightArrow = document.querySelector('.hero-arrow.right');
+/* build dots */
+slides.forEach((s,i)=> {
+  const btn = document.createElement('button');
+  btn.addEventListener('click', ()=> goto(i));
+  if(i===index) btn.classList.add('active');
+  dotsWrap.appendChild(btn);
+});
+
+const left = document.querySelector('.hero-arrow.left');
+const right = document.querySelector('.hero-arrow.right');
+left?.addEventListener('click', ()=> goto(index-1));
+right?.addEventListener('click', ()=> goto(index+1));
+
+function goto(i){
+  const next = (i + slides.length) % slides.length;
+  slides.forEach((s,idx)=> s.classList.toggle('active', idx===next));
+  Array.from(dotsWrap.children).forEach((d,idx)=> d.classList.toggle('active', idx===next));
+  index = next;
+  // update info from active slide dataset
+  const active = slides[index];
+  if(active){
+    titleEl.textContent = active.dataset.title || '';
+    tagEl.textContent = active.dataset.tag || '';
+  }
+}
+
+/* autoplay */
+let autoplay = setInterval(()=> goto(index+1), 4500);
+/* pause on hover */
 const heroSlideshow = document.querySelector('.hero-slideshow');
-const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-const navMenu = document.querySelector('.nav-menu');
-const searchInput = document.querySelector('.search');
+heroSlideshow?.addEventListener('mouseenter', ()=> clearInterval(autoplay));
+heroSlideshow?.addEventListener('mouseleave', ()=> autoplay = setInterval(()=> goto(index+1), 4500));
 
-// ========== UTILITY FUNCTIONS ==========
+/* set initial info */
+goto(index);
 
-// Debounce function for performance optimization
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-}
-
-// Smooth scroll to element
-function smoothScrollTo(element) {
-  if (element) {
-    element.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-  }
-}
-
-// Add class with animation delay
-function addClassWithDelay(elements, className, delay = 100) {
-  elements.forEach((element, index) => {
-    setTimeout(() => {
-      element.classList.add(className);
-    }, index * delay);
-  });
-}
-
-// ========== SLIDESHOW FUNCTIONALITY ==========
-
-// Initialize slideshow
-function initSlideshow() {
-  if (slides.length === 0) return;
-
-  // Create dots
-  createDots();
-
-  // Set initial slide
-  updateSlideInfo();
-
-  // Start autoplay
-  startAutoplay();
-
-  // Add event listeners
-  addSlideEventListeners();
-}
-
-// Create navigation dots
-function createDots() {
-  if (!dotsContainer) return;
-
-  dotsContainer.innerHTML = '';
-
-  slides.forEach((_, index) => {
-    const dot = document.createElement('button');
-    dot.classList.add('dot');
-    if (index === currentSlide) {
-      dot.classList.add('active');
-    }
-    dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
-    dot.addEventListener('click', () => goToSlide(index));
-    dotsContainer.appendChild(dot);
-  });
-}
-
-// Go to specific slide
-function goToSlide(index) {
-  if (index < 0 || index >= slides.length) return;
-
-  // Remove active class from all slides and dots
-  slides.forEach(slide => slide.classList.remove('active'));
-  document.querySelectorAll('.dot').forEach(dot => dot.classList.remove('active'));
-
-  // Add active class to current slide and dot
-  slides[index].classList.add('active');
-  document.querySelectorAll('.dot')[index]?.classList.add('active');
-
-  currentSlide = index;
-  updateSlideInfo();
-}
-
-// Go to next slide
-function nextSlide() {
-  const nextIndex = (currentSlide + 1) % slides.length;
-  goToSlide(nextIndex);
-}
-
-// Go to previous slide
-function prevSlide() {
-  const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
-  goToSlide(prevIndex);
-}
-
-// Update slide information
-function updateSlideInfo() {
-  if (!slides[currentSlide]) return;
-
-  const slideData = slides[currentSlide].dataset;
-
-  if (heroTitle && slideData.title) {
-    heroTitle.textContent = slideData.title;
-  }
-
-  if (heroTag && slideData.tag) {
-    heroTag.textContent = slideData.tag;
-  }
-
-  if (heroRating && slideData.rating) {
-    heroRating.textContent = slideData.rating;
-  }
-}
-
-// Start autoplay
-function startAutoplay() {
-  if (slideInterval) clearInterval(slideInterval);
-  slideInterval = setInterval(nextSlide, 5000);
-  isPlaying = true;
-}
-
-// Stop autoplay
-function stopAutoplay() {
-  if (slideInterval) clearInterval(slideInterval);
-  isPlaying = false;
-}
-
-// Add slideshow event listeners
-function addSlideEventListeners() {
-  // Arrow navigation
-  leftArrow?.addEventListener('click', () => {
-    prevSlide();
-    stopAutoplay();
-    setTimeout(startAutoplay, 3000); // Resume after 3 seconds
-  });
-
-  rightArrow?.addEventListener('click', () => {
-    nextSlide();
-    stopAutoplay();
-    setTimeout(startAutoplay, 3000); // Resume after 3 seconds
-  });
-
-  // Pause on hover
-  heroSlideshow?.addEventListener('mouseenter', stopAutoplay);
-  heroSlideshow?.addEventListener('mouseleave', () => {
-    if (!isPlaying) startAutoplay();
-  });
-
-  // Keyboard navigation
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') {
-      prevSlide();
-      stopAutoplay();
-      setTimeout(startAutoplay, 3000);
-    } else if (e.key === 'ArrowRight') {
-      nextSlide();
-      stopAutoplay();
-      setTimeout(startAutoplay, 3000);
+/* ========= SCROLL REVEAL (IntersectionObserver) ========= */
+const reveals = document.querySelectorAll('.reveal, .fade-up');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('show');
+      io.unobserve(entry.target);
     }
   });
-}
+},{threshold:0.2});
 
-// ========== MOBILE MENU ==========
+reveals.forEach(el => io.observe(el));
 
-function initMobileMenu() {
-  if (!mobileMenuToggle || !navMenu) return;
-
-  mobileMenuToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-    mobileMenuToggle.classList.toggle('active');
-
-    // Toggle aria-expanded
-    const isExpanded = navMenu.classList.contains('active');
-    mobileMenuToggle.setAttribute('aria-expanded', isExpanded);
+/* ========= CARD TILT (subtle) ========= */
+const cards = document.querySelectorAll('.movie-card');
+cards.forEach(card=>{
+  card.addEventListener('mousemove', (e)=>{
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `perspective(900px) rotateX(${ -y * 5 }deg) rotateY(${ x * 6 }deg) translateZ(6px)`;
   });
-
-  // Close menu when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!navMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
-      navMenu.classList.remove('active');
-      mobileMenuToggle.classList.remove('active');
-      mobileMenuToggle.setAttribute('aria-expanded', 'false');
-    }
+  card.addEventListener('mouseleave', ()=>{
+    card.style.transform = '';
   });
-}
+});
 
+<<<<<<< HEAD
 // ========== MOVIE CARDS INTERACTIONS ==========
 
 function initMovieCards() {
@@ -521,3 +385,10 @@ function initLazyLoading() {
       }
     });
   });
+=======
+/* ========= accessibility: keyboard focus visual ========= */
+document.querySelectorAll('.movie-card, .card, .btn').forEach(el=>{
+  el.addEventListener('focus', ()=> el.classList.add('focus'));
+  el.addEventListener('blur', ()=> el.classList.remove('focus'));
+});
+>>>>>>> parent of 96f1702 (Revamp UI and interactions for MovieWave site)

@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 @import url('signin.css');
 
 /* ========== CSS CUSTOM PROPERTIES ========== */
 
 
+=======
+/* ---------- design tokens ---------- */
+>>>>>>> parent of 96f1702 (Revamp UI and interactions for MovieWave site)
 :root {
   --bg1: #1a1a1a; /* dark */
   --bg2: #111111; /* darker */
@@ -131,6 +135,7 @@ body{
   .hero-info{padding:12px}
 
 }
+<<<<<<< HEAD
 
 
 .movie-poster img {
@@ -759,3 +764,5 @@ body{
   .poster img{height:200px}
 
 
+=======
+>>>>>>> parent of 96f1702 (Revamp UI and interactions for MovieWave site)
