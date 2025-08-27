@@ -62,13 +62,19 @@
         <div class="booking-step" id="step-3-seats">
           <div class="seat-selection-layout">
             <div class="seat-map-container">
-                <div class="screen">SCREEN</div>
-                <div id="seat-map" class="seat-map"></div>
-                <div class="seat-legend">
-                    <div class="legend-item"><div class="seat available"></div><span>Available</span></div>
-                    <div class="legend-item"><div class="seat selected"></div><span>Selected</span></div>
-                    <div class="legend-item"><div class="seat booked"></div><span>Booked</span></div>
+              <div class="screen">SCREEN</div>
+              <div id="seat-map" class="seat-map"></div>
+              <div class="seat-legend">
+                <div class="legend-item">
+                  <div class="seat available"></div><span>Available</span>
                 </div>
+                <div class="legend-item">
+                  <div class="seat selected"></div><span>Selected</span>
+                </div>
+                <div class="legend-item">
+                  <div class="seat booked"></div><span>Booked</span>
+                </div>
+              </div>
             </div>
             <div class="booking-summary-container">
               <h3>Booking Summary</h3>
@@ -78,7 +84,8 @@
                 <p><strong>Seats:</strong> <span id="summary-seats">N/A</span></p>
                 <p><strong>Total:</strong> <span id="summary-total">₹0</span></p>
               </div>
-              <button id="confirm-booking-btn" class="btn btn-primary btn-full" disabled>Confirm Booking</button>
+              <button id="confirm-booking-btn" class="btn btn-primary btn-full" disabled><a href="payment.html"> confirm
+                  booking</a></button>
             </div>
           </div>
         </div>

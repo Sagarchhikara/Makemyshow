@@ -160,20 +160,11 @@ function updateBookingSummary() {
 }
 
 function handleConfirmBooking() {
-    showNotification(`Booking confirmed for ${bookingState.movieTitle}! Seats: ${bookingState.selectedSeats.join(', ')}`, 'success');
-    
-    bookingState.selectedSeats.forEach(seatId => {
-        const seatElement = document.querySelector(`[data-seat-id="${seatId}"]`);
-        if(seatElement) {
-            seatElement.classList.remove('selected');
-            seatElement.classList.add('booked');
-            seatElement.removeEventListener('click', handleSeatSelection);
-        }
-    });
+    // Save booking state to local storage to pass to the payment page
+    localStorage.setItem('bookingDetails', JSON.stringify(bookingState));
 
-    setTimeout(() => {
-        window.location.href = 'index.html';
-    }, 3000);
+    // Redirect to the payment page
+    window.location.href = 'payment.html';
 }
 
 function showNotification(message, type = 'info', duration = 3000) {
