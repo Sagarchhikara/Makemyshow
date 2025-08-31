@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MovieWave — Payment</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Payment specific styles */
+    .payment-section {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      padding: 2rem 0;
+    }
+
+    .payment-container {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 3rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .payment-form {
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-large);
+      border: 1px solid var(--border);
+    }
+
+    .payment-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .payment-title {
+      font-size: var(--font-size-2xl);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .secure-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+      border-radius: var(--radius-medium);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+    }
+
+    .payment-methods {
+      margin-bottom: 2rem;
+    }
+
+    .method-tabs {
+      display: flex;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-medium);
+      padding: 0.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .method-tab {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      text-align: center;
+      background: transparent;
+      color: var(--text-secondary);
+      border-radius: var(--radius-small);
+      transition: var(--transition-fast);
+      font-weight: 600;
+      font-size: var(--font-size-sm);
+    }
+
+    .method-tab.active {
+      background: var(--accent);
+      color: white;
+      box-shadow: var(--shadow-small);
+    }
+
+    .method-content {
+      display: none;
+    }
+
+    .method-content.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: var(--font-size-sm);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-medium);
+      color: var(--text-primary);
+      font-size: var(--font-size-base);
+      transition: var(--transition-fast);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1rem;
+    }
+
+    .card-logos {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .card-logo {
+      width: 40px;
+      height: 25px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-small);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .upi-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .upi-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-medium);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .upi-option:hover,
+    .upi-option.selected {
+      border-color: var(--accent);
+      background: rgba(229, 9, 20, 0.05);
+    }
+
+    .upi-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+    }
+
+    .wallet-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .wallet-option {
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-medium);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      font-weight: 600;
+      font-size: var(--font-size-sm);
+    }
+
+    .wallet-option:hover,
+    .wallet-option.selected {
+      border-color: var(--accent);
+      background: rgba(229, 9, 20, 0.05);
+      color: var(--accent);
+    }
+
+    .payment-summary {
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-medium);
+      border: 1px solid var(--border);
+      height: fit-content;
+      position: sticky;
+      top: 2rem;
+    }
+
+    .summary-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .movie-poster-small {
+      width: 80px;
+      height: 120px;
+      border-radius: var(--radius-medium);
+      overflow: hidden;
+      margin: 0 auto 1rem;
+    }
+
+    .movie-poster-small img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+      font-weight: 700;
+      font-size: var(--font-size-lg);
+      color: var(--accent);
+    }
+
+    .summary-label {
+      color: var(--text-secondary);
+      font-size: var(--font-size-sm);
+    }
+
+    .summary-value {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .promo-section {
+      margin: 1.5rem 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .promo-input-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .promo-input {
+      flex: 1;
+      padding: 0.5rem 0.75rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-small);
+      color: var(--text-primary);
+      font-size: var(--font-size-sm);
+    }
+
+    .apply-btn {
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-small);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .apply-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .pay-button {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+      color: white;
+      border: none;
+      border-radius: var(--radius-medium);
+      font-size: var(--font-size-lg);
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .pay-button:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent-dark) 100%);
+      box-shadow: var(--shadow-glow);
+      transform: translateY(-2px);
+    }
+
+    .pay-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .processing {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .security-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: rgba(34, 197, 94, 0.05);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: var(--radius-medium);
+      font-size: var(--font-size-xs);
+      color: #22c55e;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+      font-size: var(--font-size-sm);
+      margin-bottom: 2rem;
+      transition: var(--transition-fast);
+    }
+
+    .back-button:hover {
+      color: var(--accent);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .payment-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .payment-summary {
+        position: static;
+        order: -1;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .upi-options {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      }
+
+      .method-tabs {
+        flex-direction: column;
+      }
+
+      .method-tab {
+        border-radius: var(--radius-small);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .payment-form,
+      .payment-summary {
+        padding: 1.5rem;
+      }
+
+      .upi-options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .wallet-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <header class="nav" role="banner">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="brand" href="index.html">
+          🎬 <span>MovieWave</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAYMENT SECTION -->
+  <section class="payment-section">
+    <div class="container">
+      <a href="booking.html" class="back-button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15,18 9,12 15,6"></polyline>
+        </svg>
+        Back to Booking
+      </a>
+
+      <div class="payment-container">
+        <!-- Payment Form -->
+        <div class="payment-form">
+          <div class="payment-header">
+            <h2 class="payment-title">Complete Payment</h2>
+            <div class="secure-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L3 7V12C3 16.97 6.84 21.25 12 22C17.16 21.25 21 16.97 21 12V7L12 2Z"/>
+              </svg>
+              Secure Payment
+            </div>
+          </div>
+
+          <!-- Payment Methods -->
+          <div class="payment-methods">
+            <div class="method-tabs">
+              <button class="method-tab active" data-method="card">Card</button>
+              <button class="method-tab" data-method="upi">UPI</button>
+              <button class="method-tab" data-method="wallet">Wallet</button>
+              <button class="method-tab" data-method="netbanking">Net Banking</button>
+            </div>
+
+            <!-- Credit/Debit Card -->
+            <div class="method-content active" id="card-method">
+              <div class="form-group">
+                <label class="form-label">Card Number</label>
+                <input type="text" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19" id="card-number">
+                <div class="card-logos">
+                  <div class="card-logo">VISA</div>
+                  <div class="card-logo">MC</div>
+                  <div class="card-logo">AMEX</div>
+                  <div class="card-logo">RuPay</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Cardholder Name</label>
+                <input type="text" class="form-input" placeholder="John Doe" id="cardholder-name">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Expiry Date</label>
+                  <input type="text" class="form-input" placeholder="MM/YY" maxlength="5" id="expiry-date">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">CVV</label>
+                  <input type="text" class="form-input" placeholder="123" maxlength="3" id="cvv">
+                </div>
+              </div>
+            </div>
+
+            <!-- UPI -->
+            <div class="method-content" id="upi-method">
+              <div class="form-group">
+                <label class="form-label">UPI ID</label>
+                <input type="text" class="form-input" placeholder="yourname@upi" id="upi-id">
+              </div>
+              <div class="upi-options">
+                <div class="upi-option" data-upi="gpay">
+                  <div class="upi-icon">G</div>
+                  <span>Google Pay</span>
+                </div>
+                <div class="upi-option" data-upi="phonepe">
+                  <div class="upi-icon">P</div>
+                  <span>PhonePe</span>
+                </div>
+                <div class="upi-option" data-upi="paytm">
+                  <div class="upi-icon">P</div>
+                  <span>Paytm</span>
+                </div>
+                <div class="upi-option" data-upi="bhim">
+                  <div class="upi-icon">B</div>
+                  <span>BHIM</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Wallet -->
+            <div class="method-content" id="wallet-method">
+              <div class="wallet-grid">
+                <div class="wallet-option" data-wallet="paytm">Paytm</div>
+                <div class="wallet-option" data-wallet="mobikwik">MobiKwik</div>
+                <div class="wallet-option" data-wallet="freecharge">FreeCharge</div>
+                <div class="wallet-option" data-wallet="amazon">Amazon Pay</div>
+              </div>
+            </div>
+
+            <!-- Net Banking -->
+            <div class="method-content" id="netbanking-method">
+              <div class="form-group">
+                <label class="form-label">Select Bank</label>
+                <select class="form-input" id="bank-select">
+                  <option value="">Choose your bank</option>
+                  <option value="sbi">State Bank of India</option>
+                  <option value="hdfc">HDFC Bank</option>
+                  <option value="icici">ICICI Bank</option>
+                  <option value="axis">Axis Bank</option>
+                  <option value="pnb">Punjab National Bank</option>
+                  <option value="kotak">Kotak Mahindra Bank</option>
+                  <option value="yes">Yes Bank</option>
+                  <option value="indusind">IndusInd Bank</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="security-info">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L3 7V12C3 16.97 6.84 21.25 12 22C17.16 21.25 21 16.97 21 12V7L12 2Z"/>
+            </svg>
+            Your payment information is encrypted and secure
+          </div>
+        </div>
+
+        <!-- Payment Summary -->
+        <div class="payment-summary">
+          <div class="summary-header">
+            <div class="movie-poster-small">
+              <img src="f1 movie.png" alt="Movie Poster" id="summary-poster">
+            </div>
+            <h3 id="payment-movie-title">F1: The Movie</h3>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-label">Movie</span>
+            <span class="summary-value" id="payment-movie-name">F1: The Movie</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Date & Time</span>
+            <span class="summary-value" id="payment-time">Today, 6:30 PM</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Seats</span>
+            <span class="summary-value" id="payment-seats">A1, A2</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Tickets</span>
+            <span class="summary-value" id="payment-quantity">2 × ₹150</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Convenience Fee</span>
+            <span class="summary-value">₹30</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">GST (18%)</span>
+            <span class="summary-value" id="payment-gst">₹59</span>
+          </div>
+
+          <div class="promo-section">
+            <label class="form-label">Promo Code</label>
+            <div class="promo-input-group">
+              <input type="text" class="promo-input" placeholder="Enter code" id="promo-code">
+              <button class="apply-btn" onclick="applyPromo()">Apply</button>
+            </div>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-label">Total Amount</span>
+            <span class="summary-value" id="payment-total">₹389</span>
+          </div>
+
+          <button class="pay-button" onclick="processPayment()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L3 7V12C3 16.97 6.84 21.25 12 22C17.16 21.25 21 16.97 21 12V7L12 2Z"/>
+            </svg>
+            <span id="pay-button-text">Pay ₹389</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Payment gateway functionality
+    let currentMethod = 'card';
+    let isProcessing = false;
+
+    // Initialize payment page
+    document.addEventListener('DOMContentLoaded', function() {
+      loadBookingDetails();
+      initPaymentMethods();
+      initFormFormatting();
+    });
+
+    // Load booking details from localStorage or URL params
+    function loadBookingDetails() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const movieTitle = urlParams.get('movie') || 'F1: The Movie';
+      const showtime = urlParams.get('time') || 'Today, 6:30 PM';
+      const seats = urlParams.get('seats') || 'A1, A2';
+      const quantity = parseInt(urlParams.get('quantity')) || 2;
+      const price = 150;
+      const convenienceFee = 30;
+      const subtotal = quantity * price;
+      const gst = Math.round((subtotal + convenienceFee) * 0.18);
+      const total = subtotal + convenienceFee + gst;
+
+      // Update summary
+      document.getElementById('payment-movie-title').textContent = movieTitle;
+      document.getElementById('payment-movie-name').textContent = movieTitle;
+      document.getElementById('payment-time').textContent = showtime;
+      document.getElementById('payment-seats').textContent = seats;
+      document.getElementById('payment-quantity').textContent = `${quantity} × ₹${price}`;
+      document.getElementById('payment-gst').textContent = `₹${gst}`;
+      document.getElementById('payment-total').textContent = `₹${total}`;
+      document.getElementById('pay-button-text').textContent = `Pay ₹${total}`;
+    }
+
+    // Initialize payment method tabs
+    function initPaymentMethods() {
+      const methodTabs = document.querySelectorAll('.method-tab');
+      const methodContents = document.querySelectorAll('.method-content');
+
+      methodTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const method = this.getAttribute('data-method');
+          
+          // Update active tab
+          methodTabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+
+          // Update active content
+          methodContents.forEach(content => content.classList.remove('active'));
+          document.getElementById(`${method}-method`).classList.add('active');
+
+          currentMethod = method;
+        });
+      });
+
+      // UPI options selection
+      const upiOptions = document.querySelectorAll('.upi-option');
+      upiOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          upiOptions.forEach(opt => opt.classList.remove('selected'));
+          this.classList.add('selected');
+        });
+      });
+
+      // Wallet options selection
+      const walletOptions = document.querySelectorAll('.wallet-option');
+      walletOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          walletOptions.forEach(opt => opt.classList.remove('selected'));
+          this.classList.add('selected');
+        });
+      });
+    }
+
+    // Initialize form formatting
+    function initFormFormatting() {
+      const cardNumberInput = document.getElementById('card-number');
+      const expiryInput = document.getElementById('expiry-date');
+
+      // Format card number
+      cardNumberInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+        let formattedValue = value.replace(/(.{4})/g, '$1 ').trim();
+        if (formattedValue.length > 19) formattedValue = formattedValue.substr(0, 19);
+        this.value = formattedValue;
+      });
+
+      // Format expiry date
+      expiryInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+          value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        this.value = value;
+      });
+
+      // Only allow numbers for CVV
+      document.getElementById('cvv').addEventListener('input', function(e) {
+        this.value = this.value.replace(/\D/g, '');
+      });
+    }
+
+    // Apply promo code
+    function applyPromo() {
+      const promoCode = document.getElementById('promo-code').value.trim().toUpperCase();
+      const totalElement = document.getElementById('payment-total');
+      const payButtonText = document.getElementById('pay-button-text');
+      
+      let currentTotal = parseInt(totalElement.textContent.replace('₹', ''));
+      let newTotal = currentTotal;
+      let discountApplied = false;
+
+      // Sample promo codes
+      switch(promoCode) {
+        case 'MOVIE20':
+          newTotal = Math.round(currentTotal * 0.8);
+          discountApplied = true;
+          break;
+        case 'FIRST50':
+          newTotal = Math.max(currentTotal - 50, 50);
+          discountApplied = true;
+          break;
+        case 'WELCOME10':
+          newTotal = Math.round(currentTotal * 0.9);
+          discountApplied = true;
+          break;
+      }
+
+      if (discountApplied) {
+        totalElement.textContent = `₹${newTotal}`;
+        payButtonText.textContent = `Pay ₹${newTotal}`;
+        showNotification('Promo code applied successfully!', 'success');
+      } else if (promoCode) {
+        showNotification('Invalid promo code', 'error');
+      }
+    }
+
+    // Process payment
+    async function processPayment() {
+      if (isProcessing) return;
+
+      if (!validatePaymentForm()) {
+        return;
+      }
+
+      isProcessing = true;
+      const payButton = document.querySelector('.pay-button');
+      const buttonText = document.getElementById('pay-button-text');
+      
+      // Update button state
+      payButton.disabled = true;
+      payButton.classList.add('processing');
+      buttonText.textContent = 'Processing...';
+
+      try {
+        // Simulate payment processing
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
+        // Simulate successful payment
+        if (Math.random() > 0.1) { // 90% success rate
+          showNotification('Payment successful! Redirecting to confirmation...', 'success');
+          
+          setTimeout(() => {
+            // Redirect to success page or back to home
+            window.location.href = 'index.html?payment=success';
+          }, 2000);
+        } else {
+          throw new Error('Payment failed');
+        }
+      } catch (error) {
+        showNotification('Payment failed. Please try again.', 'error');
+        
+        // Reset button state
+        payButton.disabled = false;
+        payButton.classList.remove('processing');
+        buttonText.textContent = buttonText.textContent.replace('Processing...', 'Pay ₹389');
+        isProcessing = false;
+      }
+    }
+
+    // Validate payment form
+    function validatePaymentForm() {
+      switch(currentMethod) {
+        case 'card':
+          return validateCardForm();
+        case 'upi':
+          return validateUPIForm();
+        case 'wallet':
+          return validateWalletForm();
+        case 'netbanking':
+          return validateNetBankingForm();
+        default:
+          return false;
+      }
+    }
+
+    function validateCardForm() {
+      const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
+      const cardholderName = document.getElementById('cardholder-name').value.trim();
+      const expiryDate = document.getElementById('expiry-date').value;
+      const cvv = document.getElementById('cvv').value;
+
+      if (!cardNumber || cardNumber.length < 13) {
+        showNotification('Please enter a valid card number', 'error');
+        return false;
+      }
+      if (!cardholderName) {
+        showNotification('Please enter cardholder name', 'error');
+        return false;
+      }
+      if (!expiryDate || expiryDate.length !== 5) {
+        showNotification('Please enter a valid expiry date', 'error');
+        return false;
+      }
+      if (!cvv || cvv.length < 3) {
+        showNotification('Please enter a valid CVV', 'error');
+        return false;
+      }
+      return true;
+    }
+
+    function validateUPIForm() {
+      const upiId = document.getElementById('upi-id').value.trim();
+      const selectedOption = document.querySelector('.upi-option.selected');
+      
+      if (!upiId && !selectedOption) {
+        showNotification('Please enter UPI ID or select a UPI app', 'error');
+        return false;
+      }
+      if (upiId && !upiId.includes('@')) {
+        showNotification('Please enter a valid UPI ID', 'error');
+        return false;
+      }
+      return true;
+    }
+
+    function validateWalletForm() {
+      const selectedWallet = document.querySelector('.wallet-option.selected');
+      if (!selectedWallet) {
+        showNotification('Please select a wallet', 'error');
+        return false;
+      }
+      return true;
+    }
+
+    function validateNetBankingForm() {
+      const selectedBank = document.getElementById('bank-select').value;
+      if (!selectedBank) {
+        showNotification('Please select your bank', 'error');
+        return false;
+      }
+      return true;
+    }
+
+    // Show notification
+    function showNotification(message, type = 'info', duration = 3000) {
+      const existingNotification = document.querySelector('.notification');
+      if (existingNotification) {
+        existingNotification.remove();
+      }
+
+      const notification = document.createElement('div');
+      notification.classList.add('notification', `notification-${type}`);
+      notification.textContent = message;
+
+      Object.assign(notification.style, {
+        position: 'fixed',
+        top: '2rem',
+        right: '2rem',
+        backgroundColor: '#1f1f1f',
+        color: '#ffffff',
+        padding: '1rem 1.5rem',
+        borderRadius: '12px',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+        zIndex: '1000',
+        transform: 'translateX(100%)',
+        transition: 'transform 0.3s ease',
+        maxWidth: '300px',
+        wordWrap: 'break-word'
+      });
+
+      if (type === 'error') {
+        notification.style.borderColor = '#e50914';
+        notification.style.backgroundColor = '#2a0a0a';
+      } else if (type === 'success') {
+        notification.style.borderColor = '#22c55e';
+        notification.style.backgroundColor = '#0a2a0a';
+      }
+
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 10);
+
+      setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, duration);
+    }
+
+    // Auto-detect payment method based on input
+    document.addEventListener('input', function(e) {
+      if (e.target.id === 'card-number') {
+        const value = e.target.value.replace(/\s/g, '');
+        const cardLogos = document.querySelectorAll('.card-logo');
+        
+        // Reset all logos
+        cardLogos.forEach(logo => {
+          logo.style.opacity = '0.5';
+          logo.style.transform = 'scale(1)';
+        });
+
+        // Highlight detected card type
+        if (value.startsWith('4')) {
+          // Visa
+          cardLogos[0].style.opacity = '1';
+          cardLogos[0].style.transform = 'scale(1.1)';
+        } else if (value.startsWith('5') || value.startsWith('2')) {
+          // Mastercard
+          cardLogos[1].style.opacity = '1';
+          cardLogos[1].style.transform = 'scale(1.1)';
+        } else if (value.startsWith('3')) {
+          // Amex
+          cardLogos[2].style.opacity = '1';
+          cardLogos[2].style.transform = 'scale(1.1)';
+        } else if (value.startsWith('6') || value.startsWith('8')) {
+          // RuPay
+          cardLogos[3].style.opacity = '1';
+          cardLogos[3].style.transform = 'scale(1.1)';
+        }
+      }
+    });
+
+    // Handle browser back button
+    window.addEventListener('beforeunload', function(e) {
+      if (isProcessing) {
+        e.preventDefault();
+        e.returnValue = '';
+        return 'Payment is being processed. Are you sure you want to leave?';
+      }
+    });
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !isProcessing) {
+        const activeElement = document.activeElement;
+        if (activeElement.id === 'promo-code') {
+          applyPromo();
+        } else if (!activeElement.classList.contains('form-input')) {
+          processPayment();
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

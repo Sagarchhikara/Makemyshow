@@ -160,11 +160,28 @@ function updateBookingSummary() {
 }
 
 function handleConfirmBooking() {
-    // Save booking state to local storage to pass to the payment page
-    localStorage.setItem('bookingDetails', JSON.stringify(bookingState));
-
-    // Redirect to the payment page
-    window.location.href = 'payment.html';
+    // Show processing state
+    if(confirmBookingBtn) {
+        const originalText = confirmBookingBtn.textContent;
+        confirmBookingBtn.textContent = 'Processing...';
+        confirmBookingBtn.disabled = true;
+    }
+    
+    showNotification(`Redirecting to payment gateway...`, 'info');
+    
+    // Create URL parameters for payment page
+    const paymentParams = new URLSearchParams({
+        movie: bookingState.movieTitle,
+        time: bookingState.time,
+        seats: bookingState.selectedSeats.join(', '),
+        quantity: bookingState.ticketQuantity.toString(),
+        total: bookingState.totalPrice.toString()
+    });
+    
+    // Redirect to payment gateway after short delay
+    setTimeout(() => {
+        window.location.href = `payment.html?${paymentParams.toString()}`;
+    }, 1500);
 }
 
 function showNotification(message, type = 'info', duration = 3000) {
@@ -196,6 +213,8 @@ function showNotification(message, type = 'info', duration = 3000) {
 
   if (type === 'error') {
     notification.style.borderColor = '#e50914';
+  } else if (type === 'success') {
+    notification.style.borderColor = '#22c55e';
   }
 
   document.body.appendChild(notification);
