@@ -5,13 +5,13 @@ let isPlaying = true;
 
 // ========== DOM ELEMENTS ==========
 const slides = document.querySelectorAll('.slide');
-const heroTitle = document.getElementById('hero-title');
-const heroTag = document.getElementById('hero-tag');
-const heroRating = document.getElementById('hero-rating');
-const dotsContainer = document.querySelector('.hero-dots');
-const leftArrow = document.querySelector('.hero-arrow.left');
-const rightArrow = document.querySelector('.hero-arrow.right');
-const heroSlideshow = document.querySelector('.hero-slideshow');
+const slideshowTitle = document.getElementById('slideshow-title');
+const slideshowTag = document.getElementById('slideshow-tag');
+const slideshowRating = document.getElementById('slideshow-rating');
+const dotsContainer = document.querySelector('.slideshow-dots');
+const leftArrow = document.querySelector('.slideshow-arrow.left');
+const rightArrow = document.querySelector('.slideshow-arrow.right');
+const slideshow = document.querySelector('.slideshow');
 const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
 const navMenu = document.querySelector('.nav-menu');
 const searchInput = document.querySelector('.search');
@@ -121,16 +121,16 @@ function updateSlideInfo() {
 
   const slideData = slides[currentSlide].dataset;
 
-  if (heroTitle && slideData.title) {
-    heroTitle.textContent = slideData.title;
+  if (slideshowTitle && slideData.title) {
+    slideshowTitle.textContent = slideData.title;
   }
 
-  if (heroTag && slideData.tag) {
-    heroTag.textContent = slideData.tag;
+  if (slideshowTag && slideData.tag) {
+    slideshowTag.textContent = slideData.tag;
   }
 
-  if (heroRating && slideData.rating) {
-    heroRating.textContent = slideData.rating;
+  if (slideshowRating && slideData.rating) {
+    slideshowRating.textContent = slideData.rating;
   }
 }
 
@@ -163,8 +163,8 @@ function addSlideEventListeners() {
   });
 
   // Pause on hover
-  heroSlideshow?.addEventListener('mouseenter', stopAutoplay);
-  heroSlideshow?.addEventListener('mouseleave', () => {
+  slideshow?.addEventListener('mouseenter', stopAutoplay);
+  slideshow?.addEventListener('mouseleave', () => {
     if (!isPlaying) startAutoplay();
   });
 
