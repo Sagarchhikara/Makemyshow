@@ -26,6 +26,10 @@ const confirmBookingBtn = document.getElementById('confirm-booking-btn');
 
 // ========== BOOKING FLOW ==========
 
+/**
+ * Initializes the booking process. It retrieves the movie title from the URL,
+ * sets up event listeners for the booking controls, and resets the booking flow.
+ */
 function initBooking() {
   // Get movie title from URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -46,12 +50,19 @@ function initBooking() {
   resetBookingFlow();
 }
 
+/**
+ * Navigates to a specific step in the booking process.
+ * @param {number} stepNumber The step number to navigate to.
+ */
 function goToStep(stepNumber) {
   bookingSteps.forEach((step, index) => {
     step.classList.toggle('active', index + 1 === stepNumber);
   });
 }
 
+/**
+ * Resets the booking flow to its initial state.
+ */
 function resetBookingFlow() {
     goToStep(1);
     bookingState.time = '';
@@ -66,6 +77,10 @@ function resetBookingFlow() {
     }
 }
 
+/**
+ * Handles the selection of a time slot.
+ * @param {Event} e The event object from the click event.
+ */
 function handleTimeSelection(e) {
   const selectedTime = e.target.dataset.time;
   bookingState.time = selectedTime;
@@ -77,6 +92,10 @@ function handleTimeSelection(e) {
   goToStep(2);
 }
 
+/**
+ * Handles the change in ticket quantity.
+ * @param {number} change The amount to change the quantity by (e.g., 1 or -1).
+ */
 function handleQuantityChange(change) {
   const newQuantity = bookingState.ticketQuantity + change;
   if (newQuantity >= 1 && newQuantity <= 10) {
@@ -85,18 +104,27 @@ function handleQuantityChange(change) {
   }
 }
 
+/**
+ * Updates the display of the ticket quantity.
+ */
 function updateQuantityDisplay() {
   if(quantityDisplay) quantityDisplay.textContent = bookingState.ticketQuantity;
   if(quantityMinusBtn) quantityMinusBtn.disabled = bookingState.ticketQuantity === 1;
   if(quantityPlusBtn) quantityPlusBtn.disabled = bookingState.ticketQuantity === 10;
 }
 
+/**
+ * Handles the confirmation of the ticket quantity, proceeding to the seat selection step.
+ */
 function handleConfirmQuantity() {
   generateSeatMap();
   updateBookingSummary();
   goToStep(3);
 }
 
+/**
+ * Generates the seat map for the selected movie and time.
+ */
 function generateSeatMap() {
     if (!seatMap) return;
     seatMap.innerHTML = '';
@@ -125,6 +153,10 @@ function generateSeatMap() {
     }
 }
 
+/**
+ * Handles the selection of a seat.
+ * @param {Event} e The event object from the click event.
+ */
 function handleSeatSelection(e) {
     const seat = e.target;
     if (!seat.classList.contains('seat') || seat.classList.contains('booked')) return;
@@ -146,6 +178,9 @@ function handleSeatSelection(e) {
     updateBookingSummary();
 }
 
+/**
+ * Updates the booking summary with the current booking state.
+ */
 function updateBookingSummary() {
     if(summaryMovieTitle) summaryMovieTitle.textContent = bookingState.movieTitle || 'N/A';
     if(summaryTime) summaryTime.textContent = bookingState.time || 'N/A';
@@ -159,6 +194,9 @@ function updateBookingSummary() {
     if(confirmBookingBtn) confirmBookingBtn.disabled = bookingState.selectedSeats.length !== bookingState.ticketQuantity || bookingState.ticketQuantity === 0;
 }
 
+/**
+ * Handles the confirmation of the booking, redirecting to the payment page.
+ */
 function handleConfirmBooking() {
     // Show processing state
     if(confirmBookingBtn) {
@@ -184,6 +222,12 @@ function handleConfirmBooking() {
     }, 1500);
 }
 
+/**
+ * Displays a notification message to the user.
+ * @param {string} message The message to display.
+ * @param {string} [type='info'] The type of notification ('info', 'error', 'success').
+ * @param {number} [duration=3000] The duration in milliseconds for the notification to be visible.
+ */
 function showNotification(message, type = 'info', duration = 3000) {
   const existingNotification = document.querySelector('.notification');
   if (existingNotification) {

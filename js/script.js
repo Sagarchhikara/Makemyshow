@@ -18,7 +18,13 @@ const searchInput = document.querySelector('.search');
 
 // ========== UTILITY FUNCTIONS ==========
 
-// Debounce function for performance optimization
+/**
+ * Debounces a function, delaying its execution until after a specified wait time has passed since the last time it was invoked.
+ * This is useful for performance optimization in scenarios like handling user input or window resizing.
+ * @param {Function} func The function to debounce.
+ * @param {number} wait The number of milliseconds to delay.
+ * @returns {Function} Returns the new debounced function.
+ */
 function debounce(func, wait) {
   let timeout;
   return function executedFunction(...args) {
@@ -31,7 +37,10 @@ function debounce(func, wait) {
   };
 }
 
-// Smooth scroll to element
+/**
+ * Smoothly scrolls the page to a specified element.
+ * @param {HTMLElement} element The element to scroll to.
+ */
 function smoothScrollTo(element) {
   if (element) {
     element.scrollIntoView({
@@ -41,7 +50,13 @@ function smoothScrollTo(element) {
   }
 }
 
-// Add class with animation delay
+/**
+ * Adds a CSS class to a collection of elements with a specified delay between each addition.
+ * This creates a staggered animation effect.
+ * @param {NodeListOf<HTMLElement>} elements The elements to add the class to.
+ * @param {string} className The CSS class to add.
+ * @param {number} [delay=100] The delay in milliseconds between adding the class to each element.
+ */
 function addClassWithDelay(elements, className, delay = 100) {
   elements.forEach((element, index) => {
     setTimeout(() => {
@@ -52,7 +67,10 @@ function addClassWithDelay(elements, className, delay = 100) {
 
 // ========== SLIDESHOW FUNCTIONALITY ==========
 
-// Initialize slideshow
+/**
+ * Initializes the hero slideshow, creating navigation dots, setting the first slide,
+ * starting autoplay, and adding necessary event listeners.
+ */
 function initSlideshow() {
   if (slides.length === 0) return;
 
@@ -69,7 +87,10 @@ function initSlideshow() {
   addSlideEventListeners();
 }
 
-// Create navigation dots
+/**
+ * Creates navigation dots for the slideshow.
+ * Each dot corresponds to a slide and allows for direct navigation.
+ */
 function createDots() {
   if (!dotsContainer) return;
 
@@ -87,7 +108,10 @@ function createDots() {
   });
 }
 
-// Go to specific slide
+/**
+ * Navigates to a specific slide by its index.
+ * @param {number} index The index of the slide to go to.
+ */
 function goToSlide(index) {
   if (index < 0 || index >= slides.length) return;
 
@@ -103,19 +127,25 @@ function goToSlide(index) {
   updateSlideInfo();
 }
 
-// Go to next slide
+/**
+ * Navigates to the next slide in the sequence.
+ */
 function nextSlide() {
   const nextIndex = (currentSlide + 1) % slides.length;
   goToSlide(nextIndex);
 }
 
-// Go to previous slide
+/**
+ * Navigates to the previous slide in the sequence.
+ */
 function prevSlide() {
   const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
   goToSlide(prevIndex);
 }
 
-// Update slide information
+/**
+ * Updates the hero section's title, tag, and rating based on the current active slide's data attributes.
+ */
 function updateSlideInfo() {
   if (!slides[currentSlide]) return;
 
@@ -134,20 +164,27 @@ function updateSlideInfo() {
   }
 }
 
-// Start autoplay
+/**
+ * Starts the automatic playback of the slideshow.
+ */
 function startAutoplay() {
   if (slideInterval) clearInterval(slideInterval);
   slideInterval = setInterval(nextSlide, 5000);
   isPlaying = true;
 }
 
-// Stop autoplay
+/**
+ * Stops the automatic playback of the slideshow.
+ */
 function stopAutoplay() {
   if (slideInterval) clearInterval(slideInterval);
   isPlaying = false;
 }
 
-// Add slideshow event listeners
+/**
+ * Adds event listeners for slideshow controls, including arrow navigation,
+ * hover-to-pause, and keyboard navigation.
+ */
 function addSlideEventListeners() {
   // Arrow navigation
   leftArrow?.addEventListener('click', () => {
@@ -184,6 +221,10 @@ function addSlideEventListeners() {
 
 // ========== MOBILE MENU ==========
 
+/**
+ * Initializes the mobile menu, handling the toggle functionality and closing the menu
+ * when a click is detected outside of it.
+ */
 function initMobileMenu() {
   if (!mobileMenuToggle || !navMenu) return;
 
@@ -208,6 +249,10 @@ function initMobileMenu() {
 
 // ========== MOVIE CARDS INTERACTIONS ==========
 
+/**
+ * Initializes all movie card interactions, including tilt effects on hover,
+ * click handlers for booking and trailer buttons, and keyboard navigation.
+ */
 function initMovieCards() {
   const movieCards = document.querySelectorAll('.movie-card');
 
@@ -243,7 +288,10 @@ function initMovieCards() {
   });
 }
 
-// Handle card tilt effect
+/**
+ * Handles the 3D tilt effect on a movie card when the mouse moves over it.
+ * @param {MouseEvent} e The mouse event.
+ */
 function handleCardTilt(e) {
   const card = e.currentTarget;
   const rect = card.getBoundingClientRect();
@@ -264,13 +312,20 @@ function handleCardTilt(e) {
   `;
 }
 
-// Reset card tilt
+/**
+ * Resets the tilt effect on a movie card when the mouse leaves it.
+ * @param {MouseEvent} e The mouse event.
+ */
 function resetCardTilt(e) {
   const card = e.currentTarget;
   card.style.transform = '';
 }
 
-// Handle ticket booking
+/**
+ * Handles the ticket booking process when a "Book Now" button is clicked.
+ * It provides visual feedback and simulates a booking action.
+ * @param {HTMLElement} card The movie card element.
+ */
 function handleBookTicket(card) {
   const movieTitle = card.querySelector('h3')?.textContent;
 
@@ -297,7 +352,10 @@ function handleBookTicket(card) {
   showNotification(`Booking initiated for "${movieTitle}"`);
 }
 
-// Handle trailer play
+/**
+ * Handles the action of playing a movie trailer.
+ * @param {HTMLElement} card The movie card element containing the trailer button.
+ */
 function handlePlayTrailer(card) {
   const movieTitle = card.querySelector('h3')?.textContent;
   console.log(`Playing trailer for: ${movieTitle}`);
@@ -306,6 +364,10 @@ function handlePlayTrailer(card) {
 
 // ========== SEARCH FUNCTIONALITY ==========
 
+/**
+ * Initializes the search functionality, including debouncing the search input
+ * and handling the "Enter" key press.
+ */
 function initSearch() {
   if (!searchInput) return;
 
@@ -320,6 +382,9 @@ function initSearch() {
   });
 }
 
+/**
+ * Handles the search logic, filtering movie cards based on the search query.
+ */
 function handleSearch() {
   const query = searchInput.value.trim().toLowerCase();
   if (!query) {
@@ -350,6 +415,9 @@ function handleSearch() {
   }
 }
 
+/**
+ * Shows all movie cards, typically used to reset the search filter.
+ */
 function showAllMovies() {
   const movieCards = document.querySelectorAll('.movie-card');
   movieCards.forEach(card => {
@@ -360,6 +428,9 @@ function showAllMovies() {
 
 // ========== SMOOTH SCROLLING ==========
 
+/**
+ * Initializes smooth scrolling for navigation links.
+ */
 function initSmoothScrolling() {
   const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
 
@@ -386,6 +457,10 @@ function initSmoothScrolling() {
 
 // ========== INTERSECTION OBSERVER ==========
 
+/**
+ * Initializes scroll animations using the Intersection Observer API.
+ * Elements fade in and up as they enter the viewport.
+ */
 function initScrollAnimations() {
   const observerOptions = {
     threshold: 0.1,
@@ -416,6 +491,10 @@ function initScrollAnimations() {
 
 // ========== COMING SOON SCROLL ==========
 
+/**
+ * Initializes horizontal scrolling for the "Coming Soon" section,
+ * supporting both mouse wheel and touch gestures.
+ */
 function initComingSoonScroll() {
   const scrollContainer = document.querySelector('.coming-soon-scroll');
   if (!scrollContainer) return;
@@ -454,6 +533,12 @@ function initComingSoonScroll() {
 
 // ========== NOTIFICATIONS ==========
 
+/**
+ * Displays a notification message to the user.
+ * @param {string} message The message to display.
+ * @param {string} [type='info'] The type of notification ('info', 'error', 'success').
+ * @param {number} [duration=3000] The duration in milliseconds to display the notification.
+ */
 function showNotification(message, type = 'info', duration = 3000) {
   // Remove existing notification
   const existingNotification = document.querySelector('.notification');
@@ -508,7 +593,9 @@ function showNotification(message, type = 'info', duration = 3000) {
 
 // ========== PERFORMANCE OPTIMIZATIONS ==========
 
-// Lazy load images
+/**
+ * Initializes lazy loading for images using the Intersection Observer API.
+ */
 function initLazyLoading() {
   const images = document.querySelectorAll('img[src]');
 
