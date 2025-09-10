@@ -85,9 +85,9 @@ button {
   transition: var(--transition-fast);
 }
 
-ul {
+/* ul {
   list-style: none;
-}
+} */
 
 
 .container {
