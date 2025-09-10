@@ -34,15 +34,15 @@ function initBooking() {
     bookingState.movieTitle = decodeURIComponent(movieTitle);
   }
 
-  if(bookingMovieTitle) bookingMovieTitle.textContent = `Book Tickets for ${bookingState.movieTitle}`;
-  if(summaryMovieTitle) summaryMovieTitle.textContent = bookingState.movieTitle;
+  if (bookingMovieTitle) bookingMovieTitle.textContent = `Book Tickets for ${bookingState.movieTitle}`;
+  if (summaryMovieTitle) summaryMovieTitle.textContent = bookingState.movieTitle;
 
   timeSlots.forEach(slot => slot.addEventListener('click', handleTimeSelection));
-  if(quantityMinusBtn) quantityMinusBtn.addEventListener('click', () => handleQuantityChange(-1));
-  if(quantityPlusBtn) quantityPlusBtn.addEventListener('click', () => handleQuantityChange(1));
-  if(confirmQuantityBtn) confirmQuantityBtn.addEventListener('click', handleConfirmQuantity);
-  if(confirmBookingBtn) confirmBookingBtn.addEventListener('click', handleConfirmBooking);
-  
+  if (quantityMinusBtn) quantityMinusBtn.addEventListener('click', () => handleQuantityChange(-1));
+  if (quantityPlusBtn) quantityPlusBtn.addEventListener('click', () => handleQuantityChange(1));
+  if (confirmQuantityBtn) confirmQuantityBtn.addEventListener('click', handleConfirmQuantity);
+  if (confirmBookingBtn) confirmBookingBtn.addEventListener('click', handleConfirmBooking);
+
   resetBookingFlow();
 }
 
@@ -53,26 +53,26 @@ function goToStep(stepNumber) {
 }
 
 function resetBookingFlow() {
-    goToStep(1);
-    bookingState.time = '';
-    bookingState.ticketQuantity = 1;
-    bookingState.selectedSeats = [];
-    updateQuantityDisplay();
-    updateBookingSummary();
-    timeSlots.forEach(slot => slot.classList.remove('selected'));
-    if(confirmBookingBtn) confirmBookingBtn.disabled = true;
-    if (seatMap) {
-      seatMap.innerHTML = '';
-    }
+  goToStep(1);
+  bookingState.time = '';
+  bookingState.ticketQuantity = 1;
+  bookingState.selectedSeats = [];
+  updateQuantityDisplay();
+  updateBookingSummary();
+  timeSlots.forEach(slot => slot.classList.remove('selected'));
+  if (confirmBookingBtn) confirmBookingBtn.disabled = true;
+  if (seatMap) {
+    seatMap.innerHTML = '';
+  }
 }
 
 function handleTimeSelection(e) {
   const selectedTime = e.target.dataset.time;
   bookingState.time = selectedTime;
-  
+
   timeSlots.forEach(slot => slot.classList.remove('selected'));
   e.target.classList.add('selected');
-  
+
   updateBookingSummary();
   goToStep(2);
 }
@@ -86,9 +86,9 @@ function handleQuantityChange(change) {
 }
 
 function updateQuantityDisplay() {
-  if(quantityDisplay) quantityDisplay.textContent = bookingState.ticketQuantity;
-  if(quantityMinusBtn) quantityMinusBtn.disabled = bookingState.ticketQuantity === 1;
-  if(quantityPlusBtn) quantityPlusBtn.disabled = bookingState.ticketQuantity === 10;
+  if (quantityDisplay) quantityDisplay.textContent = bookingState.ticketQuantity;
+  if (quantityMinusBtn) quantityMinusBtn.disabled = bookingState.ticketQuantity === 1;
+  if (quantityPlusBtn) quantityPlusBtn.disabled = bookingState.ticketQuantity === 10;
 }
 
 function handleConfirmQuantity() {
@@ -98,90 +98,90 @@ function handleConfirmQuantity() {
 }
 
 function generateSeatMap() {
-    if (!seatMap) return;
-    seatMap.innerHTML = '';
-    const bookedSeats = ['A5', 'B6', 'C7', 'H2', 'F10']; 
-    
-    for (let i = 0; i < 10; i++) {
-        const rowChar = String.fromCharCode(65 + i);
-        const rowLabel = document.createElement('div');
-        rowLabel.classList.add('row-label');
-        rowLabel.textContent = rowChar;
-        seatMap.appendChild(rowLabel);
+  if (!seatMap) return;
+  seatMap.innerHTML = '';
+  const bookedSeats = ['A5', 'B6', 'C7', 'H2', 'F10'];
 
-        for (let j = 1; j <= 12; j++) {
-            const seat = document.createElement('div');
-            const seatId = `${rowChar}${j}`;
-            seat.classList.add('seat');
-            seat.dataset.seatId = seatId;
-            
-            if (bookedSeats.includes(seatId)) {
-                seat.classList.add('booked');
-            } else {
-                seat.addEventListener('click', handleSeatSelection);
-            }
-            seatMap.appendChild(seat);
-        }
+  for (let i = 0; i < 10; i++) {
+    const rowChar = String.fromCharCode(65 + i);
+    const rowLabel = document.createElement('div');
+    rowLabel.classList.add('row-label');
+    rowLabel.textContent = rowChar;
+    seatMap.appendChild(rowLabel);
+
+    for (let j = 1; j <= 12; j++) {
+      const seat = document.createElement('div');
+      const seatId = `${rowChar}${j}`;
+      seat.classList.add('seat');
+      seat.dataset.seatId = seatId;
+
+      if (bookedSeats.includes(seatId)) {
+        seat.classList.add('booked');
+      } else {
+        seat.addEventListener('click', handleSeatSelection);
+      }
+      seatMap.appendChild(seat);
     }
+  }
 }
 
 function handleSeatSelection(e) {
-    const seat = e.target;
-    if (!seat.classList.contains('seat') || seat.classList.contains('booked')) return;
-    
-    const seatId = seat.dataset.seatId;
-    const isSelected = seat.classList.contains('selected');
+  const seat = e.target;
+  if (!seat.classList.contains('seat') || seat.classList.contains('booked')) return;
 
-    if (isSelected) {
-        bookingState.selectedSeats = bookingState.selectedSeats.filter(s => s !== seatId);
-        seat.classList.remove('selected');
+  const seatId = seat.dataset.seatId;
+  const isSelected = seat.classList.contains('selected');
+
+  if (isSelected) {
+    bookingState.selectedSeats = bookingState.selectedSeats.filter(s => s !== seatId);
+    seat.classList.remove('selected');
+  } else {
+    if (bookingState.selectedSeats.length < bookingState.ticketQuantity) {
+      bookingState.selectedSeats.push(seatId);
+      seat.classList.add('selected');
     } else {
-        if (bookingState.selectedSeats.length < bookingState.ticketQuantity) {
-            bookingState.selectedSeats.push(seatId);
-            seat.classList.add('selected');
-        } else {
-            showNotification(`You can only select ${bookingState.ticketQuantity} seats.`, 'error');
-        }
+      showNotification(`You can only select ${bookingState.ticketQuantity} seats.`, 'error');
     }
-    updateBookingSummary();
+  }
+  updateBookingSummary();
 }
 
 function updateBookingSummary() {
-    if(summaryMovieTitle) summaryMovieTitle.textContent = bookingState.movieTitle || 'N/A';
-    if(summaryTime) summaryTime.textContent = bookingState.time || 'N/A';
-    
-    const seatsText = bookingState.selectedSeats.sort().join(', ') || 'N/A';
-    if(summarySeats) summarySeats.textContent = seatsText;
+  if (summaryMovieTitle) summaryMovieTitle.textContent = bookingState.movieTitle || 'N/A';
+  if (summaryTime) summaryTime.textContent = bookingState.time || 'N/A';
 
-    bookingState.totalPrice = bookingState.selectedSeats.length * TICKET_PRICE;
-    if(summaryTotal) summaryTotal.textContent = `₹${bookingState.totalPrice}`;
+  const seatsText = bookingState.selectedSeats.sort().join(', ') || 'N/A';
+  if (summarySeats) summarySeats.textContent = seatsText;
 
-    if(confirmBookingBtn) confirmBookingBtn.disabled = bookingState.selectedSeats.length !== bookingState.ticketQuantity || bookingState.ticketQuantity === 0;
+  bookingState.totalPrice = bookingState.selectedSeats.length * TICKET_PRICE;
+  if (summaryTotal) summaryTotal.textContent = `₹${bookingState.totalPrice}`;
+
+  if (confirmBookingBtn) confirmBookingBtn.disabled = bookingState.selectedSeats.length !== bookingState.ticketQuantity || bookingState.ticketQuantity === 0;
 }
 
 function handleConfirmBooking() {
-    // Show processing state
-    if(confirmBookingBtn) {
-        const originalText = confirmBookingBtn.textContent;
-        confirmBookingBtn.textContent = 'Processing...';
-        confirmBookingBtn.disabled = true;
-    }
-    
-    showNotification(`Redirecting to payment gateway...`, 'info');
-    
-    // Create URL parameters for payment page
-    const paymentParams = new URLSearchParams({
-        movie: bookingState.movieTitle,
-        time: bookingState.time,
-        seats: bookingState.selectedSeats.join(', '),
-        quantity: bookingState.ticketQuantity.toString(),
-        total: bookingState.totalPrice.toString()
-    });
-    
-    // Redirect to payment gateway after short delay
-    setTimeout(() => {
-        window.location.href = `payment.html?${paymentParams.toString()}`;
-    }, 1500);
+  // Show processing state
+  if (confirmBookingBtn) {
+    const originalText = confirmBookingBtn.textContent;
+    confirmBookingBtn.textContent = 'Processing...';
+    confirmBookingBtn.disabled = true;
+  }
+
+  showNotification(`Redirecting to payment gateway...`, 'info');
+
+  // Create URL parameters for payment page
+  const paymentParams = new URLSearchParams({
+    movie: bookingState.movieTitle,
+    time: bookingState.time,
+    seats: bookingState.selectedSeats.join(', '),
+    quantity: bookingState.ticketQuantity.toString(),
+    total: bookingState.totalPrice.toString()
+  });
+
+  // Redirect to payment gateway after short delay
+  setTimeout(() => {
+    window.location.href = `payment-gateway.html?${paymentParams.toString()}`;
+  }, 1500);
 }
 
 function showNotification(message, type = 'info', duration = 3000) {
