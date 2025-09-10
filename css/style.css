@@ -469,7 +469,6 @@ ul {
   margin: 0 auto;
 }
 
-/* ========== MOVIE GRID ========== */
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
