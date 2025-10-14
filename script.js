@@ -20,6 +20,8 @@ const USE_API = true; // Switch to false to use local data (changed to false for
 let currentSlide = 0;
 let slideInterval;
 let isPlaying = true;
+let nowPlayingMovies = [];
+let genresMap = {};
 
 // ========== DOM ELEMENTS ==========
 const slides = document.querySelectorAll('.slide');
@@ -34,6 +36,8 @@ const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
 const navMenu = document.querySelector('.nav-menu');
 const searchInput = document.querySelector('.search');
 const movieGrid = document.querySelector('.movie-grid');
+const comingSoonGrid = document.querySelector('.coming-soon-grid');
+const filterBtns = document.querySelectorAll('.filter-btn');
 
 // ========== API & DATA HANDLING ==========
 
@@ -90,6 +94,48 @@ async function fetchMovieData(endpoint, params = {}, forceRefresh = false) {
  * Renders movie cards in the grid.
  * @param {Array<Object>} movies - An array of movie objects.
  */
+function renderUpcomingMovieCards(movies) {
+  if (!comingSoonGrid) {
+    console.error('Coming soon grid container not found');
+    return;
+  }
+
+  comingSoonGrid.innerHTML = '';
+
+  if (!movies || movies.length === 0) {
+    comingSoonGrid.innerHTML = '<p class="no-movies-message">No upcoming movies announced.</p>';
+    return;
+  }
+
+  movies.slice(0, 6).forEach(movie => {
+    const {
+      id,
+      title,
+      poster_path,
+      release_date
+    } = movie;
+    const posterUrl = poster_path ? `${IMAGE_BASE_URL}${poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image';
+
+    const card = document.createElement('div');
+    card.classList.add('coming-soon-card');
+    card.dataset.movieId = id;
+
+    const releaseMonth = new Date(release_date).toLocaleString('default', {
+      month: 'short',
+      year: 'numeric'
+    });
+
+    card.innerHTML = `
+      <div class="coming-poster">
+        <img src="${posterUrl}" alt="Poster for ${title}" loading="lazy">
+        <div class="coming-date">${releaseMonth}</div>
+      </div>
+      <h4>${title}</h4>
+    `;
+    comingSoonGrid.appendChild(card);
+  });
+}
+
 function renderMovieCards(movies) {
     console.log('Rendering movie cards:', movies);
     if (!movieGrid) {
@@ -669,21 +715,85 @@ async function init() {
     initMobileMenu();
     initSearch();
     initSmoothScrolling();
-    initComingSoonScroll();
     initLazyLoading();
+    initFilters();
 
     // Load initial movie data
+    loadUpcomingMovies();
     if (USE_API) {
         console.log('Loading movies from API...');
         const data = await fetchMovieData('movie/now_playing');
         if (data && data.results) {
-            renderMovieCards(data.results);
+            nowPlayingMovies = data.results;
+            renderMovieCards(nowPlayingMovies);
         }
     } else {
         console.log('Using local data source.');
-        renderMovieCards(localMovies);
+        nowPlayingMovies = localMovies;
+        renderMovieCards(nowPlayingMovies);
+    }
+}
+
+async function loadUpcomingMovies() {
+    if (USE_API) {
+        const data = await fetchMovieData('movie/upcoming');
+        if (data && data.results) {
+            renderUpcomingMovieCards(data.results);
+        }
+    } else {
+        // You can add local upcoming movies data for testing
+        renderUpcomingMovieCards([]);
     }
 }
 
 // Run initialization on page load
 document.addEventListener('DOMContentLoaded', init);
+
+function handleFilterClick(event) {
+    const selectedGenre = event.target.dataset.genre;
+
+    // Update active button state
+    filterBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.genre === selectedGenre);
+    });
+
+    if (selectedGenre === 'all') {
+        renderMovieCards(nowPlayingMovies);
+        return;
+    }
+
+    const genreId = Object.keys(genresMap).find(
+        key => genresMap[key].toLowerCase() === selectedGenre
+    );
+
+    if (genreId) {
+        const filteredMovies = nowPlayingMovies.filter(movie =>
+            movie.genre_ids.includes(parseInt(genreId))
+        );
+        renderMovieCards(filteredMovies);
+    } else {
+        renderMovieCards([]); // No movies found for this genre
+    }
+}
+
+async function initFilters() {
+    if (USE_API) {
+        const data = await fetchMovieData('genre/movie/list');
+        if (data && data.genres) {
+            data.genres.forEach(genre => {
+                genresMap[genre.id] = genre.name;
+            });
+        }
+    } else {
+        // Mock genres for local testing
+        genresMap = {
+            28: 'Action',
+            18: 'Drama',
+            878: 'Sci-Fi'
+        };
+    }
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', handleFilterClick);
+    });
+}
