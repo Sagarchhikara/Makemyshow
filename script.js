@@ -5,16 +5,16 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 const USE_API = true; // Switch to false to use local data (changed to false for testing)
 
 // ========== LOCAL DATA (for testing if USE_API is false) ==========
-const localMovies = [
-    { id: 967847, title: 'F1: The Movie', poster_path: 'f1-movie.png', vote_average: 8.5, original_language: 'en' },
-    { id: 967848, title: 'Saiyaara', poster_path: 'saiyaara.avif', vote_average: 8.2, original_language: 'hi' },
-    { id: 967849, title: 'War 2', poster_path: 'war-2.jpg', vote_average: 7.8, original_language: 'hi' },
-    { id: 967850, title: 'Mahavatar Narsimha', poster_path: 'narsimha.jpeg', vote_average: 8.0, original_language: 'hi' },
-    { id: 967851, title: 'Coolie: The Powerhouse', poster_path: 'coolie.jpg', vote_average: 7.5, original_language: 'hi' },
-    { id: 967852, title: 'Sarbala ji', poster_path: 'sarbala-ji.jpg', vote_average: 7.2, original_language: 'hi' },
-    { id: 967853, title: 'Weapons', poster_path: 'weapons.webp', vote_average: 6.8, original_language: 'en' },
-    { id: 967854, title: 'Freakier Friday', poster_path: 'freaky-friday.jpeg', vote_average: 7.9, original_language: 'en' },
-];
+// const localMovies = [
+//     { id: 967847, title: 'F1: The Movie', poster_path: 'f1-movie.png', vote_average: 8.5, original_language: 'en' },
+//     { id: 967848, title: 'Saiyaara', poster_path: 'saiyaara.avif', vote_average: 8.2, original_language: 'hi' },
+//     { id: 967849, title: 'War 2', poster_path: 'war-2.jpg', vote_average: 7.8, original_language: 'hi' },
+//     { id: 967850, title: 'Mahavatar Narsimha', poster_path: 'narsimha.jpeg', vote_average: 8.0, original_language: 'hi' },
+//     { id: 967851, title: 'Coolie: The Powerhouse', poster_path: 'coolie.jpg', vote_average: 7.5, original_language: 'hi' },
+//     { id: 967852, title: 'Sarbala ji', poster_path: 'sarbala-ji.jpg', vote_average: 7.2, original_language: 'hi' },
+//     { id: 967853, title: 'Weapons', poster_path: 'weapons.webp', vote_average: 6.8, original_language: 'en' },
+//     { id: 967854, title: 'Freakier Friday', poster_path: 'freaky-friday.jpeg', vote_average: 7.9, original_language: 'en' },
+// ];
 
 // ========== GLOBAL VARIABLES ==========
 let currentSlide = 0;
