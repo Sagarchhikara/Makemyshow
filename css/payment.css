@@ -1,0 +1,95 @@
+/* ========== PAYMENT SECTION ========== */
+.payment-section {
+    padding: 4rem 0;
+}
+
+.payment-container {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.booking-summary-container {
+    flex: 1;
+    background-color: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--radius-large);
+    border: 1px solid var(--border);
+}
+
+.booking-summary-container h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.booking-summary p {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.booking-summary p:last-child {
+    margin-bottom: 0;
+}
+
+.booking-summary strong {
+    color: var(--text-secondary);
+}
+
+.payment-form-container {
+    flex: 2;
+    background-color: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--radius-large);
+    border: 1px solid var(--border);
+}
+
+.payment-form-container h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.payment-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.payment-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.payment-form input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-medium);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.payment-form input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.payment-form .form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.payment-form .form-row .form-group {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .payment-container {
+        flex-direction: column;
+    }
+}
