@@ -115,8 +115,41 @@
           <p class="section-subtitle">Latest blockbusters in theaters</p>
         </div>
 
+        <div class="filters">
+          <div class="filter-group">
+            <label for="genre-filter">Genre</label>
+            <select id="genre-filter" class="filter-select">
+              <option value="all">All Genres</option>
+              <option value="action">Action</option>
+              <option value="comedy">Comedy</option>
+              <option value="drama">Drama</option>
+              <option value="romance">Romance</option>
+              <option value="thriller">Thriller</option>
+              <option value="horror">Horror</option>
+              <option value="animation">Animation</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="language-filter">Language</label>
+            <select id="language-filter" class="filter-select">
+              <option value="all">All Languages</option>
+              <option value="english">English</option>
+              <option value="hindi">Hindi</option>
+              <option value="spanish">Spanish</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="format-filter">Format</label>
+            <select id="format-filter" class="filter-select">
+              <option value="all">All Formats</option>
+              <option value="2d">2D</option>
+              <option value="3d">3D</option>
+              <option value="imax">IMAX</option>
+            </select>
+          </div>
+        </div>
         <div class="movie-grid">
-          <article class="movie-card" tabindex="0">
+          <article class="movie-card" tabindex="0" data-genre="action" data-language="english" data-format="2d">
             <div class="movie-poster">
               <img src="../images/f1 movie.png" alt="F1: The Movie">
               <div class="movie-overlay">
@@ -135,7 +168,7 @@
             </div>
           </article>
 
-          <article class="movie-card" tabindex="0">
+          <article class="movie-card" tabindex="0" data-genre="romance" data-language="hindi" data-format="2d">
             <div class="movie-poster">
               <img src="../images/saiyaara.avif" alt="Saiyaara">
               <div class="movie-overlay">
@@ -154,7 +187,7 @@
             </div>
           </article>
 
-          <article class="movie-card" tabindex="0">
+          <article class="movie-card" tabindex="0" data-genre="thriller" data-language="hindi" data-format="2d">
             <div class="movie-poster">
               <img src="../images/war 2.jpg" alt="War 2">
               <div class="movie-overlay">
@@ -173,7 +206,7 @@
             </div>
           </article>
 
-          <article class="movie-card" tabindex="0">
+          <article class="movie-card" tabindex="0" data-genre="animation" data-language="hindi" data-format="3d">
             <div class="movie-poster">
               <img src="../images/narsimha.jpeg" alt="Mahavatar Narsimha">
               <div class="movie-overlay">
@@ -192,7 +225,7 @@
             </div>
           </article>
 
-          <article class="movie-card" tabindex="0">
+          <article class="movie-card" tabindex="0" data-genre="romance" data-language="hindi" data-format="2d">
             <div class="movie-poster">
               <img src="../images/coolie.jpg" alt="Coolie: The Powerhouse">
               <div class="movie-overlay">
@@ -211,7 +244,7 @@
             </div>
           </article>
 
-          <article class="movie-card" tabindex="0">
+          <article class="movie-card" tabindex="0" data-genre="comedy" data-language="hindi" data-format="2d">
             <div class="movie-poster">
               <img src="../images/sarbala ji.jpg" alt="Sarbala ji">
               <div class="movie-overlay">
@@ -230,7 +263,7 @@
             </div>
           </article>
 
-          <article class="movie-card" tabindex="0">
+          <article class="movie-card" tabindex="0" data-genre="horror" data-language="english" data-format="2d">
             <div class="movie-poster">
               <img src="../images/weapons.webp" alt="Weapons">
               <div class="movie-overlay">
@@ -249,7 +282,7 @@
             </div>
           </article>
 
-          <article class="movie-card" tabindex="0">
+          <article class="movie-card" tabindex="0" data-genre="comedy" data-language="english" data-format="imax">
             <div class="movie-poster">
               <img src="../images/freaky friday.jpeg" alt="Freakier Friday">
               <div class="movie-overlay">

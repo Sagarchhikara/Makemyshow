@@ -243,6 +243,19 @@ function initMovieCards() {
   });
 }
 
+// ========== INITIALIZATION ==========
+document.addEventListener('DOMContentLoaded', () => {
+  initSlideshow();
+  initMobileMenu();
+  initMovieCards();
+  initSearch();
+  initSmoothScrolling();
+  initScrollAnimations();
+  initComingSoonScroll();
+  initLazyLoading();
+  initFilters();
+});
+
 // Handle card tilt effect
 function handleCardTilt(e) {
   const card = e.currentTarget;
@@ -355,6 +368,46 @@ function showAllMovies() {
   movieCards.forEach(card => {
     card.style.display = 'block';
     card.classList.add('fade-in-up');
+  });
+}
+
+// ========== FILTER FUNCTIONALITY ==========
+
+function initFilters() {
+  const genreFilter = document.getElementById('genre-filter');
+  const languageFilter = document.getElementById('language-filter');
+  const formatFilter = document.getElementById('format-filter');
+
+  if (genreFilter && languageFilter && formatFilter) {
+    genreFilter.addEventListener('change', filterMovies);
+    languageFilter.addEventListener('change', filterMovies);
+    formatFilter.addEventListener('change', filterMovies);
+  }
+}
+
+function filterMovies() {
+  const genreValue = document.getElementById('genre-filter').value;
+  const languageValue = document.getElementById('language-filter').value;
+  const formatValue = document.getElementById('format-filter').value;
+
+  const movieCards = document.querySelectorAll('.movie-card');
+
+  movieCards.forEach(card => {
+    const cardGenre = card.dataset.genre || 'all';
+    const cardLanguage = card.dataset.language || 'all';
+    const cardFormat = card.dataset.format || 'all';
+
+    const genreMatch = genreValue === 'all' || cardGenre === genreValue;
+    const languageMatch = languageValue === 'all' || cardLanguage === languageValue;
+    const formatMatch = formatValue === 'all' || cardFormat === formatValue;
+
+    if (genreMatch && languageMatch && formatMatch) {
+      card.style.display = 'block';
+      card.classList.add('fade-in-up');
+    } else {
+      card.style.display = 'none';
+      card.classList.remove('fade-in-up');
+    }
   });
 }
 
