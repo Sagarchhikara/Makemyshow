@@ -1,6 +1,7 @@
 // ========== BOOKING VARIABLES ==========
 let bookingState = {
   movieTitle: '',
+  posterUrl: '',
   time: '',
   ticketQuantity: 1,
   selectedSeats: [],
@@ -30,8 +31,13 @@ function initBooking() {
   // Get movie title from URL
   const urlParams = new URLSearchParams(window.location.search);
   const movieTitle = urlParams.get('movie');
+  const posterUrl = urlParams.get('poster');
+
   if (movieTitle) {
     bookingState.movieTitle = decodeURIComponent(movieTitle);
+  }
+  if (posterUrl) {
+    bookingState.posterUrl = decodeURIComponent(posterUrl);
   }
 
   if (bookingMovieTitle) bookingMovieTitle.textContent = `Book Tickets for ${bookingState.movieTitle}`;
@@ -172,6 +178,7 @@ function handleConfirmBooking() {
   // Create URL parameters for payment page
   const paymentParams = new URLSearchParams({
     movie: bookingState.movieTitle,
+    poster: bookingState.posterUrl,
     time: bookingState.time,
     seats: bookingState.selectedSeats.join(', '),
     quantity: bookingState.ticketQuantity.toString(),

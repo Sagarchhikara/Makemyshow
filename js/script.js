@@ -408,26 +408,15 @@ function resetCardTilt(e) {
 // Handle ticket booking
 function handleBookTicket(card) {
     const movieTitle = card.querySelector('h3')?.textContent;
+    const posterUrl = card.querySelector('.movie-poster img')?.src;
 
-    // Show a simple alert for booking
-    alert(`You are booking a ticket for "${movieTitle}".`);
-
-    // Add visual feedback on the button
-    const button = card.querySelector('.btn-primary');
-    if (button) {
-        const originalText = button.textContent;
-        if (button.disabled) return; // Prevent multiple clicks
-
-        button.textContent = 'Processing...';
-        button.disabled = true;
-
-        setTimeout(() => {
-            button.textContent = 'Booked!';
-            setTimeout(() => {
-                button.textContent = originalText;
-                button.disabled = false;
-            }, 1500);
-        }, 500);
+    if (movieTitle) {
+        const params = new URLSearchParams();
+        params.append('movie', encodeURIComponent(movieTitle));
+        if (posterUrl) {
+            params.append('poster', encodeURIComponent(posterUrl));
+        }
+        window.location.href = `booking.html?${params.toString()}`;
     }
 }
 
@@ -671,6 +660,24 @@ async function init() {
     initSmoothScrolling();
     initComingSoonScroll();
     initLazyLoading();
+
+    // Add event listener for slideshow book button
+    const slideshowBookBtn = document.getElementById('slideshow-book-btn');
+    if (slideshowBookBtn) {
+        slideshowBookBtn.addEventListener('click', () => {
+            const activeSlide = document.querySelector('.slide.active');
+            if (activeSlide) {
+                const movieTitle = activeSlide.dataset.title;
+                const posterUrl = activeSlide.querySelector('img').src;
+                const params = new URLSearchParams();
+                params.append('movie', encodeURIComponent(movieTitle));
+                if (posterUrl) {
+                    params.append('poster', encodeURIComponent(posterUrl));
+                }
+                window.location.href = `booking.html?${params.toString()}`;
+            }
+        });
+    }
 
     // Load initial movie data
     if (USE_API) {
