@@ -79,4 +79,239 @@ This project is unlicensed.
 
 ## Contact
 
-Project Link: [https://github.com/your_username/your_repository](https://github.com/your_username/your_repository)
+# 🎬 MakeMyShow - Complete Dynamic Booking Flow
+
+## 📊 Data Flow Architecture
+
+```
+HOME PAGE (index.html)
+    ↓
+    User clicks "Book Now" on any movie
+    ↓
+BOOKING PAGE (booking.html)
+    ↓
+    URL Parameters: ?movie=XXX&poster=YYY
+    ↓
+    Step 1: Select Showtime
+    Step 2: Select Ticket Quantity
+    Step 3: Select Seats
+    ↓
+PAYMENT PAGE (payment-gateway.html)
+    ↓
+    URL Parameters: ?movie=XXX&poster=YYY&time=ZZZ&seats=AAA&quantity=NNN
+    ↓
+    Complete Payment
+    ↓
+SUCCESS PAGE (index.html)
+    ↓
+    URL Parameters: ?payment=success&booking=BKXXX&movie=YYY&seats=ZZZ&amount=NNN
+```
+
+---
+
+## 🔄 Complete Flow Breakdown
+
+### **1. Movie Selection (index.html / script.js)**
+
+**User Action:** Clicks "Book Now" on any movie card
+
+**What Happens:**
+```javascript
+// In script.js - handleBookTicket function
+const movieTitle = card.querySelector('h3')?.textContent;
+const posterUrl = card.querySelector('.movie-poster img')?.src;
+
+const params = new URLSearchParams();
+params.append('movie', encodeURIComponent(movieTitle));
+params.append('poster', encodeURIComponent(posterUrl));
+
+window.location.href = `booking.html?${params.toString()}`;
+```
+
+**URL Example:**
+```
+booking.html?movie=F1%3A%20The%20Movie&poster=../images/f1%20movie.png
+```
+
+---
+
+### **2. Booking Page (booking.html / booking.js)**
+
+**Data Received:**
+- `movie` - Movie title
+- `poster` - Poster image URL
+
+**User Actions:**
+1. Select showtime (e.g., "6:30 PM")
+2. Select ticket quantity (1-10)
+3. Select exact seats (e.g., A1, A2, A3)
+4. Click "Confirm Booking"
+
+**What Happens:**
+```javascript
+// In booking.js - handleConfirmBooking function
+const paymentParams = new URLSearchParams({
+  movie: bookingState.movieTitle,          // "F1: The Movie"
+  poster: bookingState.posterUrl,          // "../images/f1 movie.png"
+  time: bookingState.time,                 // "6:30 PM"
+  seats: bookingState.selectedSeats.join(', '), // "A1, A2, A3"
+  quantity: bookingState.ticketQuantity.toString(), // "3"
+  total: bookingState.totalPrice.toString()        // "450"
+});
+
+window.location.href = `payment-gateway.html?${paymentParams.toString()}`;
+```
+
+**URL Example:**
+```
+payment-gateway.html?movie=F1%3A%20The%20Movie&poster=../images/f1%20movie.png&time=6%3A30%20PM&seats=A1%2C%20A2%2C%20A3&quantity=3&total=450
+```
+
+---
+
+### **3. Payment Page (payment-gateway.html / payment-gateway.js)**
+
+**Data Received:**
+- `movie` - Movie title
+- `poster` - Poster URL
+- `time` - Showtime
+- `seats` - Selected seats
+- `quantity` - Number of tickets
+
+**Automatic Calculations:**
+```javascript
+// In payment-gateway.js - calculatePrices function
+Ticket Price:      ₹150 × 3 = ₹450
+Convenience Fee:   ₹30
+Subtotal:          ₹480
+GST (18%):         ₹86
+-----------------------------------
+TOTAL:             ₹566
+```
+
+**Dynamic Updates:**
+- Movie title appears in header
+- Poster displays correctly
+- Showtime shows selected time
+- Seats display as "A1, A2, A3"
+- Quantity shows "3 × ₹150"
+- Total calculates automatically
+
+**Payment Processing:**
+```javascript
+// After successful payment
+const bookingData = {
+  bookingId: generateBookingId(),      // "BKLXYZ123ABC"
+  movieTitle: "F1: The Movie",
+  showtime: "6:30 PM",
+  seats: "A1, A2, A3",
+  quantity: 3,
+  amount: 566,
+  paymentMethod: "card",
+  timestamp: "2025-10-23T10:30:00.000Z"
+};
+
+// Redirect with booking confirmation
+window.location.href = `index.html?payment=success&booking=${bookingData.bookingId}&movie=${movieTitle}&seats=${seats}&amount=${amount}`;
+```
+
+---
+
+## 🎯 Key Features
+
+### ✅ **Fully Dynamic**
+- All data flows through URL parameters
+- No hardcoded values
+- Works with any movie selected
+
+### ✅ **Data Persistence**
+- Movie details carry through entire flow
+- Poster images maintain consistency
+- Selected seats tracked accurately
+
+### ✅ **Automatic Calculations**
+```javascript
+// Pricing formula
+subtotal = quantity × ticketPrice
+gst = (subtotal + convenienceFee) × 0.18
+total = subtotal + convenienceFee + gst - discount
+```
+
+### ✅ **Promo Code System**
+```javascript
+MOVIE20   → 20% off
+FIRST50   → ₹50 off
+WELCOME10 → 10% off
+WEEKEND25 → 25% off
+FLAT100   → ₹100 off
+```
+
+### ✅ **Validation**
+- Card number formatting & detection (Visa, MC, Amex, RuPay)
+- Expiry date validation (checks if expired)
+- CVV validation
+- UPI ID format checking
+- Seat selection limits
+
+### ✅ **Smart UI Updates**
+- Real-time price calculations
+- Live seat selection counter
+- Payment method switching
+- Card type detection
+- Processing animations
+
+---
+
+## 📝 Example Complete Flow
+
+### **Step-by-Step Example:**
+
+1. **User sees "War 2" on homepage**
+   - Rating: ★ 7.8
+   - Genre: Thriller • 128m
+
+2. **Clicks "Book Now"**
+   ```
+   → Redirects to: booking.html?movie=War%202&poster=../images/war%202.jpg
+   ```
+
+3. **Booking Page Shows:**
+   - Header: "Book Tickets for War 2"
+   - Available showtimes
+   - Ticket quantity selector
+   - Seat map (10 rows × 12 seats)
+
+4. **User Selects:**
+   - Time: 9:00 PM
+   - Quantity: 2 tickets
+   - Seats: H5, H6
+
+5. **Clicks "Confirm Booking"**
+   ```
+   → Redirects to: payment-gateway.html?movie=War%202&poster=../images/war%202.jpg&time=9%3A00%20PM&seats=H5%2C%20H6&quantity=2
+   ```
+
+6. **Payment Page Shows:**
+   ```
+   Movie:           War 2
+   Poster:          [War 2 poster image]
+   Date & Time:     9:00 PM
+   Seats:           H5, H6
+   Tickets:         2 × ₹150
+   Convenience Fee: ₹30
+   GST (18%):       ₹59
+   ─────────────────────────
+   TOTAL:           ₹389
+   ```
+
+7. **User Enters Promo Code:** `MOVIE20`
+   ```
+   Discount:        -₹66 (20% off)
+   NEW TOTAL:       ₹323
+   ```
+
+8. **Completes Payment**
+   ```
+   → Payment Processing... (3 seconds)
+   → Success! Booking ID: BKLX8K3ABC
+   → Redirects to: index.html?payment=success&booking=BKLX8K3ABC&movie=War%202&seats=H5%
