@@ -34,10 +34,10 @@ function initBooking() {
   const posterUrl = urlParams.get('poster');
 
   if (movieTitle) {
-    bookingState.movieTitle = decodeURIComponent(movieTitle);
+    bookingState.movieTitle = movieTitle;
   }
   if (posterUrl) {
-    bookingState.posterUrl = decodeURIComponent(posterUrl);
+    bookingState.posterUrl = posterUrl;
   }
 
   if (bookingMovieTitle) bookingMovieTitle.textContent = `Book Tickets for ${bookingState.movieTitle}`;
