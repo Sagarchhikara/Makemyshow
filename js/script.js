@@ -412,9 +412,9 @@ function handleBookTicket(card) {
 
     if (movieTitle) {
         const params = new URLSearchParams();
-        params.append('movie', encodeURIComponent(movieTitle));
+        params.append('movie', movieTitle);
         if (posterUrl) {
-            params.append('poster', encodeURIComponent(posterUrl));
+            params.append('poster', posterUrl);
         }
         window.location.href = `booking.html?${params.toString()}`;
     }

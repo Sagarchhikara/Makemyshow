@@ -632,11 +632,11 @@
     // Load booking details from localStorage or URL params
     function loadBookingDetails() {
       const urlParams = new URLSearchParams(window.location.search);
-      const movieTitle = decodeURIComponent(urlParams.get('movie') || 'F1: The Movie');
-      const showtime = decodeURIComponent(urlParams.get('time') || 'Today, 6:30 PM');
-      const seats = decodeURIComponent(urlParams.get('seats') || 'A1, A2');
+      const movieTitle = urlParams.get('movie') || 'F1: The Movie';
+      const showtime = urlParams.get('time') || 'Today, 6:30 PM';
+      const seats = urlParams.get('seats') || 'A1, A2';
       const quantity = parseInt(urlParams.get('quantity')) || 2;
-      const posterUrl = decodeURIComponent(urlParams.get('poster') || '../images/f1 movie.png');
+      const posterUrl = urlParams.get('poster') || '../images/f1 movie.png';
       const price = 150;
       const convenienceFee = 30;
       const subtotal = quantity * price;
