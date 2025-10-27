@@ -102,14 +102,21 @@ function cacheElements() {
 function loadBookingDetails() {
   const urlParams = new URLSearchParams(window.location.search);
   
-  // Extract all parameters from URL
-  paymentState.movieTitle = decodeURIComponent(urlParams.get('movie') || 'Movie');
-  paymentState.posterUrl = decodeURIComponent(urlParams.get('poster') || '../images/f1 movie.png');
-  paymentState.showtime = decodeURIComponent(urlParams.get('time') || 'Not selected');
+  // Extract all parameters from URL (URLSearchParams returns decoded values)
+  paymentState.movieTitle = urlParams.get('movie') || 'Movie';
+  paymentState.posterUrl = urlParams.get('poster') || '../images/f1 movie.png';
+  paymentState.showtime = urlParams.get('time') || 'Not selected';
   
-  const seatsParam = urlParams.get('seats');
-  paymentState.seats = seatsParam ? decodeURIComponent(seatsParam).split(', ').filter(s => s) : [];
-  paymentState.quantity = parseInt(urlParams.get('quantity')) || paymentState.seats.length || 1;
+  const seatsParam = urlParams.get('seats') || '';
+  paymentState.seats = seatsParam
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  const qtyParam = parseInt(urlParams.get('quantity'), 10);
+  paymentState.quantity = Number.isInteger(qtyParam) && qtyParam > 0
+    ? qtyParam
+    : (paymentState.seats.length || 1);
   
   console.log('📋 Booking Details Loaded:', {
     movie: paymentState.movieTitle,
