@@ -22,14 +22,14 @@ let slideInterval;
 let isPlaying = true;
 
 // ========== DOM ELEMENTS ==========
-const slides = document.querySelectorAll('.slide');
-const heroTitle = document.getElementById('hero-title');
-const heroTag = document.getElementById('hero-tag');
-const heroRating = document.getElementById('hero-rating');
-const dotsContainer = document.querySelector('.hero-dots');
-const leftArrow = document.querySelector('.hero-arrow.left');
-const rightArrow = document.querySelector('.hero-arrow.right');
-const heroSlideshow = document.querySelector('.hero-slideshow');
+let slides; // Will be populated dynamically
+const slideshowTitle = document.getElementById('slideshow-title');
+const slideshowTag = document.getElementById('slideshow-tag');
+const slideshowRating = document.getElementById('slideshow-rating');
+const dotsContainer = document.querySelector('.slideshow-dots');
+const leftArrow = document.querySelector('.slideshow-arrow.left');
+const rightArrow = document.querySelector('.slideshow-arrow.right');
+const slideshowContainer = document.querySelector('.slideshow-container');
 const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
 const navMenu = document.querySelector('.nav-menu');
 const searchInput = document.querySelector('.search');
@@ -85,6 +85,42 @@ async function fetchMovieData(endpoint, params = {}, forceRefresh = false) {
 }
 
 // ========== UI RENDERING ==========
+
+/**
+ * Renders the hero slideshow.
+ * @param {Array<Object>} movies - An array of movie objects to display in the slideshow.
+ */
+function renderSlideshow(movies) {
+    const slidesContainer = document.querySelector('.slides-container');
+    if (!slidesContainer) return;
+
+    slidesContainer.innerHTML = ''; // Clear existing static slides
+    const moviesToShow = movies.slice(0, 5); // Use first 5 movies for slideshow
+
+    moviesToShow.forEach((movie, index) => {
+        const slide = document.createElement('div');
+        slide.classList.add('slide');
+        if (index === 0) slide.classList.add('active');
+
+        const posterUrl = movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : 'https://via.placeholder.com/1200x675?text=No+Image';
+
+        slide.dataset.title = movie.title;
+        slide.dataset.tag = `${movie.original_language.toUpperCase()} • ${movie.release_date.substring(0, 4)}`;
+        slide.dataset.rating = movie.vote_average.toFixed(1);
+
+        slide.innerHTML = `
+            <img src="${posterUrl}" alt="${movie.title}" />
+            <div class="slide-overlay"></div>
+        `;
+        slidesContainer.appendChild(slide);
+    });
+
+    // After creating slides, initialize the slideshow functionality
+    slides = document.querySelectorAll('.slide');
+    if (slides.length > 0) {
+        initSlideshow();
+    }
+}
 
 /**
  * Renders movie cards in the grid.
@@ -256,16 +292,16 @@ function updateSlideInfo() {
 
     const slideData = slides[currentSlide].dataset;
 
-    if (heroTitle && slideData.title) {
-        heroTitle.textContent = slideData.title;
+    if (slideshowTitle && slideData.title) {
+        slideshowTitle.textContent = slideData.title;
     }
 
-    if (heroTag && slideData.tag) {
-        heroTag.textContent = slideData.tag;
+    if (slideshowTag && slideData.tag) {
+        slideshowTag.textContent = slideData.tag;
     }
 
-    if (heroRating && slideData.rating) {
-        heroRating.textContent = slideData.rating;
+    if (slideshowRating && slideData.rating) {
+        slideshowRating.textContent = slideData.rating;
     }
 }
 
@@ -298,8 +334,8 @@ function addSlideEventListeners() {
     });
 
     // Pause on hover
-    heroSlideshow?.addEventListener('mouseenter', stopAutoplay);
-    heroSlideshow?.addEventListener('mouseleave', () => {
+    slideshowContainer?.addEventListener('mouseenter', stopAutoplay);
+    slideshowContainer?.addEventListener('mouseleave', () => {
         if (!isPlaying) startAutoplay();
     });
 
@@ -530,6 +566,50 @@ function initScrollAnimations() {
 
 // ========== COMING SOON SCROLL ==========
 
+async function renderComingSoonMovies() {
+    const container = document.querySelector('.coming-soon-scroll');
+    if (!container) return;
+
+    container.innerHTML = ''; // Clear static content
+
+    let movies = [];
+    if (USE_API) {
+        const data = await fetchMovieData('movie/upcoming');
+        if (data && data.results) {
+            movies = data.results;
+        }
+    } else {
+        // Fallback to a slice of local movies if not using API for "coming soon"
+        movies = localMovies.slice(0, 6);
+    }
+
+    if (movies.length === 0) {
+        container.innerHTML = '<p>No upcoming movies to display.</p>';
+        return;
+    }
+
+    movies.forEach(movie => {
+        const card = document.createElement('div');
+        card.classList.add('coming-soon-card');
+
+        const posterUrl = movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : 'https://via.placeholder.com/300x450?text=No+Image';
+        const releaseDate = new Date(movie.release_date).toLocaleDateString('en-US', {
+            month: 'short',
+            year: 'numeric'
+        });
+
+        card.innerHTML = `
+            <div class="coming-poster">
+                <img src="${posterUrl}" alt="${movie.title}" loading="lazy">
+                <div class="coming-date">${releaseDate}</div>
+            </div>
+            <h4>${movie.title}</h4>
+            <p>${movie.original_language.toUpperCase()}</p>
+        `;
+        container.appendChild(card);
+    });
+}
+
 function initComingSoonScroll() {
     const scrollContainer = document.querySelector('.coming-soon-scroll');
     if (!scrollContainer) return;
@@ -654,7 +734,6 @@ async function init() {
     console.log('Initializing MovieWave application...');
 
     // Initialize core functionalities
-    initSlideshow();
     initMobileMenu();
     initSearch();
     initSmoothScrolling();
@@ -684,11 +763,15 @@ async function init() {
         console.log('Loading movies from API...');
         const data = await fetchMovieData('movie/now_playing');
         if (data && data.results) {
+            renderSlideshow(data.results);
             renderMovieCards(data.results);
         }
+        renderComingSoonMovies(); // Fetch and render upcoming movies
     } else {
         console.log('Using local data source.');
+        renderSlideshow(localMovies);
         renderMovieCards(localMovies);
+        renderComingSoonMovies(); // Use local data for coming soon as well
     }
 }
 

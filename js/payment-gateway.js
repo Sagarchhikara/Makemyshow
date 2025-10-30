@@ -40,6 +40,7 @@ const elements = {
   showtime: null,
   seats: null,
   quantity: null,
+  convenienceFee: null,
   gst: null,
   total: null,
   payButtonText: null,
@@ -78,6 +79,7 @@ function cacheElements() {
   elements.showtime = document.getElementById('payment-time');
   elements.seats = document.getElementById('payment-seats');
   elements.quantity = document.getElementById('payment-quantity');
+  elements.convenienceFee = document.getElementById('payment-convenience-fee');
   elements.gst = document.getElementById('payment-gst');
   elements.total = document.getElementById('payment-total');
   elements.payButtonText = document.getElementById('pay-button-text');
@@ -171,6 +173,11 @@ function updateSummaryUI() {
   // Update quantity
   if (elements.quantity) {
     elements.quantity.textContent = `${paymentState.quantity} × ₹${paymentState.ticketPrice}`;
+  }
+
+  // Update convenience fee
+  if (elements.convenienceFee) {
+    elements.convenienceFee.textContent = `₹${paymentState.convenienceFee}`;
   }
   
   // Update GST
