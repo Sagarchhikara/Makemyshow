@@ -21,9 +21,15 @@ const Slideshow = () => {
     return () => clearTimeout(timer);
   }, [currentSlide]);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === movies.length - 1 ? 0 : prev + 1));
-  };
+  const nextSlide = useCallback(() => {
+  setCurrentSlide((prev) => (prev + 1) % slides.length);
+}, [slides.length]);
+
+useEffect(() => {
+  const timer = setInterval(() => nextSlide(), 3000);
+  return () => clearInterval(timer);
+}, [nextSlide]); // ✅
+
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev === 0 ? movies.length - 1 : prev - 1));
