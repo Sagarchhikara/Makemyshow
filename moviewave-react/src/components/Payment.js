@@ -6,10 +6,32 @@ const Payment = () => {
   const { booking } = useContext(BookingContext);
   const { movie, time, seats, total } = booking;
   const [activeMethod, setActiveMethod] = useState('card');
+  const [promoCode, setPromoCode] = useState('');
+  const [discount, setDiscount] = useState(0);
+  const [promoError, setPromoError] = useState('');
 
   const handleMethodChange = (method) => {
     setActiveMethod(method);
   };
+
+  const handleApplyPromo = () => {
+    const validCodes = {
+      'SAVE10': 0.1,
+      'MOVIEWAVE20': 0.2,
+    };
+
+    if (validCodes[promoCode]) {
+      setDiscount(total * validCodes[promoCode]);
+      setPromoError('');
+    } else {
+      setDiscount(0);
+      setPromoError('Invalid promo code');
+    }
+  };
+
+  const totalAfterDiscount = total - discount;
+  const gst = totalAfterDiscount * 0.18;
+  const finalTotal = totalAfterDiscount + gst;
 
   return (
     <section className="payment-section">
@@ -165,27 +187,42 @@ const Payment = () => {
             </div>
             <div className="summary-item">
               <span className="summary-label">GST (18%)</span>
-              <span className="summary-value" id="payment-gst">₹{total * 0.18}</span>
+              <span className="summary-value" id="payment-gst">₹{gst.toFixed(2)}</span>
             </div>
 
             <div className="promo-section">
               <label className="form-label">Promo Code</label>
               <div className="promo-input-group">
-                <input type="text" className="promo-input" placeholder="Enter code" id="promo-code" />
-                <button type="button" className="apply-btn">Apply</button>
+                <input
+                  type="text"
+                  className="promo-input"
+                  placeholder="Enter code"
+                  id="promo-code"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value)}
+                />
+                <button type="button" className="apply-btn" onClick={handleApplyPromo}>Apply</button>
               </div>
+              {promoError && <p className="promo-error">{promoError}</p>}
             </div>
+
+            {discount > 0 && (
+              <div className="summary-item">
+                <span className="summary-label">Discount</span>
+                <span className="summary-value" id="payment-discount">- ₹{discount.toFixed(2)}</span>
+              </div>
+            )}
 
             <div className="summary-item">
               <span className="summary-label">Total Amount</span>
-              <span className="summary-value" id="payment-total">₹{total * 1.18}</span>
+              <span className="summary-value" id="payment-total">₹{finalTotal.toFixed(2)}</span>
             </div>
 
             <button className="pay-button">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2L3 7V12C3 16.97 6.84 21.25 12 22C17.16 21.25 21 16.97 21 12V7L12 2Z"/>
               </svg>
-              <span id="pay-button-text">Pay ₹{total * 1.18}</span>
+              <span id="pay-button-text">Pay ₹{finalTotal.toFixed(2)}</span>
             </button>
           </div>
         </div>

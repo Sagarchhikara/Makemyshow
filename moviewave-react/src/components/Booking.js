@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BookingContext } from '../context/BookingContext';
 
 const SEAT_ROWS = 6;
@@ -9,6 +9,7 @@ const bookedSeats = ['A3', 'B5', 'C1', 'D8']; // Mock booked seats
 const Booking = () => {
   const { setBooking } = useContext(BookingContext);
   const location = useLocation();
+  const navigate = useNavigate();
   const { movie } = location.state || { movie: { title: 'F1: The Movie', ticketPrice: 250 } };
 
   const [step, setStep] = useState(1);
@@ -92,6 +93,10 @@ const Booking = () => {
 
   const isBookingConfirmedEnabled = selectedSeats.length === ticketQuantity && ticketQuantity > 0;
 
+  const handleConfirmBooking = () => {
+    navigate('/payment');
+  };
+
   return (
     <section id="booking" className="section booking-section">
       <div className="container">
@@ -148,10 +153,8 @@ const Booking = () => {
                   <p><strong>Seats:</strong> <span id="summary-seats">{selectedSeats.join(', ') || 'N/A'}</span></p>
                   <p><strong>Total:</strong> <span id="summary-total">₹{totalPrice}</span></p>
                 </div>
-                <button id="confirm-booking-btn" className="btn btn-primary btn-full" disabled={!isBookingConfirmedEnabled}>
-                    <Link to="/payment" style={{ color: 'inherit', textDecoration: 'none' }}>
-                        Confirm Booking
-                    </Link>
+                <button id="confirm-booking-btn" className="btn btn-primary btn-full" disabled={!isBookingConfirmedEnabled} onClick={handleConfirmBooking}>
+                  Confirm Booking
                 </button>
               </div>
             </div>
