@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { fetchMovies, IMAGE_BASE_URL_ORIGINAL } from '../api/tmdb';
 import { Link } from 'react-router-dom';
 
@@ -14,16 +14,14 @@ const Slideshow = () => {
     getMovies();
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      nextSlide();
-    }, 5000); // Change slide every 5 seconds
-    return () => clearTimeout(timer);
-  }, [currentSlide]);
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % (movies.length || 1));
+  }, [movies.length]);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === movies.length - 1 ? 0 : prev + 1));
-  };
+  useEffect(() => {
+    const timer = setInterval(() => nextSlide(), 5000);
+    return () => clearInterval(timer);
+  }, [nextSlide]);
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev === 0 ? movies.length - 1 : prev - 1));
