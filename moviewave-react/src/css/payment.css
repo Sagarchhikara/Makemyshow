@@ -15,6 +15,58 @@
     padding: 2rem;
     border-radius: var(--radius-large);
     border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.payment-methods {
+    display: flex;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.method-tab {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.method-tab.active {
+    color: var(--accent);
+}
+
+.method-tab::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.method-tab.active::after {
+    transform: scaleX(1);
+}
+
+.method-content {
+    display: none;
+    animation: fadeIn 0.5s;
+}
+
+.method-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .booking-summary-container h3 {
@@ -86,6 +138,12 @@
 
 .payment-form .form-row .form-group {
     flex: 1;
+}
+
+.promo-error {
+    color: var(--accent);
+    font-size: var(--font-size-sm);
+    margin-top: 0.5rem;
 }
 
 @media (max-width: 768px) {

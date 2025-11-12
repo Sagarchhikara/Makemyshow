@@ -247,7 +247,7 @@
     align-items: flex-start;
     text-align: left;
   }
-  
+
   .seat-selection-layout {
     grid-template-columns: 1fr;
   }
@@ -279,7 +279,7 @@
   .time-slot {
     padding: 0.5rem 1rem;
   }
-  
+
   .seat-map {
     grid-template-columns: repeat(7, auto); /* Adjust for smaller screens */
   }
