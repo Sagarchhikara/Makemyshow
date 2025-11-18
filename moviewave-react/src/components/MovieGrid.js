@@ -8,7 +8,12 @@ const MovieGrid = () => {
   useEffect(() => {
     const getMovies = async () => {
       const nowPlaying = await fetchMovies('movie/now_playing');
-      setMovies(nowPlaying);
+      const prices = [250, 300, 350, 275, 325];
+      const moviesWithPrice = nowPlaying.map((movie, index) => ({
+        ...movie,
+        ticketPrice: prices[index % prices.length], // Consistent price
+      }));
+      setMovies(moviesWithPrice);
     };
     getMovies();
   }, []);
