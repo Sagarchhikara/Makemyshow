@@ -1,10 +1,12 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BookingContext } from '../context/BookingContext';
+import { IMAGE_BASE_URL } from '../api/tmdb';
+import '../css/payment.css';
 
 const Payment = () => {
   const { booking } = useContext(BookingContext);
-  const { movie, time, seats, total } = booking || {};
+  const { movie, time, seats } = booking || {};
   const navigate = useNavigate();
   const [activeMethod, setActiveMethod] = useState('card');
   const [promoCode, setPromoCode] = useState('');
@@ -28,8 +30,9 @@ const Payment = () => {
       'MOVIEWAVE20': 0.2,
     };
 
+    const subtotal = (seats ? seats.length * 150 : 0);
     if (validCodes[promoCode]) {
-      setDiscount(total * validCodes[promoCode]);
+      setDiscount(subtotal * validCodes[promoCode]);
       setPromoError('');
     } else {
       setDiscount(0);
@@ -45,109 +48,229 @@ const Payment = () => {
     }, 2000); // Simulate 2-second processing time
   };
 
-  const totalAfterDiscount = (total || 0) - discount;
-  const gst = totalAfterDiscount * 0.18;
-  const finalTotal = totalAfterDiscount + gst;
+  const ticketPrice = 150;
+  const convenienceFee = 30;
+  const subtotal = (seats ? seats.length * ticketPrice : 0);
+  const totalAfterDiscount = subtotal - discount;
+  const gst = (totalAfterDiscount + convenienceFee) * 0.18;
+  const finalTotal = totalAfterDiscount + convenienceFee + gst;
 
   return (
     <section className="payment-section">
       <div className="container">
-        <div className="payment-container">
-          <div className="payment-form">
-            <Link to="/booking" className="back-button">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="15,18 9,12 15,6"></polyline>
+        <header className="payment-header">
+            <Link to="/" className="header-logo">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 0L32 16L16 32L0 16L16 0Z" fill="#FF0000"/>
+                  <path d="M16 4L28 16L16 28L4 16L16 4Z" fill="white"/>
+                  <path d="M16 8L24 16L16 24L8 16L16 8Z" fill="#FF0000"/>
               </svg>
-              Back to Booking
+              <span>MovieWave</span>
             </Link>
-            <h2 className="payment-title">Complete Your Payment</h2>
+        </header>
+
+        <div className="payment-container">
+          {/* Left Column: Payment Form */}
+          <div className="payment-form">
+            <h2 className="payment-title">Complete Payment</h2>
+            <div className="secure-payment-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="9,12 11,14 15,10" />
+              </svg>
+              Secure Payment
+            </div>
 
             {/* Payment Methods */}
             <div className="payment-methods">
-              <h4>Select Payment Method</h4>
               <div className="method-tabs">
                 <button className={`method-tab ${activeMethod === 'card' ? 'active' : ''}`} onClick={() => handleMethodChange('card')}>Card</button>
                 <button className={`method-tab ${activeMethod === 'upi' ? 'active' : ''}`} onClick={() => handleMethodChange('upi')}>UPI</button>
                 <button className={`method-tab ${activeMethod === 'wallet' ? 'active' : ''}`} onClick={() => handleMethodChange('wallet')}>Wallet</button>
+                <button className={`method-tab ${activeMethod === 'netbanking' ? 'active' : ''}`} onClick={() => handleMethodChange('netbanking')}>Net Banking</button>
               </div>
 
               {activeMethod === 'card' && (
                 <div className="method-content">
-                  <input type="text" className="form-input" placeholder="Card Number" />
-                  <input type="text" className="form-input" placeholder="Cardholder Name" />
+                  <div className="form-group">
+                    <label>Card Number</label>
+                    <input type="text" className="form-input" placeholder="1234 5678 9012 3456" />
+                    <div className="card-logos">
+                      <span>VISA</span>
+                      <span>MC</span>
+                      <span>AMEX</span>
+                      <span>RuPay</span>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Cardholder Name</label>
+                    <input type="text" className="form-input" placeholder="John Doe" />
+                  </div>
                   <div className="form-row">
-                    <input type="text" className="form-input" placeholder="MM/YY" />
-                    <input type="text" className="form-input" placeholder="CVV" />
+                    <div className="form-group">
+                      <label>Expiry Date</label>
+                      <input type="text" className="form-input" placeholder="MM/YY" />
+                    </div>
+                    <div className="form-group">
+                      <label>CVV</label>
+                      <input type="text" className="form-input" placeholder="123" />
+                    </div>
                   </div>
                 </div>
               )}
-               {activeMethod === 'upi' && (
+
+              {activeMethod === 'upi' && (
                 <div className="method-content">
-                  <input type="text" className="form-input" placeholder="yourname@upi" />
+                  <div className="form-group">
+                    <label>UPI ID</label>
+                    <input type="text" className="form-input" placeholder="yourname@upi" />
+                    <p className="input-hint">Enter your UPI ID (e.g., 9876543210@paytm)</p>
+                  </div>
+                  <div className="upi-apps">
+                    <p className="upi-label">Or pay using</p>
+                    <div className="upi-options">
+                      <button className="upi-option">
+                        <img src="/icons8-google-pay.svg" alt="Google Pay" className="payment-logo" />
+                        <span>Google Pay</span>
+                      </button>
+                      <button className="upi-option">
+                        <img src="/icons8-paypal-48.png" alt="PayPal" className="payment-logo" />
+                        <span>PayPal</span>
+                      </button>
+                      <button className="upi-option">
+                        <img src="/icons8-apple-pay-30.png" alt="Apple Pay" className="payment-logo" />
+                        <span>Apple Pay</span>
+                      </button>
+                      <button className="upi-option">
+                        <img src="/google-pay_6124998.png" alt="UPI" className="payment-logo" />
+                        <span>UPI</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
 
               {activeMethod === 'wallet' && (
                 <div className="method-content">
-                 <select className="form-input" id="bank-select">
-                    <option value="">Choose your wallet</option>
-                    <option value="paytm">Paytm</option>
-                    <option value="mobikwik">MobiKwik</option>
-                    <option value="freecharge">FreeCharge</option>
-                    <option value="amazon">Amazon Pay</option>
-                  </select>
+                  <div className="wallet-options">
+                    <button className="wallet-option">
+                      <div className="wallet-icon">
+                        <img src="/icons8-google-pay.svg" alt="Google Pay" />
+                      </div>
+                      <div className="wallet-info">
+                        <span className="wallet-name">Google Pay</span>
+                        <span className="wallet-balance">Balance: ₹2,450</span>
+                      </div>
+                    </button>
+                    <button className="wallet-option">
+                      <div className="wallet-icon">
+                        <img src="/icons8-paypal-48.png" alt="PayPal" />
+                      </div>
+                      <div className="wallet-info">
+                        <span className="wallet-name">PayPal</span>
+                        <span className="wallet-balance">Balance: ₹1,200</span>
+                      </div>
+                    </button>
+                    <button className="wallet-option">
+                      <div className="wallet-icon">
+                        <img src="/icons8-apple-pay-30.png" alt="Apple Pay" />
+                      </div>
+                      <div className="wallet-info">
+                        <span className="wallet-name">Apple Pay</span>
+                        <span className="wallet-balance">Balance: ₹850</span>
+                      </div>
+                    </button>
+                    <button className="wallet-option">
+                      <div className="wallet-icon">
+                        <img src="/icons8-amazon-pay-32.png" alt="Amazon Pay" />
+                      </div>
+                      <div className="wallet-info">
+                        <span className="wallet-name">Amazon Pay</span>
+                        <span className="wallet-balance">Balance: ₹3,100</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {activeMethod === 'netbanking' && (
+                <div className="method-content">
+                  <div className="form-group">
+                    <label>Select Your Bank</label>
+                    <select className="form-input">
+                      <option value="">Choose your bank</option>
+                      <option value="sbi">State Bank of India</option>
+                      <option value="hdfc">HDFC Bank</option>
+                      <option value="icici">ICICI Bank</option>
+                      <option value="axis">Axis Bank</option>
+                      <option value="kotak">Kotak Mahindra Bank</option>
+                      <option value="pnb">Punjab National Bank</option>
+                      <option value="bob">Bank of Baroda</option>
+                      <option value="canara">Canara Bank</option>
+                      <option value="union">Union Bank of India</option>
+                      <option value="idbi">IDBI Bank</option>
+                      <option value="yes">Yes Bank</option>
+                      <option value="indusind">IndusInd Bank</option>
+                    </select>
+                  </div>
+                  <div className="netbanking-info">
+                    <p>You will be redirected to your bank's secure login page</p>
+                  </div>
                 </div>
               )}
             </div>
 
-            <button className="pay-button" onClick={handlePayment} disabled={isProcessing}>
-              {isProcessing ? 'Processing...' : `Pay ₹${finalTotal.toFixed(2)}`}
-            </button>
+            <div className="secure-info-badge">
+                Your payment information is encrypted and secure
+            </div>
           </div>
 
-          {/* Order Summary */}
+          {/* Right Column: Order Summary */}
           <div className="order-summary">
-            <h4>Order Summary</h4>
-            <div className="summary-item">
-              <span>Movie</span>
-              <span>{movie || 'N/A'}</span>
+            <div className="movie-poster">
+                <img src={movie?.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : '/placeholder.jpg'} alt={movie?.title} />
             </div>
-            <div className="summary-item">
-              <span>Time</span>
-              <span>{time || 'N/A'}</span>
-            </div>
-            <div className="summary-item">
-              <span>Seats</span>
-              <span>{(seats || []).join(', ')}</span>
-            </div>
-            <div className="summary-item">
-              <span>Tickets</span>
-              <span>{(seats || []).length}</span>
-            </div>
-            <hr />
-            <div className="summary-item">
-              <span>Subtotal</span>
-              <span>₹{(total || 0).toFixed(2)}</span>
-            </div>
-            <div className="summary-item">
-              <span>GST (18%)</span>
-              <span>₹{gst.toFixed(2)}</span>
+            <h4 className="summary-title">{movie?.title || "Movie"}</h4>
+
+            <div className="summary-details">
+                <div className="summary-item">
+                    <span>Movie</span>
+                    <span>{movie?.title || 'Not selected'}</span>
+                </div>
+                <div className="summary-item">
+                    <span>Date & Time</span>
+                    <span>{time || 'Not selected'}</span>
+                </div>
+                <div className="summary-item">
+                    <span>Seats</span>
+                    <span>{(seats || []).join(', ') || 'Not selected'}</span>
+                </div>
+                <div className="summary-item">
+                    <span>Tickets</span>
+                    <span>{seats ? `${seats.length} × ₹${ticketPrice}` : 'N/A'}</span>
+                </div>
+                <div className="summary-item">
+                    <span>Convenience Fee</span>
+                    <span>₹{convenienceFee.toFixed(2)}</span>
+                </div>
+                <div className="summary-item">
+                    <span>GST (18%)</span>
+                    <span>₹{gst.toFixed(2)}</span>
+                </div>
             </div>
 
             <div className="promo-section">
-              <div className="promo-input-group">
-                <input
-                  type="text"
-                  className="promo-input"
-                  placeholder="Promo Code"
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value)}
-                />
-                <button className="apply-btn" onClick={handleApplyPromo}>Apply</button>
-              </div>
+              <input
+                type="text"
+                className="promo-input"
+                placeholder="Enter code"
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value)}
+              />
+              <button className="apply-btn" onClick={handleApplyPromo}>Apply</button>
             </div>
-            {promoError && <p className="promo-error">{promoError}</p>}
 
+            {promoError && <p className="promo-error">{promoError}</p>}
             {discount > 0 && (
               <div className="summary-item discount">
                 <span>Discount</span>
@@ -155,11 +278,14 @@ const Payment = () => {
               </div>
             )}
 
-            <hr />
-            <div className="summary-item total">
-              <span>Total</span>
-              <span>₹{finalTotal.toFixed(2)}</span>
+            <div className="total-amount">
+                <span>Total Amount</span>
+                <span>₹{finalTotal.toFixed(2)}</span>
             </div>
+
+            <button className="pay-button" onClick={handlePayment} disabled={isProcessing}>
+              {isProcessing ? 'Processing...' : `Pay ₹${finalTotal.toFixed(2)}`}
+            </button>
           </div>
         </div>
       </div>

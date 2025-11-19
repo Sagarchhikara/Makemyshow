@@ -1,6 +1,39 @@
-/* ========== PAYMENT SECTION ========== */
+:root {
+    --bg-primary: #141414;
+    --bg-secondary: #1A1A1A;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A3A3A3;
+    --accent: #E50914;
+    --accent-hover: #F6121D;
+    --border: #333333;
+    --success: #00B894;
+}
+
 .payment-section {
-    padding: 4rem 0;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 2rem 0;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.payment-header {
+    margin-bottom: 2rem;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 .payment-container {
@@ -9,174 +42,331 @@
     align-items: flex-start;
 }
 
-.booking-summary-container {
-    flex: 1;
+.payment-form {
+    flex: 1.5;
     background-color: var(--bg-secondary);
     padding: 2rem;
-    border-radius: var(--radius-large);
-    border: 1px solid var(--border);
-    transition: all 0.3s ease;
+    border-radius: 12px;
 }
 
-.payment-methods {
+.payment-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.secure-payment-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #2D2D2D;
+    color: var(--success);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+}
+
+.method-tabs {
     display: flex;
     margin-bottom: 1.5rem;
     border-bottom: 1px solid var(--border);
 }
 
 .method-tab {
-    padding: 1rem 1.5rem;
+    padding: 1rem;
     cursor: pointer;
     border: none;
     background: transparent;
     color: var(--text-secondary);
     font-size: 1rem;
     position: relative;
-    transition: color 0.3s ease;
 }
 
 .method-tab.active {
     color: var(--accent);
+    border-bottom: 2px solid var(--accent);
 }
 
-.method-tab::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
-
-.method-tab.active::after {
-    transform: scaleX(1);
-}
-
-.method-content {
-    display: none;
-    animation: fadeIn 0.5s;
-}
-
-.method-content.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.booking-summary-container h3 {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-    color: var(--text-primary);
-}
-
-.booking-summary p {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-}
-
-.booking-summary p:last-child {
-    margin-bottom: 0;
-}
-
-.booking-summary strong {
-    color: var(--text-secondary);
-}
-
-.payment-form-container {
-    flex: 2;
-    background-color: var(--bg-secondary);
-    padding: 2rem;
-    border-radius: var(--radius-large);
-    border: 1px solid var(--border);
-}
-
-.payment-form-container h3 {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-    color: var(--text-primary);
-}
-
-.payment-form .form-group {
+.method-content .form-group {
     margin-bottom: 1.5rem;
 }
 
-.payment-form label {
+.method-content label {
     display: block;
     margin-bottom: 0.5rem;
     color: var(--text-secondary);
-    font-size: 0.9rem;
 }
 
-.payment-form input {
+.form-input {
     width: 100%;
     padding: 0.75rem 1rem;
-    background-color: var(--bg-tertiary);
+    background-color: #2D2D2D;
     border: 1px solid var(--border);
-    border-radius: var(--radius-medium);
+    border-radius: 8px;
     color: var(--text-primary);
     font-size: 1rem;
 }
 
-.payment-form input:focus {
-    outline: none;
-    border-color: var(--accent);
+.card-logos {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
 }
 
-.payment-form .form-row {
+.form-row {
     display: flex;
     gap: 1rem;
 }
 
-.payment-form .form-row .form-group {
-    flex: 1;
+.secure-info-badge {
+    text-align: center;
+    color: var(--success);
+    margin-top: 2rem;
+    background-color: #2D2D2D;
+    padding: 1rem;
+    border-radius: 8px;
 }
 
-.promo-input-group {
+.order-summary {
+    flex: 1;
+    background-color: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+.movie-poster {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.movie-poster img {
+    width: 100px;
+    border-radius: 8px;
+}
+
+.summary-title {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}
+
+.summary-item span:last-child {
+    color: var(--text-primary);
+}
+
+.promo-section {
     display: flex;
     gap: 0.5rem;
+    margin: 2rem 0;
 }
 
 .promo-input {
     flex: 1;
-    width: 100%;
-    padding: 0.75rem 1rem;
-    background-color: var(--bg-tertiary);
+    background-color: #2D2D2D;
     border: 1px solid var(--border);
-    border-radius: var(--radius-medium);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
     color: var(--text-primary);
-    font-size: 1rem;
 }
 
 .apply-btn {
-    padding: 0.75rem 1.5rem;
     background-color: var(--accent);
     color: var(--text-primary);
-    border-radius: var(--radius-medium);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.apply-btn:hover {
-    background-color: var(--accent-hover);
+.total-amount {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 2rem 0 1rem;
+}
+
+.pay-button {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--accent);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.pay-button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
 }
 
 .promo-error {
     color: var(--accent);
-    font-size: var(--font-size-sm);
+    font-size: 0.9rem;
+    margin-top: -1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* UPI Payment Styles */
+.input-hint {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
     margin-top: 0.5rem;
 }
 
+.upi-apps {
+    margin-top: 2rem;
+}
+
+.upi-label {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.upi-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.upi-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background-color: #2D2D2D;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upi-option:hover {
+    border-color: var(--accent);
+    background-color: #333;
+    transform: translateY(-2px);
+}
+
+.payment-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.upi-option span {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+/* Wallet Payment Styles */
+.wallet-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.wallet-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #2D2D2D;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.wallet-option:hover {
+    border-color: var(--accent);
+    background-color: #333;
+    transform: translateX(4px);
+}
+
+.wallet-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1A1A1A;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.wallet-icon svg,
+.wallet-icon img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.wallet-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.wallet-name {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.wallet-balance {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+/* Net Banking Styles */
+.netbanking-info {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #2D2D2D;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.netbanking-info p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .payment-container {
+        flex-direction: column;
+    }
+
+    .method-tabs {
+        flex-wrap: wrap;
+    }
+
+    .method-tab {
+        flex: 1;
+        min-width: 100px;
+        font-size: 0.9rem;
+        padding: 0.75rem 0.5rem;
+    }
+
+    .upi-options {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
         flex-direction: column;
     }
 }
