@@ -217,3 +217,156 @@
     margin-top: -1.5rem;
     margin-bottom: 1rem;
 }
+
+/* UPI Payment Styles */
+.input-hint {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+.upi-apps {
+    margin-top: 2rem;
+}
+
+.upi-label {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.upi-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.upi-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background-color: #2D2D2D;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upi-option:hover {
+    border-color: var(--accent);
+    background-color: #333;
+    transform: translateY(-2px);
+}
+
+.payment-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.upi-option span {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+/* Wallet Payment Styles */
+.wallet-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.wallet-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #2D2D2D;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.wallet-option:hover {
+    border-color: var(--accent);
+    background-color: #333;
+    transform: translateX(4px);
+}
+
+.wallet-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1A1A1A;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.wallet-icon svg,
+.wallet-icon img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.wallet-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.wallet-name {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.wallet-balance {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+/* Net Banking Styles */
+.netbanking-info {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #2D2D2D;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.netbanking-info p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .payment-container {
+        flex-direction: column;
+    }
+
+    .method-tabs {
+        flex-wrap: wrap;
+    }
+
+    .method-tab {
+        flex: 1;
+        min-width: 100px;
+        font-size: 0.9rem;
+        padding: 0.75rem 0.5rem;
+    }
+
+    .upi-options {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+}

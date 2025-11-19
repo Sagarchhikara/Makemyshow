@@ -20,15 +20,15 @@ const Booking = () => {
 
   useEffect(() => {
     // Recalculate total price whenever selected seats change
-    const newTotalPrice = selectedSeats.length * movie.ticketPrice;
+    const newTotalPrice = selectedSeats.length * (movie.ticketPrice || 150);
     setTotalPrice(newTotalPrice);
     setBooking({
-      movie: movie.title,
+      movie: movie,
       time: selectedTime,
       seats: selectedSeats,
       total: newTotalPrice,
     });
-  }, [selectedSeats, movie.ticketPrice, movie.title, selectedTime, setBooking]);
+  }, [selectedSeats, movie, selectedTime, setBooking]);
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);

@@ -1,6 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BookingContext } from '../context/BookingContext';
+import { IMAGE_BASE_URL } from '../api/tmdb';
 import '../css/payment.css';
 
 const Payment = () => {
@@ -117,6 +118,106 @@ const Payment = () => {
                   </div>
                 </div>
               )}
+
+              {activeMethod === 'upi' && (
+                <div className="method-content">
+                  <div className="form-group">
+                    <label>UPI ID</label>
+                    <input type="text" className="form-input" placeholder="yourname@upi" />
+                    <p className="input-hint">Enter your UPI ID (e.g., 9876543210@paytm)</p>
+                  </div>
+                  <div className="upi-apps">
+                    <p className="upi-label">Or pay using</p>
+                    <div className="upi-options">
+                      <button className="upi-option">
+                        <img src="/icons8-google-pay.svg" alt="Google Pay" className="payment-logo" />
+                        <span>Google Pay</span>
+                      </button>
+                      <button className="upi-option">
+                        <img src="/icons8-paypal-48.png" alt="PayPal" className="payment-logo" />
+                        <span>PayPal</span>
+                      </button>
+                      <button className="upi-option">
+                        <img src="/icons8-apple-pay-30.png" alt="Apple Pay" className="payment-logo" />
+                        <span>Apple Pay</span>
+                      </button>
+                      <button className="upi-option">
+                        <img src="/google-pay_6124998.png" alt="UPI" className="payment-logo" />
+                        <span>UPI</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeMethod === 'wallet' && (
+                <div className="method-content">
+                  <div className="wallet-options">
+                    <button className="wallet-option">
+                      <div className="wallet-icon">
+                        <img src="/icons8-google-pay.svg" alt="Google Pay" />
+                      </div>
+                      <div className="wallet-info">
+                        <span className="wallet-name">Google Pay</span>
+                        <span className="wallet-balance">Balance: ₹2,450</span>
+                      </div>
+                    </button>
+                    <button className="wallet-option">
+                      <div className="wallet-icon">
+                        <img src="/icons8-paypal-48.png" alt="PayPal" />
+                      </div>
+                      <div className="wallet-info">
+                        <span className="wallet-name">PayPal</span>
+                        <span className="wallet-balance">Balance: ₹1,200</span>
+                      </div>
+                    </button>
+                    <button className="wallet-option">
+                      <div className="wallet-icon">
+                        <img src="/icons8-apple-pay-30.png" alt="Apple Pay" />
+                      </div>
+                      <div className="wallet-info">
+                        <span className="wallet-name">Apple Pay</span>
+                        <span className="wallet-balance">Balance: ₹850</span>
+                      </div>
+                    </button>
+                    <button className="wallet-option">
+                      <div className="wallet-icon">
+                        <img src="/icons8-amazon-pay-32.png" alt="Amazon Pay" />
+                      </div>
+                      <div className="wallet-info">
+                        <span className="wallet-name">Amazon Pay</span>
+                        <span className="wallet-balance">Balance: ₹3,100</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {activeMethod === 'netbanking' && (
+                <div className="method-content">
+                  <div className="form-group">
+                    <label>Select Your Bank</label>
+                    <select className="form-input">
+                      <option value="">Choose your bank</option>
+                      <option value="sbi">State Bank of India</option>
+                      <option value="hdfc">HDFC Bank</option>
+                      <option value="icici">ICICI Bank</option>
+                      <option value="axis">Axis Bank</option>
+                      <option value="kotak">Kotak Mahindra Bank</option>
+                      <option value="pnb">Punjab National Bank</option>
+                      <option value="bob">Bank of Baroda</option>
+                      <option value="canara">Canara Bank</option>
+                      <option value="union">Union Bank of India</option>
+                      <option value="idbi">IDBI Bank</option>
+                      <option value="yes">Yes Bank</option>
+                      <option value="indusind">IndusInd Bank</option>
+                    </select>
+                  </div>
+                  <div className="netbanking-info">
+                    <p>You will be redirected to your bank's secure login page</p>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="secure-info-badge">
@@ -127,7 +228,7 @@ const Payment = () => {
           {/* Right Column: Order Summary */}
           <div className="order-summary">
             <div className="movie-poster">
-                <img src={movie?.posterURL} alt={movie?.title} />
+                <img src={movie?.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : '/placeholder.jpg'} alt={movie?.title} />
             </div>
             <h4 className="summary-title">{movie?.title || "Movie"}</h4>
 
