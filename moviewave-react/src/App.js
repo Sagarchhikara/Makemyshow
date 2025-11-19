@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -9,7 +8,7 @@ import OrderConfirmation from './components/OrderConfirmation';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import { BookingProvider } from './context/BookingContext';
-import { SpeedInsights } from "@vercel/speed-insights/react"
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import './css/style.css';
 import './css/booking.css';
 import './css/payment.css';
@@ -29,6 +28,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
         </Routes>
         <Footer />
+        <SpeedInsights />
       </Router>
     </BookingProvider>
   );
