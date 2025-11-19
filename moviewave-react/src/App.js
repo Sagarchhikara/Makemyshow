@@ -9,6 +9,7 @@ import OrderConfirmation from './components/OrderConfirmation';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import { BookingProvider } from './context/BookingContext';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 import './css/style.css';
 import './css/booking.css';
 import './css/payment.css';
