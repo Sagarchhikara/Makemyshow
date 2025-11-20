@@ -1,9 +1,13 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import MovieGrid from './MovieGrid';
 import ComingSoonGrid from './ComingSoonGrid';
 import Slideshow from './Slideshow';
 
 const Home = () => {
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
+
   return (
     <>
       <Slideshow />
@@ -14,7 +18,7 @@ const Home = () => {
               <h2 className="section-title">Now Showing</h2>
               <p className="section-subtitle">Latest blockbusters in theaters</p>
             </div>
-            <MovieGrid />
+            <MovieGrid searchQuery={searchQuery} />
           </div>
         </section>
 
@@ -24,7 +28,7 @@ const Home = () => {
               <h2 className="section-title">Coming Soon</h2>
               <p className="section-subtitle">Upcoming releases to watch out for</p>
             </div>
-            <ComingSoonGrid />
+            <ComingSoonGrid searchQuery={searchQuery} />
           </div>
         </section>
       </main>

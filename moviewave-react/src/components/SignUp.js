@@ -26,7 +26,7 @@ const SignUp = () => {
         <div className="signin-container">
             <div className="signin-box">
                 <h2 className="signin-title">Sign Up</h2>
-                <p className="signin-subtitle">Create your MovieWave account</p>
+                <p className="signin-subtitle">Create your MakeMyShow account</p>
                 <form className="signin-form" onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>

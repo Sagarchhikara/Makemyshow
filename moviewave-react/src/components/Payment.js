@@ -65,7 +65,7 @@ const Payment = () => {
                   <path d="M16 4L28 16L16 28L4 16L16 4Z" fill="white"/>
                   <path d="M16 8L24 16L16 24L8 16L16 8Z" fill="#FF0000"/>
               </svg>
-              <span>MovieWave</span>
+              <span>MakeMyShow</span>
             </Link>
         </header>
 
