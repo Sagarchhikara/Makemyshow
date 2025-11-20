@@ -19,7 +19,7 @@ const SignIn = () => {
         <div className="signin-container">
             <div className="signin-box">
                 <h2 className="signin-title">Sign In</h2>
-                <p className="signin-subtitle">Welcome back to MovieWave!</p>
+                <p className="signin-subtitle">Welcome back to MakeMyShow!</p>
                 <form className="signin-form" onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>

@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container">
         <div className="footer-content">
           <div className="footer-brand">
-            <div className="brand">🎬 <span>MovieWave</span></div>
+            <div className="brand">🎬 <span>MakeMyShow</span></div>
             <p>Your ultimate destination for movie tickets and entertainment.</p>
           </div>
 
@@ -36,7 +36,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; 2025 MovieWave. All rights reserved.</p>
+          <p>&copy; 2025 MakeMyShow. All rights reserved.</p>
           <p>Made with ❤️ for movie lovers</p>
         </div>
       </div>
