@@ -138,8 +138,10 @@
 
 .seat-map {
   display: grid;
-  grid-template-columns: repeat(13, auto);
+  grid-template-columns: repeat(8, 1fr);
   gap: 0.5rem;
+  max-width: 100%;
+  justify-items: center;
 }
 
 .seat {
@@ -242,34 +244,82 @@
 }
 
 @media (max-width: 768px) {
+  .booking-section {
+    padding: 2rem 0;
+  }
+
   .booking-header {
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
+    margin-bottom: 2rem;
+  }
+
+  .booking-header .section-title {
+    font-size: 1.5rem;
+  }
+
+  .booking-flow {
+    padding: 1.5rem;
+  }
+
+  .booking-step h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .time-slots {
+    gap: 0.75rem;
+  }
+
+  .time-slot {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
   }
 
   .seat-selection-layout {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .seat-map-container {
     padding: 1rem;
+    overflow-x: auto;
+  }
+
+  .screen {
+    width: 85%;
+    min-width: 280px;
   }
 
   .seat-map {
     gap: 0.4rem;
+    grid-template-columns: repeat(8, minmax(28px, 1fr));
   }
 
   .seat {
-    width: 25px;
-    height: 25px;
-    font-size: 0.6rem;
+    width: 28px;
+    height: 28px;
+    font-size: 0.65rem;
+  }
+
+  .seat-legend {
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .booking-summary-container {
+    position: static;
   }
 }
 
 @media (max-width: 480px) {
   .booking-flow {
-    padding: 1.5rem;
+    padding: 1rem;
+  }
+
+  .booking-step h3 {
+    font-size: var(--font-size-xl);
   }
 
   .time-slots {
@@ -278,9 +328,141 @@
 
   .time-slot {
     padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .ticket-quantity {
+    gap: 1rem;
+  }
+
+  .quantity-btn {
+    width: 35px;
+    height: 35px;
+    font-size: var(--font-size-lg);
+  }
+
+  #quantity-display {
+    font-size: var(--font-size-xl);
+  }
+
+  .seat-map-container {
+    padding: 0.75rem;
+  }
+
+  .screen {
+    width: 90%;
+    min-width: 250px;
+    padding: 0.5rem;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
   }
 
   .seat-map {
-    grid-template-columns: repeat(7, auto); /* Adjust for smaller screens */
+    grid-template-columns: repeat(8, minmax(24px, 1fr));
+    gap: 0.35rem;
+    width: 100%;
   }
+
+  .seat {
+    width: 100%;
+    max-width: 32px;
+    height: 32px;
+    font-size: 0.6rem;
+    padding: 0.2rem;
+  }
+
+  .seat-legend {
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .legend-item {
+    font-size: 0.85rem;
+  }
+
+  .legend-item .seat {
+    width: 18px;
+    height: 18px;
+  }
+
+  .booking-summary-container {
+    padding: 1rem;
+    position: static;
+  }
+
+  .booking-summary p {
+    font-size: 0.9rem;
+  }
+
+  #confirm-booking-btn {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 360px) {
+  .booking-flow {
+    padding: 1rem;
+  }
+
+  .booking-step h3 {
+    font-size: 1.25rem;
+  }
+
+  .time-slot {
+    padding: 0.55rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .seat-map {
+    grid-template-columns: repeat(8, minmax(22px, 1fr));
+    gap: 0.25rem;
+  }
+
+  .seat {
+    max-width: 28px;
+    height: 28px;
+    font-size: 0.55rem;
+  }
+
+  .screen {
+    min-width: 240px;
+    font-size: 0.75rem;
+  }
+}
+
+/* Landscape mode optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+  .seat-selection-layout {
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  .seat-map-container {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .booking-summary-container {
+    position: sticky;
+    top: 1rem;
+  }
+}
+
+/* Prevent text selection on seats for better mobile UX */
+.seat {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Better touch feedback */
+.seat:active:not(.booked) {
+  transform: scale(0.95);
+}
+
+.time-slot:active {
+  transform: scale(0.98);
 }
