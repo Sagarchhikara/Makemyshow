@@ -370,3 +370,94 @@
         flex-direction: column;
     }
 }
+
+/* Success Notification */
+.success-notification {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.notification-content {
+    background-color: var(--bg-secondary);
+    padding: 3rem;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    animation: slideUp 0.5s ease;
+    border: 2px solid var(--success);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.notification-icon {
+    margin-bottom: 1.5rem;
+    animation: scaleIn 0.5s ease 0.3s both;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.notification-content h2 {
+    color: var(--success);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.notification-details {
+    background-color: #2D2D2D;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    text-align: left;
+}
+
+.notification-details p {
+    margin: 0.75rem 0;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.notification-details strong {
+    color: var(--text-secondary);
+    margin-right: 0.5rem;
+}
+
+.notification-message {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-top: 1rem;
+}

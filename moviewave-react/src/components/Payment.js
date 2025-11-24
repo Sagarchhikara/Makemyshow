@@ -13,6 +13,7 @@ const Payment = () => {
   const [discount, setDiscount] = useState(0);
   const [promoError, setPromoError] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     if (!booking) {
@@ -28,6 +29,7 @@ const Payment = () => {
     const validCodes = {
       'SAVE10': 0.1,
       'MOVIEWAVE20': 0.2,
+      'FIRST50':0.5,
     };
 
     const subtotal = (seats ? seats.length * 150 : 0);
@@ -44,7 +46,11 @@ const Payment = () => {
     setIsProcessing(true);
     setTimeout(() => {
       setIsProcessing(false);
-      navigate('/confirmation');
+      setShowNotification(true);
+      // Redirect to home after showing notification
+      setTimeout(() => {
+        navigate('/');
+      }, 3000);
     }, 2000); // Simulate 2-second processing time
   };
 
@@ -57,6 +63,26 @@ const Payment = () => {
 
   return (
     <section className="payment-section">
+      {showNotification && (
+        <div className="success-notification">
+          <div className="notification-content">
+            <div className="notification-icon">
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#00B894" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="8,12 11,15 16,9" />
+              </svg>
+            </div>
+            <h2>Booking Confirmed!</h2>
+            <div className="notification-details">
+              <p><strong>Movie:</strong> {movie?.title}</p>
+              <p><strong>Date & Time:</strong> {time}</p>
+              <p><strong>Seats:</strong> {(seats || []).join(', ')}</p>
+              <p><strong>Total Paid:</strong> ₹{finalTotal.toFixed(2)}</p>
+            </div>
+            <p className="notification-message">Your tickets have been sent to your email</p>
+          </div>
+        </div>
+      )}
       <div className="container">
         <header className="payment-header">
             <Link to="/" className="header-logo">
